@@ -1,0 +1,139 @@
+/* Dueño: perfil 1. Animaciones de la landing. Todo se desactiva con prefers-reduced-motion. */
+
+/* Entrada del titular, palabra a palabra */
+.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em) rotate(2deg);
+  animation: wordIn 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+@keyframes wordIn {
+  to { opacity: 1; transform: none; }
+}
+
+/* Aparición al entrar en pantalla (la clase .in la pone <Revelar />) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* El escudo se dibuja */
+.draw {
+  stroke-dasharray: 1100;
+  stroke-dashoffset: 1100;
+  animation: draw 2.2s 0.4s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+}
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+.fadeLate {
+  opacity: 0;
+  animation: fade 0.8s 1.8s forwards;
+}
+@keyframes fade {
+  to { opacity: 1; }
+}
+
+/* Tarjetas que flotan alrededor del escudo */
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+.floatSlow {
+  animation: float 8s ease-in-out -3s infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-14px) rotate(1deg); }
+}
+
+/* Banda en movimiento continuo */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+.marqueeReverse {
+  animation-direction: reverse;
+  animation-duration: 46s;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Cursor de "escribiendo" */
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--ink);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Sello que cae sobre el pasaporte */
+.stamp {
+  animation: stamp 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+@keyframes stamp {
+  from { opacity: 0; transform: scale(1.8) rotate(-18deg); }
+  to { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+
+/* Barras de la rúbrica que crecen */
+.grow {
+  transform-origin: left;
+  animation: grow 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes grow {
+  from { transform: scaleX(0); }
+}
+
+/* Escena del recorrido */
+.scene {
+  animation: sceneIn 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes sceneIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+}
+
+/* Arco España ↔ México */
+.arc {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  transition: stroke-dashoffset 2.4s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.in .arc {
+  stroke-dashoffset: 0;
+}
+.pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse 2.2s ease-out infinite;
+}
+@keyframes pulse {
+  from { opacity: 0.6; transform: scale(1); }
+  to { opacity: 0; transform: scale(3.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word, .reveal, .draw, .fadeLate, .stamp, .grow, .scene, .arc {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .float, .floatSlow, .marquee, .pulse, .caret::after {
+    animation: none !important;
+  }
+}
