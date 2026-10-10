@@ -13,6 +13,7 @@
 | [`docs/PRD.md`](docs/PRD.md) | Producto: problema, reglas, MVP, IA, datos, decisiones |
 | [`docs/perfiles/`](docs/perfiles/README.md) | **Una ficha por perfil: empieza aquí** |
 | [`docs/EQUIPO.md`](docs/EQUIPO.md) | Reparto (4 partes de la app + negocio) y calendario |
+| [`docs/NICHO.md`](docs/NICHO.md) | Propuesta de nicho de entrada, competidores y cómo vender a universidades |
 | [`docs/NEGOCIO.md`](docs/NEGOCIO.md) | Mercado, financiación, KPIs, aliados, plan 90 días |
 | [`docs/PITCH.md`](docs/PITCH.md) | Guion del pitch de 3 minutos |
 | [`docs/deck-mentores.html`](docs/deck-mentores.html) | Deck para validar con mentores ([publicado](https://claude.ai/code/artifact/ca73f748-aac1-4b16-b9db-db126fd59be0)) |
