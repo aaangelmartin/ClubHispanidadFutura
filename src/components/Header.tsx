@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { getSession } from "@/lib/session";
 import Marca from "@/components/Marca";
+import HeaderShell from "@/components/HeaderShell";
 
 export default async function Header() {
   const session = await getSession();
@@ -24,10 +25,10 @@ export default async function Header() {
           ];
 
   return (
-    <header className="border-b border-line bg-paper">
+    <HeaderShell>
       <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
         <Link href="/" aria-label="Inicio · Retos Hispanidad Futura">
-          <Marca size={34} fondo="var(--paper)" compacta />
+          <Marca size={34} fondo="var(--marca-fondo, var(--paper))" compacta />
         </Link>
         {links.map((l) => (
           <Link key={l.href} href={l.href} className="text-sm text-ink-2 hover:text-ink">
@@ -42,6 +43,6 @@ export default async function Header() {
           Demo
         </Link>
       </nav>
-    </header>
+    </HeaderShell>
   );
 }
