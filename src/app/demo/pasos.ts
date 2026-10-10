@@ -28,6 +28,8 @@ export const PASOS: Paso[] = [
   { perfil: 4, titulo: "Dashboard de la empresa", frase: "La empresa ve sus retos, las entregas y lo que le falta por valorar.", ruta: "/empresa", como: "empresa_es" },
   { perfil: 4, titulo: "Valorar entregas", frase: "La IA resume cada entrega frente a la rúbrica; la nota la pone la empresa.", ruta: "/empresa/retos/33333333-3333-4333-8333-000000000003", como: "empresa_es" },
   { perfil: 4, titulo: "Candidatos", frase: "Todos los que han entregado, sin ranking automático.", ruta: "/empresa/candidatos", como: "empresa_es" },
+  { perfil: 4, titulo: "Mensajes", frase: "La empresa habla con el candidato que le interesa sin salir de la plataforma.", ruta: "/empresa/mensajes", como: "empresa_es" },
+  { perfil: 4, titulo: "Ajustes y plan", frase: "Piloto gratis 90 días; después, pago por reto y comisión si contrata.", ruta: "/empresa/ajustes", como: "empresa_es" },
   { perfil: 4, titulo: "Pasaporte", frase: "Gane o no, el estudiante se lleva una valoración real que vale en los dos países.", ruta: "/pasaporte/22222222-2222-4222-8222-000000000001", como: null },
   { perfil: 1, titulo: "Panel en vivo", frase: "Y esto son registros reales de hoy, de España y México.", ruta: "/panel", como: null },
 ];

@@ -6,6 +6,7 @@ import p from "@/app/empresa/_lib/pasaporte.module.css";
 import { formatDate, getCandidates, initials, requireCompany, weightedScore } from "../_lib/queries";
 import { countryCode } from "../_lib/visuals";
 import Sello, { fechaSello } from "../_lib/Sello";
+import Accion from "../_lib/Accion";
 
 export const dynamic = "force-dynamic";
 
@@ -60,6 +61,7 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
         </div>
       </section>
 
+      <div className="flex flex-wrap items-center justify-between gap-3">
       <nav className="flex flex-wrap gap-2" aria-label="Filtrar por estado">
         {filters.map((f) => (
           <Link
@@ -71,6 +73,8 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
           </Link>
         ))}
       </nav>
+      <Accion hecho="Exportado: candidatos.csv">Exportar a CSV</Accion>
+      </div>
 
       {rows.length === 0 && <div className={`${p.hoja} p-10 text-center text-ink-2`}>No hay candidatos con este filtro.</div>}
 
@@ -120,7 +124,9 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
                 {contacted ? (
                   <span className="font-semibold text-ok">Contactado</span>
                 ) : c.evaluation ? (
-                  <span className="text-ink-2">Valorado</span>
+                  <Accion hecho={`Invitación a entrevista enviada a ${c.student.name.split(" ")[0]}`} className="font-semibold text-gold">
+                    Invitar a entrevista
+                  </Accion>
                 ) : (
                   <Link href={`/empresa/retos/${c.challenge.id}`} className="font-semibold text-gold">
                     Valorar →

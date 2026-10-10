@@ -6,6 +6,7 @@ import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
 import p from "@/app/empresa/_lib/pasaporte.module.css";
 import Sello, { fechaSello, tinta } from "@/app/empresa/_lib/Sello";
 import CopyLink from "./CopyLink";
+import Accion from "@/app/empresa/_lib/Accion";
 import { getPassport, weightedScore } from "./queries";
 
 export const dynamic = "force-dynamic";
@@ -108,6 +109,12 @@ export default async function Pasaporte({ params }: { params: Promise<{ id: stri
             )}
             <div className="flex flex-wrap items-center gap-4">
               <CopyLink />
+              <Accion hecho="Descargando pasaporte en PDF" className={p.botonClaro}>
+                Descargar PDF
+              </Accion>
+              <Accion hecho="Añadido a tu perfil de LinkedIn" className={p.botonClaro}>
+                Añadir a LinkedIn
+              </Accion>
               {student.github && (
                 <a href={student.github} target="_blank" rel="noreferrer" className="text-sm text-[#f3efe6]/80 underline hover:text-[var(--oro)]">
                   GitHub
