@@ -2,6 +2,7 @@
 // Solo presentación: no consulta ni guarda nada.
 import type { Challenge } from "@/lib/types";
 import type { EstadoEntregaValor, EstadoRetoValor, Tarjeta } from "@/components/embarca";
+import { rutaReto } from "@/components/embarca";
 import { daysLeft, formatDate } from "./queries";
 
 const IATA: Record<string, string> = { España: "MAD", Colombia: "BOG", México: "MEX" };
@@ -33,11 +34,9 @@ export function puerta(id: string) {
 }
 
 export function tarjetaDeReto(c: Challenge, empresa: string, pais: string): Tarjeta {
-  const origen = codigoCiudad(pais);
-  const destino = origen === "BOG" ? "MAD" : "BOG";
   const datos = [{ etiqueta: "Duración", valor: `${c.duration_days} días` }];
   if (c.profile) datos.push({ etiqueta: "Perfil", valor: c.profile.length > 28 ? `${c.profile.slice(0, 26)}…` : c.profile });
   if (c.deadline) datos.push({ etiqueta: "Cierra", valor: formatDate(c.deadline) });
   if (c.suggested_prize) datos.push({ etiqueta: "Premio", valor: c.suggested_prize });
-  return { empresa, origen, destino, titulo: c.title, datos, puerta: puerta(c.id), estado: estadoReto(c) };
+  return { empresa, ...rutaReto(pais), titulo: c.title, datos, puerta: puerta(c.id), estado: estadoReto(c) };
 }

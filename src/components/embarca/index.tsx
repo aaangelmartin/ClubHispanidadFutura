@@ -150,6 +150,8 @@ export type Tarjeta = {
   empresa: string;
   origen: string; // código de 3 letras: MAD, BOG, BCN, MDE…
   destino: string;
+  origenCiudad?: string; // nombre bajo el código, como en una tarjeta real
+  destinoCiudad?: string;
   titulo: string;
   datos: { etiqueta: string; valor: string }[]; // Duración, Perfil, Cierra, Premio…
   puerta?: string;
@@ -170,10 +172,16 @@ export function TarjetaEmbarque({ t, compacta = false, className = "" }: { t: Ta
           <span className="truncate text-[13px] font-semibold text-white">{t.empresa}</span>
         </div>
         <div className={`flex flex-col ${compacta ? "gap-2 p-4" : "gap-3.5 p-5"}`}>
-          <div className="flex items-center gap-3" style={{ fontFamily: MONO }}>
-            <span className={`font-bold ${compacta ? "text-xl" : "text-3xl"}`} style={{ color: C.marino }}>{t.origen}</span>
-            <span className="text-xl" style={{ color: C.azul }} aria-hidden="true">✈</span>
-            <span className={`font-bold ${compacta ? "text-xl" : "text-3xl"}`} style={{ color: C.marino }}>{t.destino}</span>
+          <div className="flex items-end gap-4">
+            <span className="flex flex-col">
+              <span className={`font-bold leading-none ${compacta ? "text-xl" : "text-3xl"}`} style={{ color: C.marino, fontFamily: MONO }}>{t.origen}</span>
+              {t.origenCiudad && <span className="mt-1 text-xs" style={{ color: C.texto2 }}>{t.origenCiudad}</span>}
+            </span>
+            <span className={`text-xl ${t.origenCiudad ? "mb-5" : ""}`} style={{ color: C.azul }} aria-hidden="true">✈</span>
+            <span className="flex flex-col">
+              <span className={`font-bold leading-none ${compacta ? "text-xl" : "text-3xl"}`} style={{ color: C.marino, fontFamily: MONO }}>{t.destino}</span>
+              {t.destinoCiudad && <span className="mt-1 text-xs" style={{ color: C.texto2 }}>{t.destinoCiudad}</span>}
+            </span>
           </div>
           <h3 className={`font-bold leading-tight ${compacta ? "text-lg" : "text-[22px]"}`} style={{ color: C.marino }}>
             {t.titulo}
@@ -205,6 +213,30 @@ export function TarjetaEmbarque({ t, compacta = false, className = "" }: { t: Ta
       </div>
     </article>
   );
+}
+
+/* ── Rutas reales de una tarjeta ─────────────────────── */
+
+const AEROPUERTO: Record<string, { codigo: string; ciudad: string }> = {
+  España: { codigo: "MAD", ciudad: "Madrid" },
+  Colombia: { codigo: "BOG", ciudad: "Bogotá" },
+  México: { codigo: "MEX", ciudad: "Ciudad de México" },
+};
+
+/**
+ * Ruta de la tarjeta de embarque a partir de datos reales: sale del país de la empresa
+ * (su capital y su código de aeropuerto) y llega al país del estudiante si lo conocemos;
+ * si no, a «En remoto», porque el reto se hace desde casa.
+ */
+export function rutaReto(paisEmpresa: string, paisEstudiante?: string | null) {
+  const o = AEROPUERTO[paisEmpresa] ?? { codigo: paisEmpresa.slice(0, 3).toUpperCase(), ciudad: paisEmpresa };
+  const d = paisEstudiante ? AEROPUERTO[paisEstudiante] : undefined;
+  return {
+    origen: o.codigo,
+    origenCiudad: o.ciudad,
+    destino: d ? d.codigo : "WEB",
+    destinoCiudad: d ? d.ciudad : "En remoto",
+  };
 }
 
 /* ── Pasaporte (un estudiante), abierto en horizontal ── */
