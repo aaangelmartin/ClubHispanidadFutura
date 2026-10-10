@@ -4,6 +4,24 @@ Cada persona es dueña de su bloque y de sus archivos. Si algo bloquea a otro, s
 
 Nombres: rellenad la columna "Quién" al empezar.
 
+## Fase 1 · Arranque (12:55–14:30)
+
+El pitch **no se hace ahora**: empieza a las 14:30. Hasta entonces, todo el mundo construye o consigue material para la demo.
+
+**Primeros 5 minutos, los cinco juntos:** asignar roles, elegir país LatAm (México o Colombia) y un nombre provisional. Si no hay acuerdo en 5 min, decide la persona 1.
+
+| # | Rol en el arranque | Qué hace ahora | Entrega y hora |
+|---|---|---|---|
+| 1 | **App** | Crea el proyecto en Lovable. P1: landing, registro (estudiante / empresa) y panel en vivo | Enlace de registro desplegado **13:20** → a la persona 4. Luego P2 |
+| 2 | **IA y datos** | Prueba el prompt de "generar reto" (`PRD.md` §10.1) en ChatGPT/Claude con 3 problemas reales hasta que salga bien. Prepara datos de ejemplo: 3 retos "ejemplo piloto" y 1 entrega con su valoración | Prompt listo **13:15** → persona 1. Datos de ejemplo **13:45** |
+| 3 | **Mercado** | Busca los 3 datos con fuente (paro juvenil España y país LatAm, ofertas junior que piden experiencia, coste de agencia) y la tabla de competidores | `NEGOCIO.md` §1 completo **14:00** |
+| 4 | **Demanda** | Prepara el mensaje de WhatsApp y la lista de grupos y contactos universitarios de los dos países. En cuanto llegue el enlace, lo envía | Mensaje listo **13:10**. Enlace enviado **13:25**. Primeros registros reales antes de las 14:00 |
+| 5 | **Validación y retos reales** | Recorre a los mentores con el deck y apunta sus respuestas a las 5 preguntas. Pide a mentores y patrocinadores **un problema real de su empresa** para usarlo en la demo. Antes, pasa a la persona 1 los textos de la landing (problema + frase + botones) | Textos landing **13:05**. Respuestas de mentores y 1–2 retos reales **14:00** |
+
+**14:00, puesta en común (5 min):** qué han dicho los mentores, si algo cambia el alcance, y cuántos registros hay. Si los mentores tumban algo, se decide ahí y se anota en `PRD.md` §12.
+
+**14:30:** las personas 3, 4 y 5 pasan a negocio y pitch (bloques de abajo). Las personas 1 y 2 siguen con la app hasta las 15:00.
+
 | # | Rol | Quién | Entrega final | Archivos que posee |
 |---|---|---|---|---|
 | 1 | **App** (técnico principal) | | Las 5 pantallas funcionando y desplegadas | Código / proyecto Lovable |
