@@ -23,7 +23,10 @@
 
 ## App
 
-Demo desplegada: **[PENDIENTE: URL de Vercel]**
+**Producción: https://club-hispanidad-futura.vercel.app** · recorrido de la demo: https://club-hispanidad-futura.vercel.app/demo
+
+Vercel (equipo Noa) + Supabase en la nube (Frankfurt, creado desde el Marketplace de Vercel, con los datos de ejemplo cargados). La IA está apagada (`AI_ENABLED=false`).
+**Desplegar:** de momento a mano, lo hace Álvaro (`vercel deploy --prod`). Para que cada push a `main` se despliegue solo, Ángel tiene que dar acceso a Vercel a este repo de GitHub.
 
 Next.js 15 + Supabase + API de Claude, en Vercel.
 
