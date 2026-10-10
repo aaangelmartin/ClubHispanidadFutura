@@ -30,7 +30,7 @@
 |---|---|
 | Recorrido completo | https://club-hispanidad-futura.vercel.app/demo |
 | Empresa (entra como Ibérica Retail) | https://club-hispanidad-futura.vercel.app/empresa |
-| Estudiante (entra como Andrés, Colombia) | https://club-hispanidad-futura.vercel.app/estudiante |
+| Estudiante: inicio con el feed de retos (entra como Andrés, Colombia) | https://club-hispanidad-futura.vercel.app/estudiante |
 | Pasaporte del estudiante | https://club-hispanidad-futura.vercel.app/estudiante/pasaporte |
 | Landing · Registro · Panel en vivo | `/` · `/registro` · `/panel` |
 

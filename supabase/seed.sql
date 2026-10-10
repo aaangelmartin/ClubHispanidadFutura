@@ -79,3 +79,33 @@ update submissions set ai_summary = '{"what_it_does":"Identifica como problema p
 where id = '44444444-4444-4444-8444-000000000002';
 update submissions set ai_summary = '{"what_it_does":"Combina 5 entrevistas cortas con la lectura de las quejas y concluye que los tres problemas son el plazo poco claro, la falta de seguimiento y el reembolso lento. Entrega wireframes de tres pantallas nuevas.","by_criterion":[{"criterion":"Diagnóstico","observations":"Es la única entrega que contrasta las quejas con entrevistas propias; los tres problemas coinciden con los datos."},{"criterion":"Solución","observations":"Cubre los tres problemas; el reembolso más rápido depende de procesos internos, no solo de diseño."},{"criterion":"Presentación","observations":"Tres pantallas bien explicadas."}],"strengths":["Investigación propia con usuarios","Visión completa del flujo"],"questions_for_reviewer":["¿Cómo se acortaría el reembolso en la práctica?"]}'
 where id = '44444444-4444-4444-8444-000000000003';
+
+-- Retos de la plataforma: los publica el propio Club (autor «Hispanidad Futura»). Se muestran en el feed como «Reto de la plataforma».
+insert into companies (id, name, contact_name, email, country) values
+('11111111-1111-4111-8111-000000000003', 'Hispanidad Futura', 'Equipo del Club', 'retos@hispanidadfutura.ejemplo.test', 'España')
+on conflict (id) do nothing;
+
+insert into challenges (id, company_id, description, title, summary, context, task, profile, deliverable, duration_days, rubric, suggested_prize, warnings, is_example, status, deadline) values
+('33333333-3333-4333-8333-000000000004', '11111111-1111-4111-8111-000000000003',
+ 'Reto semanal del Club para practicar diseño con impacto social.',
+ 'Reto semanal: rediseña la web de una ONG de Medellín',
+ 'Propón una web más clara para una ONG que forma a jóvenes en programación.',
+ 'Una ONG de Medellín forma cada año a 300 jóvenes en programación, pero su web no explica bien cómo apuntarse.',
+ 'Rediseña la página principal y el formulario de inscripción para que un joven entienda en 30 segundos qué ofrecen y cómo apuntarse.',
+ 'Cualquier estudiante con interés en diseño, UX o comunicación.',
+ 'Enlace a Figma con la página principal y el formulario, y una explicación de media página.',
+ 7,
+ '[{"criterion":"Claridad","weight":40,"description":"Se entiende en 30 segundos qué ofrecen y cómo apuntarse"},{"criterion":"Diseño","weight":35,"description":"Atractivo, accesible y coherente"},{"criterion":"Explicación","weight":25,"description":"Las decisiones están justificadas"}]',
+ 'Sello del Club y sesión de mentoría', '{}', true, 'abierto', now() + interval '7 days'),
+('33333333-3333-4333-8333-000000000005', '11111111-1111-4111-8111-000000000003',
+ 'Reto de datos del Club con datos abiertos.',
+ 'Reto de datos: ¿dónde estudian los jóvenes iberoamericanos?',
+ 'Con datos abiertos de la UNESCO, cuenta en un gráfico cómo se mueven los estudiantes entre España y Latinoamérica.',
+ 'La movilidad de estudiantes entre España y Latinoamérica crece, pero casi nadie la cuenta de forma clara.',
+ 'Usa los datos abiertos de movilidad estudiantil de la UNESCO y crea una visualización que explique los flujos entre España y Latinoamérica, con tres conclusiones.',
+ 'Estudiantes de datos, economía, periodismo o cualquier grado con ganas de aprender.',
+ 'Un gráfico o notebook publicado y un texto de 300 palabras con tus conclusiones.',
+ 5,
+ '[{"criterion":"Rigor","weight":40,"description":"Los datos se usan bien y se citan"},{"criterion":"Visualización","weight":35,"description":"El gráfico se entiende solo"},{"criterion":"Conclusiones","weight":25,"description":"Aportan algo que no era obvio"}]',
+ 'Sello del Club y publicación en el blog', '{}', true, 'abierto', now() + interval '5 days')
+on conflict (id) do nothing;
