@@ -21,14 +21,30 @@ function claseAccion(tipo: AccionNav["tipo"]) {
   return "px-2 py-2 text-sm font-semibold text-ink-2 hover:text-ink";
 }
 
+function Avatar({ nombre }: { nombre: string }) {
+  const ini = nombre
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase();
+  return (
+    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-ink text-xs font-bold text-white" aria-hidden="true">
+      {ini}
+    </span>
+  );
+}
+
 export default function NavEmbarca({
   enlaces,
   acciones,
   quien,
+  rol,
 }: {
   enlaces: EnlaceNav[];
   acciones: AccionNav[];
   quien?: string;
+  rol?: "estudiante" | "empresa";
 }) {
   const ruta = usePathname();
   const [abierto, setAbierto] = useState(false);
@@ -41,6 +57,11 @@ export default function NavEmbarca({
           <Isotipo size={28} />
           <span className="hf-logo-texto text-[22px] font-bold tracking-[-0.03em] text-ink">Embarca</span>
         </Link>
+        {rol && (
+          <span className={`hidden rounded-full px-2.5 py-1 text-xs font-bold sm:inline-flex ${rol === "estudiante" ? "bg-blue-soft text-blue" : "bg-gold-soft text-ink"}`}>
+            {rol === "estudiante" ? "Estudiante" : "Empresa"}
+          </span>
+        )}
 
         <ul className="hidden items-center gap-1 md:flex">
           {enlaces.map((e) => {
@@ -64,7 +85,12 @@ export default function NavEmbarca({
         </ul>
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
-          {quien && <span className="mr-2 max-w-[22ch] truncate text-sm font-semibold text-ink">{quien}</span>}
+          {quien && (
+            <span className="mr-2 inline-flex items-center gap-2">
+              <Avatar nombre={quien} />
+              <span className="max-w-[18ch] truncate text-sm font-semibold text-ink">{quien}</span>
+            </span>
+          )}
           {acciones.map((a) => (
             <Link key={a.href + a.label} href={a.href} className={claseAccion(a.tipo)}>
               {a.label}
@@ -86,7 +112,13 @@ export default function NavEmbarca({
 
       {abierto && (
         <div id="menu-movil" className="flex flex-col gap-1 border-t border-line pb-4 pt-2 md:hidden">
-          {quien && <span className="px-2 py-2 text-sm text-ink-2">{quien}</span>}
+          {quien && (
+            <span className="flex items-center gap-2 px-2 py-2 text-sm font-semibold text-ink">
+              <Avatar nombre={quien} />
+              {quien}
+              {rol && <span className="text-ink-2">· {rol === "estudiante" ? "Estudiante" : "Empresa"}</span>}
+            </span>
+          )}
           {enlaces.map((e) => (
             <Link
               key={e.href}
