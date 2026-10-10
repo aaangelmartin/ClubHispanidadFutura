@@ -14,6 +14,7 @@
 | [`docs/EQUIPO.md`](docs/EQUIPO.md) | Reparto de los 5 roles y calendario del día |
 | [`docs/NEGOCIO.md`](docs/NEGOCIO.md) | Mercado, financiación, KPIs, aliados, plan 90 días |
 | [`docs/PITCH.md`](docs/PITCH.md) | Guion del pitch de 3 minutos |
+| [`docs/deck-mentores.html`](docs/deck-mentores.html) | Deck para validar con mentores ([publicado](https://claude.ai/code/artifact/ca73f748-aac1-4b16-b9db-db126fd59be0)) |
 
 ## App
 Enlace a la demo (Lovable): **[PENDIENTE]**

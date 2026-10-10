@@ -1,0 +1,319 @@
+<title>Retos reales · Pasaporte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: deck de diapositivas 16:10 navegable con teclado; en móvil se apilan. Paleta de la guía CHF (crema, azul marino, oro). */
+:root{
+  --bg:#EAE3D6; --paper:#F6F1E7; --ink:#14233D; --ink-2:#4A5568; --ink-3:#7A8496;
+  --line:rgba(20,35,61,.14); --gold:#A9781F; --gold-soft:rgba(169,120,31,.12);
+  --display:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C1526; --paper:#132038; --ink:#F1EADC; --ink-2:#C4C9D4; --ink-3:#8C95A8;
+  --line:rgba(241,234,220,.14); --gold:#D9A845; --gold-soft:rgba(217,168,69,.14); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1526; --paper:#132038; --ink:#F1EADC; --ink-2:#C4C9D4; --ink-3:#8C95A8;
+  --line:rgba(241,234,220,.14); --gold:#D9A845; --gold-soft:rgba(217,168,69,.14); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.5 var(--sans);padding-inline:16px;padding-block:20px 28px}
+.bar{max-width:1100px;margin:0 auto 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.brand b{color:var(--gold);font-weight:500}
+.nav{display:flex;align-items:center;gap:8px}
+.nav button{font:600 14px/1 var(--sans);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 14px;cursor:pointer}
+.nav button:hover{border-color:var(--gold)}
+.nav button:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.count{font:500 13px/1 var(--mono);color:var(--ink-3);min-width:56px;text-align:center;font-variant-numeric:tabular-nums}
+
+.deck{max-width:1100px;margin:0 auto}
+.slide{background:var(--paper);border:1px solid var(--line);border-radius:6px;aspect-ratio:16/10;padding:clamp(28px,5vw,64px);display:flex;flex-direction:column;gap:22px;overflow:auto}
+.js .slide{display:none}
+.js .slide.on{display:flex}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1,h2{font-family:var(--display);font-weight:700;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(36px,5.6vw,68px);line-height:1.02}
+h2{font-size:clamp(28px,3.6vw,44px);line-height:1.08}
+.lead{font-size:clamp(18px,1.9vw,23px);line-height:1.4;color:var(--ink-2);max-width:56ch;margin:0}
+p{margin:0}
+.quote{font:500 clamp(20px,2.3vw,28px)/1.3 var(--display);font-style:italic;border-left:3px solid var(--gold);padding-left:18px;max-width:40ch}
+.grow{flex:1}
+.foot{font-size:14px;color:var(--ink-3);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.col h3{font:700 13px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
+.col p{color:var(--ink-2)}
+.col strong{color:var(--ink)}
+
+/* Flujo */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:s}
+.step{border:1px solid var(--line);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+.step .who{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.step.ai{border-color:var(--gold);background:var(--gold-soft)}
+.step.ai .who{color:var(--gold)}
+.step b{font-size:16px;line-height:1.25}
+.step span{font-size:14px;color:var(--ink-2);line-height:1.4}
+.example{font-size:15px;color:var(--ink-2);border:1px dashed var(--line);border-radius:6px;padding:12px 14px}
+.example em{color:var(--ink);font-style:normal;font-weight:600}
+
+/* Listas */
+ul.clean{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+ul.clean li{position:relative;padding-left:20px;color:var(--ink-2)}
+ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+ul.clean li b{color:var(--ink)}
+ul.no li::before{background:transparent;border:1.5px solid var(--ink-3)}
+
+/* Tablas */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{font:500 11px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+td:first-child{color:var(--ink);font-weight:600;white-space:nowrap}
+tr.us td{background:var(--gold-soft)}
+tr.us td:first-child{color:var(--gold)}
+
+/* Plan 90 días */
+.months{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.month{border-top:3px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.month:last-child{border-top-color:var(--gold)}
+.month .d{font:500 12px/1 var(--mono);color:var(--ink-3);letter-spacing:.08em}
+.month b{font-size:18px}
+.month span{font-size:15px;color:var(--ink-2)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{display:flex;flex-direction:column;gap:2px}
+.kpi .n{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums}
+.kpi.key .n{color:var(--gold)}
+.kpi span{font-size:14px;color:var(--ink-2);line-height:1.35}
+.note{font-size:13px;color:var(--ink-3)}
+
+/* Preguntas */
+.qs{display:grid;gap:12px}
+.q{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;border-top:1px solid var(--line);padding-top:12px}
+.q p b{display:block;font-size:16px;color:var(--ink)}
+.q p span{font-size:14px;color:var(--ink-2)}
+.q p i{font:500 11px/1 var(--mono);font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+textarea{width:100%;min-height:58px;resize:vertical;font:400 15px/1.4 var(--sans);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+
+@media (max-width:760px){
+  .slide{aspect-ratio:auto}
+  .js .slide{display:flex}
+  .deck{display:grid;gap:14px}
+  .nav{display:none}
+  .flow{grid-template-columns:1fr}
+  .months,.q{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:no-preference){.slide.on{animation:in .25s ease-out}@keyframes in{from{opacity:.4}to{opacity:1}}}
+</style>
+
+<div class="bar">
+  <div class="brand"><b>Hackathon Iberoamérica 2030</b> · Validación con mentores</div>
+  <div class="nav">
+    <button id="prev" type="button" aria-label="Diapositiva anterior">←</button>
+    <span class="count" id="count">1 / 10</span>
+    <button id="next" type="button" aria-label="Diapositiva siguiente">→</button>
+  </div>
+</div>
+
+<main class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide on" aria-label="Portada">
+    <div class="eyebrow">Club Hispanidad Futura · 10 de octubre de 2026</div>
+    <div class="grow"></div>
+    <h1>Retos reales online<br>y un pasaporte que lo demuestra</h1>
+    <p class="lead">Las empresas publican lo que necesitan resolver. Estudiantes de España y Latinoamérica lo resuelven en remoto. La empresa contacta al que lo demuestra, y el resto se lleva el proyecto valorado en su pasaporte.</p>
+    <div class="grow"></div>
+    <div class="foot"><span>Queremos vuestra opinión antes de construir. Las preguntas están en la última diapositiva.</span><span>← → para avanzar</span></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" aria-label="Problema">
+    <div class="eyebrow">El problema</div>
+    <h2>Sin experiencia no hay trabajo. Sin trabajo no hay experiencia.</h2>
+    <div class="cols">
+      <div class="col"><h3>El estudiante</h3><p>Sabe hacer cosas, pero su CV no lo demuestra. Las ofertas junior piden experiencia previa que todavía no ha podido conseguir.</p></div>
+      <div class="col"><h3>La empresa</h3><p>Contratar junior es caro y a ciegas. Una agencia cobra en torno al <strong>15–20% del salario del primer año</strong>. Montar un reto o un proceso propio para descubrir talento cuesta semanas.</p></div>
+      <div class="col"><h3>Iberoamérica</h3><p><strong>600 millones de personas y 21 países</strong> que comparten idioma pero funcionan por separado. Una empresa española con negocio en México no tiene una vía fácil para descubrir talento joven allí, ni al revés.</p></div>
+    </div>
+    <div class="grow"></div>
+    <div class="foot"><span>Datos de paro juvenil por país: los estamos cerrando con fuente oficial.</span></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide" aria-label="Cómo funciona">
+    <div class="eyebrow">Cómo funciona</div>
+    <h2>De un problema de empresa a una contratación, en días</h2>
+    <div class="flow">
+      <div class="step"><span class="who">Empresa</span><b>Describe lo que necesita</b><span>En texto libre: el problema y el perfil que busca.</span></div>
+      <div class="step ai"><span class="who">IA</span><b>Lo convierte en un reto</b><span>Enunciado, entregable, plazo de días y rúbrica de valoración.</span></div>
+      <div class="step"><span class="who">Estudiante</span><b>Se apunta y entrega</b><span>En remoto, desde su universidad. Sin CV ni visado.</span></div>
+      <div class="step"><span class="who">Empresa</span><b>Valora todas las entregas</b><span>La IA resume cada una; la nota y la decisión las pone la empresa.</span></div>
+      <div class="step"><span class="who">Estudiante</span><b>Lo suma a su pasaporte</b><span>Gane o no, el proyecto queda valorado por una empresa real.</span></div>
+    </div>
+    <p class="example">Ejemplo: una empresa de Madrid escribe <em>"queremos entender por qué abandonan el carrito los clientes mexicanos y buscamos a alguien junior de análisis de datos"</em>. La plataforma publica un reto de 5 días para estudiantes de las dos orillas.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide" aria-label="Por qué entra el estudiante">
+    <div class="eyebrow">El estudiante</div>
+    <h2>Si no ganas, no pierdes</h2>
+    <p class="quote">Te llevas un proyecto real, valorado por una empresa real. Es la experiencia que te piden para tu primer trabajo y que nadie te da.</p>
+    <div class="cols">
+      <div class="col"><h3>Lo que recibe siempre</h3><ul class="clean">
+        <li>Un caso real de empresa, no un ejercicio de clase</li>
+        <li>Nota y feedback de la empresa en cada entrega</li>
+        <li>Un pasaporte público que puede enseñar en cualquier proceso</li>
+      </ul></div>
+      <div class="col"><h3>Reglas que le protegen</h3><ul class="clean">
+        <li><b>Nunca paga.</b></li>
+        <li>Retos de días, no de semanas, y nunca trabajo de producción</li>
+        <li>La entrega es suya salvo que la empresa le contrate</li>
+        <li>La empresa se compromete a valorar todas las entregas</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" aria-label="Uso de la IA">
+    <div class="eyebrow">Tecnología e IA</div>
+    <h2>La IA prepara. Decide una persona.</h2>
+    <div class="cols">
+      <div class="col"><h3>Lo que hace la IA</h3><ul class="clean">
+        <li><b>Monta el reto</b> a partir de lo que escribe la empresa, y avisa si lo que pide es demasiado largo o es trabajo de producción.</li>
+        <li><b>Resume cada entrega</b> frente a la rúbrica, para que la empresa revise 50 en lo que antes tardaba en revisar 5.</li>
+        <li><b>Más adelante:</b> recomienda a cada estudiante los retos que encajan con su pasaporte.</li>
+      </ul></div>
+      <div class="col"><h3>Lo que no hace</h3><ul class="clean no">
+        <li>No pone la nota final.</li>
+        <li>No ordena ni descarta candidatos.</li>
+        <li>No usa nombre, país, universidad ni género para valorar.</li>
+      </ul>
+      <p class="note" style="margin-top:14px">La IA que selecciona personas es de alto riesgo en la Ley de IA de la UE. Diseñarlo así desde el principio cubre derechos digitales y da confianza a las empresas.</p></div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide" aria-label="Competencia">
+    <div class="eyebrow">Diferencia</div>
+    <h2>Otros muestran perfiles. Aquí se ve trabajo hecho.</h2>
+    <div class="tw"><table>
+      <thead><tr><th>Quién</th><th>Qué hace</th><th>Para quién</th></tr></thead>
+      <tbody>
+        <tr><td>LinkedIn, InfoJobs</td><td>CVs y ofertas</td><td>Cualquiera; el CV dice lo que hiciste, no lo que sabes hacer</td></tr>
+        <tr><td>Devpost, HackerEarth</td><td>Hackathons y retos técnicos</td><td>Comunidad técnica global, sin foco en contratar junior</td></tr>
+        <tr><td>Nova Talent, nothiring</td><td>Selección con IA, cobro por resultado</td><td>Talento senior que ya destaca, el top 3%</td></tr>
+        <tr class="us"><td>Nosotros</td><td>Retos de empresa + pasaporte valorado</td><td>Estudiantes de España y LatAm que nadie ha visto todavía, a través de sus universidades</td></tr>
+      </tbody>
+    </table></div>
+    <p class="quote">Ellos encuentran al 3% que ya destaca. Nosotros, al 97% que nadie ha visto.</p>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide" aria-label="Modelo de negocio">
+    <div class="eyebrow">Financiación</div>
+    <h2>Paga quien contrata. El estudiante, nunca.</h2>
+    <div class="tw"><table>
+      <thead><tr><th>Quién</th><th>Qué paga</th><th>Por qué le compensa</th></tr></thead>
+      <tbody>
+        <tr><td>Empresa</td><td>Por reto publicado, y una comisión si contrata</td><td>Más barato que una agencia, y ve trabajo real antes de contratar</td></tr>
+        <tr><td>Patrocinadores</td><td>Retos con su marca</td><td>Empresas españolas con negocio en LatAm ganan marca como empleador allí</td></tr>
+        <tr><td>Piloto de 90 días</td><td>Fundaciones y multilaterales</td><td>Empleo joven y movilidad iberoamericana es su agenda (CAF, BID Lab, Fundación Carolina)</td></tr>
+        <tr><td>Universidades</td><td>Gratis en el piloto</td><td>Ganan datos de empleabilidad de sus alumnos; plan de pago más adelante</td></tr>
+        <tr><td>Estudiante</td><td>Nada</td><td>Si paga, desaparece el impacto</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide" aria-label="Piloto de 90 días">
+    <div class="eyebrow">Piloto de 90 días</div>
+    <h2>España y un país de Latinoamérica, a través de las universidades</h2>
+    <div class="months">
+      <div class="month"><span class="d">DÍAS 0–30</span><b>Acuerdos</b><span>2 universidades por país, vía oficinas de empleo y asociaciones de estudiantes. 10 empresas con negocio en los dos países. Revisión legal de datos e IA.</span></div>
+      <div class="month"><span class="d">DÍAS 31–60</span><b>Lanzamiento</b><span>Primeros retos abiertos y estudiantes registrados. Primeras entregas valoradas en los pasaportes.</span></div>
+      <div class="month"><span class="d">DÍAS 61–90</span><b>Medir y contar</b><span>Primeros contactos y contrataciones nacidos de un reto. Resultados presentados en la Cumbre Iberoamericana.</span></div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><span class="n">300</span><span>estudiantes registrados en los dos países</span></div>
+      <div class="kpi"><span class="n">20</span><span>retos reales de 10 empresas</span></div>
+      <div class="kpi key"><span class="n">≥ 90%</span><span>de entregas valoradas por la empresa: si baja, el pasaporte no vale</span></div>
+      <div class="kpi"><span class="n">≥ 45%</span><span>mujeres y perfiles de fuera de las capitales</span></div>
+    </div>
+    <p class="note">Objetivos propuestos, no datos medidos. Aliados: SEGIB (Campus Iberoamérica), OEI, Fundación Carolina, cámaras de comercio bilaterales y el propio Club como puente.</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" aria-label="La demo">
+    <div class="eyebrow">Lo que vamos a construir hoy</div>
+    <h2>Cinco pantallas, todas funcionando delante del jurado</h2>
+    <div class="cols">
+      <ul class="clean">
+        <li><b>Registro y panel en vivo:</b> estudiantes y empresas reales de los dos países, contados en directo.</li>
+        <li><b>Publicar reto:</b> la empresa escribe su problema y la IA devuelve el reto completo.</li>
+        <li><b>Retos abiertos:</b> el estudiante se apunta y entrega.</li>
+      </ul>
+      <ul class="clean">
+        <li><b>Panel de la empresa:</b> resumen de la IA por entrega, nota con rúbrica y feedback.</li>
+        <li><b>Pasaporte:</b> página pública con cada reto, la nota y el feedback de la empresa.</li>
+      </ul>
+    </div>
+    <div class="col"><h3>Lo que dejamos fuera hoy</h3><p>Entrada por voz, importar LinkedIn, matching automático y panel para universidades.</p></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="slide" aria-label="Preguntas para los mentores">
+    <div class="eyebrow">Lo que queremos validar con vosotros</div>
+    <h2>Cinco preguntas antes de construir</h2>
+    <div class="qs" id="qs"></div>
+    <p class="note">Las notas se guardan en este navegador.</p>
+  </section>
+
+</main>
+
+<script>
+const QS = [
+  {id:"q1", tag:"Empresa", q:"¿Pagaría una empresa por publicar un reto?", d:"¿O solo por contratar? ¿Cuánto tendría que costar para que dijera que sí?"},
+  {id:"q2", tag:"Estudiante", q:"¿Se va a ver como trabajo gratis?", d:"Nuestra respuesta es el pasaporte valorado. ¿Os convence, o haría falta premio o pago siempre?"},
+  {id:"q3", tag:"Canal", q:"¿Universidades como canal en 90 días?", d:"Oficinas de empleo y asociaciones, sin convenios formales. ¿Es realista? ¿A cuáles iríais primero?"},
+  {id:"q4", tag:"Países", q:"¿México o Colombia para el piloto con España?", d:"¿Dónde hay más empresas españolas con negocio y más facilidad para empezar?"},
+  {id:"q5", tag:"Pasaporte", q:"¿Valoraría otra empresa un pasaporte así?", d:"¿Qué tendría que mostrar para que un reclutador lo tomara en serio frente a un CV?"}
+];
+const qs = document.getElementById("qs");
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem("chf-mentores") || "{}"); } catch (e) {}
+QS.forEach(item => {
+  const row = document.createElement("div");
+  row.className = "q";
+  row.innerHTML = `<p><i>${item.tag}</i><b>${item.q}</b><span>${item.d}</span></p>
+    <textarea id="${item.id}" aria-label="Notas: ${item.q}" placeholder="Qué dicen los mentores…"></textarea>`;
+  qs.appendChild(row);
+  const ta = row.querySelector("textarea");
+  ta.value = saved[item.id] || "";
+  ta.addEventListener("input", () => {
+    saved[item.id] = ta.value;
+    try { localStorage.setItem("chf-mentores", JSON.stringify(saved)); } catch (e) {}
+  });
+});
+
+document.documentElement.classList.add("js");
+const slides = [...document.querySelectorAll(".slide")];
+const count = document.getElementById("count");
+let i = 0;
+function go(n) {
+  i = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, k) => s.classList.toggle("on", k === i));
+  count.textContent = `${i + 1} / ${slides.length}`;
+}
+document.getElementById("prev").onclick = () => go(i - 1);
+document.getElementById("next").onclick = () => go(i + 1);
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "TEXTAREA") return;
+  if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); go(i + 1); }
+  if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); go(i - 1); }
+});
+go(0);
+</script>
