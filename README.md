@@ -17,4 +17,23 @@
 | [`docs/deck-mentores.html`](docs/deck-mentores.html) | Deck para validar con mentores ([publicado](https://claude.ai/code/artifact/ca73f748-aac1-4b16-b9db-db126fd59be0)) |
 
 ## App
-Enlace a la demo (Lovable): **[PENDIENTE]**
+
+Demo desplegada: **[PENDIENTE: URL de Vercel]**
+
+Next.js 15 + Supabase + API de Claude, en Vercel.
+
+```bash
+npm install
+cp .env.example .env.local   # pide los valores a la persona 1
+npm run dev                  # http://localhost:3000
+```
+
+| Ruta | Qué es | Dueño |
+|---|---|---|
+| `/` | Landing | Persona 1 |
+| `/registro` | Registro estudiante / empresa | Persona 1 |
+| `/panel` | Panel en vivo | Persona 1 |
+| `/empresa`, `/empresa/nuevo`, `/empresa/retos/[id]` | Motor de retos (lado empresa) | Persona 2 |
+| `/retos`, `/retos/[id]`, `/pasaporte/[id]` | Lado estudiante | Persona 3 |
+
+Esquema de la base de datos: `supabase/schema.sql` (ejecutar una vez en el SQL Editor de Supabase).
