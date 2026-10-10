@@ -141,7 +141,7 @@ Orden de construcción = orden de prioridad. Si no da tiempo, se corta desde aba
 | `borrador` | La empresa pulsa "Generar" | La IA devuelve el reto (§10.1). La empresa lo edita. No lo ve nadie más |
 | `abierto` | La empresa pulsa "Publicar" | Se fija `deadline = ahora + duration_days`. Aparece en el listado; los estudiantes se apuntan y entregan |
 | `en_valoracion` | Se pasa el `deadline` (o la empresa lo cierra antes) | No se aceptan más entregas. La IA resume cada entrega (§10.2). La empresa valora con la rúbrica |
-| `cerrado` | La empresa pulsa "Cerrar reto" | **Solo se puede si todas las entregas están valoradas.** Las valoraciones pasan a los pasaportes |
+| `cerrado` | La empresa pulsa "Cerrar reto" | **Solo se puede si todas las entregas están valoradas.** (Cada valoración aparece en el pasaporte en cuanto se guarda; no espera al cierre) |
 
 - **Generación:** `generateChallenge()` en `src/lib/ai/generate.ts`, llamada desde una Server Action. Devuelve el JSON de §10.1, que se guarda como `borrador`. La clave de la IA nunca va en el navegador.
 - **Resumen:** `summarizeSubmission()` en `src/lib/ai/summarize.ts`. Guarda el resultado en `submissions.ai_summary`. Se lanza al pasar a `en_valoracion`, o al abrir la entrega si no existe.
