@@ -2,6 +2,7 @@
 // Dueño: perfil 1 (puede cambiar el estilo; las rutas no se cambian sin avisar).
 import Link from "next/link";
 import { getSession } from "@/lib/session";
+import Marca from "@/components/Marca";
 
 export default async function Header() {
   const session = await getSession();
@@ -24,16 +25,17 @@ export default async function Header() {
 
   return (
     <header className="border-b border-line bg-paper">
-      <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 sm:px-6">
-        <Link href="/" className="font-display text-lg font-bold text-ink">
-          Retos reales
+      <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
+        <Link href="/" aria-label="Inicio · Retos Hispanidad Futura">
+          <Marca size={34} fondo="var(--paper)" compacta />
         </Link>
         {links.map((l) => (
           <Link key={l.href} href={l.href} className="text-sm text-ink-2 hover:text-ink">
             {l.label}
           </Link>
         ))}
-        <Link href="/panel" className="ml-auto text-sm text-ink-2 hover:text-ink">
+        <Link href="/panel" className="ml-auto inline-flex items-center gap-2 text-sm text-ink-2 hover:text-ink">
+          <span className="h-2 w-2 rounded-full bg-ok" aria-hidden="true" />
           Panel en vivo
         </Link>
       </nav>
