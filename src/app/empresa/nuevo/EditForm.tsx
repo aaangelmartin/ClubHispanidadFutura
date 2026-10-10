@@ -8,11 +8,14 @@ import type { Challenge } from "@/lib/types";
 export default function EditForm({ challenge, saved }: { challenge: Challenge; saved: boolean }) {
   const [state, action, pending] = useActionState<EditState, FormData>(saveDraft, {});
   const [weights, setWeights] = useState(challenge.rubric.map((r) => r.weight));
+  // Safari no envía el name/value del botón pulsado en una acción de React: se guarda aquí en un campo oculto.
+  const [intent, setIntent] = useState("publicar");
   const total = weights.reduce((n, w) => n + (Number(w) || 0), 0);
 
   return (
     <form action={action} className="flex flex-col gap-6">
       <input type="hidden" name="id" value={challenge.id} />
+      <input type="hidden" name="intent" value={intent} />
 
       {challenge.warnings.length > 0 && (
         <div role="note" className="card border-gold bg-gold-soft p-5">
@@ -76,10 +79,10 @@ export default function EditForm({ challenge, saved }: { challenge: Challenge; s
         </p>
       )}
       <div className="flex flex-wrap gap-3">
-        <button type="submit" name="intent" value="publicar" className="btn btn-primary" disabled={pending}>
+        <button type="submit" onClick={() => setIntent("publicar")} className="btn btn-primary" disabled={pending}>
           {pending ? "Guardando…" : "Publicar reto"}
         </button>
-        <button type="submit" name="intent" value="guardar" className="btn" disabled={pending}>
+        <button type="submit" onClick={() => setIntent("guardar")} className="btn" disabled={pending}>
           Guardar borrador
         </button>
       </div>
