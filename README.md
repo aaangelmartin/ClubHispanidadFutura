@@ -13,6 +13,7 @@
 | [`docs/PRD.md`](docs/PRD.md) | Producto: problema, reglas, MVP, IA, datos, decisiones |
 | [`docs/perfiles/`](docs/perfiles/README.md) | **Una ficha por perfil: empieza aquí** |
 | [`docs/EQUIPO.md`](docs/EQUIPO.md) | Reparto (4 partes de la app + negocio) y calendario |
+| [`docs/PROBLEMA.md`](docs/PROBLEMA.md) | El problema a fondo, con datos y fuentes |
 | [`docs/ROLEPLAY.md`](docs/ROLEPLAY.md) | Causa raíz (5 porqués) y guion de roleplay con cada actor |
 | [`docs/NICHO.md`](docs/NICHO.md) | Propuesta de nicho de entrada, competidores y cómo vender a universidades |
 | [`docs/NEGOCIO.md`](docs/NEGOCIO.md) | Mercado, financiación, KPIs, aliados, plan 90 días |

@@ -8,9 +8,9 @@
 ### Datos del problema
 | Dato | Valor | Fuente |
 |---|---|---|
-| Paro juvenil España (<25 años) | [PENDIENTE] | Eurostat / INE |
-| Paro juvenil [país LatAm] | [PENDIENTE] | Instituto de estadística nacional / OIT |
-| % de ofertas junior que piden experiencia previa | [PENDIENTE] | |
+| Paro juvenil España (<25 años) | 22,7 % (UE: 15,4 %), agosto de 2026 · 460.000 jóvenes (EPA, 2.º trim. 2026) | Eurostat; INE. Enlaces en `PROBLEMA.md` |
+| Paro juvenil México (15–29) | 4,8 %, pero el 60 % de los jóvenes que trabajan está en la informalidad (9,2 M), datos de 2025 | México ¿cómo vamos?; Frente a la Pobreza. Enlaces en `PROBLEMA.md` |
+| Empleadores que exigen experiencia previa | 78 % (estudio de la UPV, sin fecha) · 3,3 años de media pedida (Adecco, sin fecha). **Buscar un dato reciente** | Enlaces en `PROBLEMA.md` |
 | Coste de contratar vía agencia | ~15–20% del salario del primer año (comprobar) | |
 | Hispanohablantes / países | 600 M / 21 países | Guía de la hackathon |
 
