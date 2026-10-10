@@ -7,6 +7,8 @@ import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
 import p from "@/app/empresa/_lib/pasaporte.module.css";
 import Accion from "@/app/empresa/_lib/Accion";
 import { getSession } from "@/lib/session";
+import { C, Nota, TarjetaEmbarque } from "@/components/embarca";
+import { estadoReto, puerta, ruta, cierre } from "@/app/retos/embarque";
 import { area, getActividad, getEstudiante, getFeed, hace, PLATAFORMA_ID, quedan } from "./queries";
 
 export const dynamic = "force-dynamic";
@@ -62,7 +64,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
       <div className={p.tapa}>
         <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-4 px-4 py-8 sm:px-6">
           <div className="flex flex-col gap-2">
-            <span className={`${p.datos} text-[11px] tracking-[0.2em] text-[var(--oro)]`}>TU FEED · ESPAÑA Y COLOMBIA</span>
+            <span className="text-sm font-semibold text-[var(--oro)]">Tu feed de España y Colombia</span>
             <h1 className="text-4xl text-[#f3efe6] sm:text-5xl">Hola, {yo.name.split(" ")[0]}.</h1>
             <p className="text-lg text-[#f3efe6]/75">
               Hay <b className="text-[var(--oro)]">{retos.length} retos abiertos</b> esperando a alguien como tú.
@@ -95,7 +97,7 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
                 ].map(([v, l]) => (
                   <div key={String(l)} className="flex flex-col">
                     <dd className="text-xl font-extrabold">{v}</dd>
-                    <dt className={`${p.datos} text-[10px] uppercase text-[var(--tinta-2)]`}>{l}</dt>
+                    <dt className="text-xs text-[var(--tinta-2)]">{l}</dt>
                   </div>
                 ))}
               </dl>
@@ -124,10 +126,12 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
           )}
           {items.map((it) =>
             it.t === "act" ? (
-              <article key={`a-${it.a.id}`} className={`${p.hoja} flex items-center gap-4 border-l-4 border-l-[var(--sello-a)] p-5`}>
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border-2 border-[var(--sello-a)] text-xs font-bold text-[var(--sello-a)]">
-                  {it.a.nota?.toFixed(1).replace(".", ",") ?? "✓"}
-                </span>
+              <article key={`a-${it.a.id}`} className={`${p.hoja} flex items-center gap-4 border-l-4 border-l-[var(--oro)] p-5`}>
+                {it.a.nota != null ? (
+                  <Nota valor={it.a.nota} size="sm" />
+                ) : (
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border-2 border-[var(--oro)] text-xs font-bold text-[var(--oro)]">✓</span>
+                )}
                 <p className="flex-1 text-sm">
                   <b>{it.a.estudiante.name}</b> ({it.a.estudiante.university}) ha conseguido un sello de{" "}
                   <b>{it.a.empresa}</b> en «{it.a.reto}».
@@ -161,13 +165,13 @@ export default async function Inicio({ searchParams }: { searchParams: Promise<{
                 <span className="grid h-9 w-9 place-items-center rounded-lg bg-[#14233d] text-xs font-bold text-[#f3efe6]">{iniciales(c.name)}</span>
                 <span className="flex flex-col">
                   <span className="text-sm font-semibold">{c.name}</span>
-                  <span className={`${p.datos} text-[10px] text-[var(--tinta-2)]`}>{c.country.toUpperCase()}</span>
+                  <span className="text-xs text-[var(--tinta-2)]">{c.country} · <span className="font-mono">{ruta(c.country).origen}</span></span>
                 </span>
               </div>
             ))}
           </div>
           <div className="rounded-2xl bg-[#14233d] p-5 text-[#f3efe6]">
-            <span className={`${p.datos} text-[10px] tracking-[0.2em] text-[var(--oro)]`}>GANES O NO</span>
+            <span className="text-sm font-bold text-[var(--oro)]">Ganes o no</span>
             <p className="mt-1 text-sm">Cada reto que entregues vuelve con la valoración de la empresa y un sello en tu pasaporte.</p>
           </div>
         </aside>
@@ -198,35 +202,40 @@ function PostReto({ r }: { r: Awaited<ReturnType<typeof getFeed>>[number] }) {
             {club ? "Reto de la plataforma" : "Ha publicado un reto"} · {hace(r.created_at)}
           </span>
         </div>
-        {r.is_example && <span className={`${p.datos} rounded-full border border-current px-2 py-0.5 text-[10px] text-[var(--tinta-2)]`}>EJEMPLO PILOTO</span>}
+        {r.is_example && <span className="rounded-full border border-current px-2 py-0.5 text-xs text-[var(--tinta-2)]">Ejemplo piloto</span>}
       </header>
 
-      <Link href={`/retos/${r.id}`} className="group flex flex-col gap-2">
-        <h2 className="text-2xl leading-tight group-hover:text-[var(--oro)]">{r.title}</h2>
-        <p className="text-[var(--tinta-2)]">{r.summary}</p>
+      <Link href={`/retos/${r.id}`} className="group block rounded-xl">
+        <TarjetaEmbarque
+          compacta
+          className="transition-transform group-hover:-translate-y-0.5"
+          t={{
+            empresa: r.company.name,
+            ...ruta(r.company.country),
+            titulo: r.title,
+            puerta: puerta(r.id),
+            estado: estadoReto(r),
+            datos: [
+              { etiqueta: "Área", valor: area(r) },
+              { etiqueta: "Duración", valor: `${r.duration_days} días` },
+              { etiqueta: "Cierra", valor: d !== null && d > 0 ? `${cierre(r.deadline)} · ${d} ${d === 1 ? "día" : "días"}` : cierre(r.deadline) },
+              ...(r.suggested_prize ? [{ etiqueta: "Premio", valor: r.suggested_prize }] : []),
+            ],
+            pie: <p className="text-sm text-[var(--tinta-2)]">{r.summary}</p>,
+          }}
+        />
       </Link>
 
-      <div className="flex flex-wrap gap-2 text-xs">
-        {[area(r), `${r.duration_days} días`, d !== null && d > 0 ? `Cierra en ${d} ${d === 1 ? "día" : "días"}` : null, "En remoto"]
-          .filter(Boolean)
-          .map((t) => (
-            <span key={t} className={`${p.datos} rounded-full bg-[#14233d]/5 px-2.5 py-1`}>
-              {t}
-            </span>
+      <div className="flex flex-col gap-2">
+        <div className="flex h-2 overflow-hidden rounded-full">
+          {r.rubric.map((c, i) => (
+            <div key={c.criterion} title={`${c.criterion} · ${c.weight}%`} style={{ width: `${c.weight}%`, background: [C.marino, C.oro, C.azul, C.verde][i % 4] }} />
           ))}
-        {r.suggested_prize && (
-          <span className={`${p.datos} rounded-full bg-[var(--oro)]/15 px-2.5 py-1 text-[#8a6420]`}>Premio: {r.suggested_prize}</span>
-        )}
+        </div>
+        <p className="text-xs text-[var(--tinta-2)]">
+          Se valora: {r.rubric.map((c) => `${c.criterion} ${c.weight}%`).join(" · ")}
+        </p>
       </div>
-
-      <div className="flex h-2 overflow-hidden rounded-full">
-        {r.rubric.map((c, i) => (
-          <div key={c.criterion} title={`${c.criterion} · ${c.weight}%`} className={["bg-[#14233d]", "bg-[var(--oro)]", "bg-[#4f5d73]", "bg-[#2f7a55]"][i % 4]} style={{ width: `${c.weight}%` }} />
-        ))}
-      </div>
-      <p className={`${p.datos} -mt-2 text-[11px] text-[var(--tinta-2)]`}>
-        SE VALORA: {r.rubric.map((c) => `${c.criterion.toUpperCase()} ${c.weight}%`).join(" · ")}
-      </p>
 
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-black/5 pt-4">
         <span className="text-sm text-[var(--tinta-2)]">

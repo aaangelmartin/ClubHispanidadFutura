@@ -1,24 +1,21 @@
 "use client";
-// Dueño: perfil 1. Formularios de registro como solicitud de pasaporte de talento; la lógica está en actions.ts (servidor).
-// El formulario valida en el cliente con mensajes en español, rellena en vivo la vista previa del pasaporte
-// y, al enviar, deja caer un sello de «solicitud recibida» mientras el servidor guarda y redirige.
+// Dueño: perfil 1. Formularios de registro de Embarca; la lógica está en actions.ts (servidor).
+// Formulario corto a la izquierda y, a la derecha, la vista previa que se rellena mientras se escribe:
+// el pasaporte (estudiante) o la tarjeta de embarque de su primer reto (empresa).
 import { startTransition, useActionState, useId, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { COUNTRIES } from "@/lib/types";
-import p from "../_landing/pasaporte.module.css";
+import { Pasaporte, TarjetaEmbarque, C } from "@/components/embarca";
 import r from "./registro.module.css";
 import { registerCompany, registerStudent, type FormState } from "./actions";
 
 const initial: FormState = { error: null };
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const CODIGO: Record<string, string> = { España: "ESP", México: "MEX", Colombia: "COL" };
+const CIUDAD: Record<string, string> = { España: "MAD", México: "MEX", Colombia: "BOG" };
 const SUGERENCIAS = ["Python", "SQL", "React", "Análisis de datos", "Machine learning", "Node.js", "Power BI"];
 
 type Errores = Record<string, string | undefined>;
-
-function sinAcentos(s: string) {
-  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase();
-}
 
 function listaSkills(s: string) {
   return s
@@ -29,72 +26,61 @@ function listaSkills(s: string) {
 
 /* ---------- Piezas del formulario ---------- */
 
+function MensajeCampo({ id, error, ayuda }: { id: string; error?: string; ayuda?: string }) {
+  const reduce = useReducedMotion();
+  return (
+    <AnimatePresence initial={false} mode="wait">
+      {error ? (
+        <motion.p
+          key="error"
+          id={id}
+          className="text-sm font-semibold text-[var(--red)]"
+          initial={reduce ? false : { opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18 }}
+        >
+          {error}
+        </motion.p>
+      ) : ayuda ? (
+        <p key="ayuda" id={id} className="text-sm text-[var(--ink-2)]">
+          {ayuda}
+        </p>
+      ) : null}
+    </AnimatePresence>
+  );
+}
+
 function Campo({
-  n,
   label,
   name,
   ayuda,
   error,
   ...input
-}: { n?: string; label: string; name: string; ayuda?: string; error?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
-  const reduce = useReducedMotion();
-  const [foco, setFoco] = useState(false);
+}: { label: string; name: string; ayuda?: string; error?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   const idAyuda = useId();
   return (
-    <div className="flex flex-col gap-1.5">
-      <label htmlFor={name} className={`${r.etiqueta} flex items-baseline gap-2`}>
-        {n && <span className="text-[var(--tinta-2)]/60">{n}</span>}
-        <span className={foco ? "text-[var(--tinta)]" : undefined}>{label}</span>
+    <div className="flex min-w-0 flex-col gap-1.5">
+      <label htmlFor={name} className={r.etiqueta}>
+        {label}
       </label>
-      <div className="relative">
-        <input
-          id={name}
-          name={name}
-          className={r.input}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error || ayuda ? idAyuda : undefined}
-          onFocus={() => setFoco(true)}
-          onBlur={() => setFoco(false)}
-          {...input}
-        />
-        <motion.span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[2.5px] origin-left bg-[var(--oro)]"
-          initial={false}
-          animate={{ scaleX: foco ? 1 : 0 }}
-          transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }}
-        />
-      </div>
-      <AnimatePresence initial={false} mode="wait">
-        {error ? (
-          <motion.p
-            key="error"
-            id={idAyuda}
-            className="text-sm font-semibold text-[var(--sello-a)]"
-            initial={reduce ? false : { opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
-          >
-            {error}
-          </motion.p>
-        ) : ayuda ? (
-          <p key="ayuda" id={idAyuda} className="text-sm text-[var(--tinta-2)]">
-            {ayuda}
-          </p>
-        ) : null}
-      </AnimatePresence>
+      <input
+        id={name}
+        name={name}
+        className={r.input}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error || ayuda ? idAyuda : undefined}
+        {...input}
+      />
+      <MensajeCampo id={idAyuda} error={error} ayuda={ayuda} />
     </div>
   );
 }
 
-function Pais({ n, valor, onChange, error }: { n?: string; valor: string; onChange: (v: string) => void; error?: string }) {
+function Pais({ label, valor, onChange, error }: { label: string; valor: string; onChange: (v: string) => void; error?: string }) {
   return (
     <fieldset className="flex flex-col gap-1.5" aria-invalid={error ? true : undefined}>
-      <legend className={`${r.etiqueta} mb-1.5 flex items-baseline gap-2`}>
-        {n && <span className="text-[var(--tinta-2)]/60">{n}</span>}
-        <span>País</span>
-      </legend>
+      <legend className={`${r.etiqueta} mb-1.5`}>{label}</legend>
       <div className="grid grid-cols-3 gap-2">
         {COUNTRIES.map((c, i) => (
           <label key={c} className={r.pais}>
@@ -107,12 +93,12 @@ function Pais({ n, valor, onChange, error }: { n?: string; valor: string; onChan
               checked={valor === c}
               onChange={() => onChange(c)}
             />
-            <span className={`${p.datos} text-[11px] opacity-60`}>{CODIGO[c]}</span>
             <span>{c}</span>
+            <span className={`${r.codigo} hidden sm:inline`}>{CODIGO[c]}</span>
           </label>
         ))}
       </div>
-      {error && <p className="text-sm font-semibold text-[var(--sello-a)]">{error}</p>}
+      {error && <p className="text-sm font-semibold text-[var(--red)]">{error}</p>}
     </fieldset>
   );
 }
@@ -121,35 +107,30 @@ function Consentimiento({ error }: { error?: string }) {
   return (
     <div className="flex flex-col gap-1.5">
       <label
-        className={`flex cursor-pointer items-start gap-3 rounded-lg bg-white/55 p-4 ring-1 ${error ? "ring-[var(--sello-a)]" : "ring-[var(--tinta)]/15"}`}
+        className={`flex cursor-pointer items-start gap-3 rounded-md border bg-[var(--paper)] p-4 ${error ? "border-[var(--red)]" : "border-[var(--line)]"}`}
       >
-        <input
-          id="consent"
-          name="consent"
-          type="checkbox"
-          required
-          className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--tinta)]"
-        />
-        <span className="text-[15px] leading-snug text-[var(--tinta-2)]">
-          <strong className="text-[var(--tinta)]">Tus datos son tuyos.</strong> Solo los usamos para conectarte con retos.
+        <input id="consent" name="consent" type="checkbox" required className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--ink)]" />
+        <span className="text-[15px] leading-snug text-[var(--ink-2)]">
+          <strong className="text-[var(--ink)]">Tus datos son tuyos.</strong> Solo los usamos para conectarte con retos.
           Cumplimos el RGPD y la ley de protección de datos de Colombia (Ley 1581 de 2012).
         </span>
       </label>
-      {error && <p className="text-sm font-semibold text-[var(--sello-a)]">{error}</p>}
+      {error && <p className="text-sm font-semibold text-[var(--red)]">{error}</p>}
     </div>
   );
 }
 
-function Enviar({ pending, children }: { pending: boolean; children: React.ReactNode }) {
+function Enviar({ pending, enviando, children }: { pending: boolean; enviando: string; children: React.ReactNode }) {
   const reduce = useReducedMotion();
   return (
     <motion.button
       type="submit"
       disabled={pending}
-      whileTap={reduce ? undefined : { scale: 0.97 }}
-      className={`${r.oro} ${p.boton} w-full rounded-full px-7 py-4 text-[17px] font-bold sm:w-auto`}
+      aria-busy={pending || undefined}
+      whileTap={reduce ? undefined : { scale: 0.98 }}
+      className="btn btn-primary min-h-12 w-full px-6 text-base font-bold sm:w-auto"
     >
-      {pending ? "Sellando tu solicitud…" : children}
+      {pending ? enviando : children}
     </motion.button>
   );
 }
@@ -157,290 +138,88 @@ function Enviar({ pending, children }: { pending: boolean; children: React.React
 function AvisoServidor({ error }: { error: string | null }) {
   if (!error) return null;
   return (
-    <p
-      role="alert"
-      className="rounded-lg bg-[var(--sello-a)]/10 px-4 py-3 text-[15px] font-semibold text-[var(--sello-a)] ring-1 ring-[var(--sello-a)]/30"
-    >
+    <p role="alert" className="rounded-md border border-[var(--red)]/30 bg-[var(--red)]/[0.06] px-4 py-3 text-[15px] font-semibold text-[var(--red)]">
       {error}
     </p>
   );
 }
 
-/* El sello de tinta que cae sobre la hoja al enviar */
-function SelloRecibido({ visible, texto }: { visible: boolean; texto: string }) {
-  const reduce = useReducedMotion();
+/* Columna derecha: superficie de papel con la vista previa en vivo */
+function Vista({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          className="pointer-events-none absolute inset-x-0 z-10 flex items-center justify-center"
-          style={{ bottom: 96, height: 200 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.2 } }}
-          aria-hidden="true"
-        >
-          <motion.div
-            className={`${p.datos} flex flex-col items-center gap-1 rounded-md border-[4px] border-[var(--sello-a)] px-4 py-3 text-[var(--sello-a)] sm:px-6`}
-            style={{
-              backgroundColor: "rgba(238, 241, 238, 0.92)",
-              boxShadow: "inset 0 0 0 3px var(--papel), inset 0 0 0 5px var(--sello-a), 0 6px 18px -8px rgba(20, 35, 61, 0.35)",
-            }}
-            initial={reduce ? { rotate: -9, opacity: 0.9 } : { scale: 2.3, rotate: -2, opacity: 0, filter: "blur(4px)" }}
-            animate={{ scale: 1, rotate: -9, opacity: 0.9, filter: "blur(0px)" }}
-            transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 520, damping: 22, mass: 0.8 }}
-          >
-            <span className="whitespace-nowrap text-[23px] font-bold leading-none tracking-[0.05em] sm:text-[32px]">{texto}</span>
-            <span className="whitespace-nowrap text-[10px] tracking-[0.18em] sm:text-[11px]">
-              HISPANIDAD FUTURA · {new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" }).toUpperCase()}
-            </span>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-function Escudo({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 268 311" className={className} aria-hidden="true">
-      <path d="M12 6 H256 V185 C256 245 212 282 134 305 C56 282 12 245 12 185 Z" fill="none" stroke="currentColor" strokeWidth="14" />
-    </svg>
-  );
-}
-
-/* ---------- Vista previa del pasaporte (estudiante) ---------- */
-
-function Dato({ etiqueta, valor, vacio }: { etiqueta: string; valor: string; vacio: string }) {
-  return (
-    <div className="flex min-w-0 flex-col">
-      <span className={`${p.datos} text-[9px] tracking-wider text-[var(--tinta-2)]`}>{etiqueta}</span>
-      <span
-        className={`${p.datos} truncate text-[13px] font-bold ${valor ? "text-[var(--tinta)]" : "text-[var(--tinta-2)]/40"}`}
-      >
-        {valor ? sinAcentos(valor) : vacio}
-      </span>
-    </div>
-  );
-}
-
-function VistaPasaporte({
-  nombre,
-  universidad,
-  pais,
-  skills,
-  compacto = false,
-}: {
-  nombre: string;
-  universidad: string;
-  pais: string;
-  skills: string[];
-  compacto?: boolean;
-}) {
-  const reduce = useReducedMotion();
-  const partes = nombre.trim().split(/\s+/).filter(Boolean);
-  // Doble apellido hispano: con tres palabras o más, las dos últimas son los apellidos.
-  const corte = partes.length >= 3 ? partes.length - 2 : 1;
-  const pila = partes.slice(0, corte).join(" ");
-  const apellidos = partes.slice(corte).join(" ");
-  const codigo = CODIGO[pais] ?? "";
-  const iniciales = (partes[0]?.[0] ?? "") + (apellidos[0] ?? "");
-
-  const mrz1 = `P<${codigo || "<<<"}${sinAcentos(apellidos || pila).replace(/[^A-Z]+/g, "<")}<<${sinAcentos(apellidos ? pila : "").replace(/[^A-Z]+/g, "<")}`
-    .padEnd(44, "<")
-    .slice(0, 44);
-  const mrz2 = `RETOS0000<${codigo || "<<<"}${sinAcentos(universidad).replace(/[^A-Z0-9]+/g, "<")}`.padEnd(44, "<").slice(0, 44);
-
-  if (compacto) {
-    return (
-      <div className={`${p.seguridad} ${r.hoja} flex items-center gap-3 rounded-xl p-3`} aria-hidden="true">
-        <div className="relative grid h-14 w-11 shrink-0 place-items-center overflow-hidden rounded bg-[#d9dfe2] ring-1 ring-black/10">
-          <span className={`${p.datos} text-sm font-bold text-[var(--tinta)]`}>{sinAcentos(iniciales) || "?"}</span>
-        </div>
-        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className={`${p.datos} text-[9px] tracking-[0.14em] text-[var(--tinta-2)]`}>PASAPORTE DE TALENTO · {codigo || "—"}</span>
-          <span className={`${p.datos} truncate text-[14px] font-bold ${nombre ? "text-[var(--tinta)]" : "text-[var(--tinta-2)]/45"}`}>
-            {nombre ? sinAcentos(nombre) : "TU NOMBRE AQUÍ"}
-          </span>
-          <span className={`${p.datos} truncate text-[11px] text-[var(--tinta-2)]`}>
-            {universidad ? sinAcentos(universidad) : "Universidad"}
-          </span>
-        </div>
-        <Escudo className="h-8 w-7 shrink-0 self-start text-[var(--oro)]" />
-      </div>
-    );
-  }
-
-  return (
-    <div className={`${p.seguridad} ${r.hoja} relative flex flex-col gap-4 overflow-hidden rounded-[14px] p-5`} aria-hidden="true">
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex flex-col">
-          <span className={`${p.datos} text-[10px] font-bold tracking-[0.16em] text-[var(--tinta)]`}>PASAPORTE DE TALENTO</span>
-          <span className={`${p.datos} text-[9px] tracking-[0.12em] text-[var(--tinta-2)]`}>IBEROAMÉRICA</span>
-        </div>
-        <Escudo className="h-8 w-7 shrink-0 text-[var(--oro)]" />
-      </div>
-
-      <div className="flex gap-4">
-        <div className="relative grid h-[118px] w-[92px] shrink-0 place-items-center overflow-hidden rounded-md bg-[#d9dfe2] ring-1 ring-black/10">
-          <svg viewBox="0 0 92 118" className="absolute inset-0 h-full w-full text-[#9aa6b2]" aria-hidden="true">
-            <circle cx="46" cy="46" r="20" fill="currentColor" />
-            <path d="M10 118 C14 86 30 76 46 76 C62 76 78 86 82 118 Z" fill="currentColor" />
-          </svg>
-          <AnimatePresence>
-            {iniciales && (
-              <motion.span
-                key="ini"
-                className={`${p.datos} relative rounded bg-[var(--tinta)] px-1.5 py-0.5 text-[13px] font-bold text-[#f3efe6]`}
-                initial={reduce ? false : { opacity: 0, scale: 0.6 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                {sinAcentos(iniciales)}
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </div>
-        <div className="grid min-w-0 flex-1 grid-cols-1 gap-2">
-          <Dato etiqueta="Apellidos" valor={apellidos} vacio="—" />
-          <Dato etiqueta="Nombre" valor={pila} vacio="TU NOMBRE" />
-          <Dato etiqueta="Universidad" valor={universidad} vacio="—" />
-          <div className="grid grid-cols-2 gap-2">
-            <Dato etiqueta="Nacionalidad" valor={codigo} vacio="—" />
-            <Dato etiqueta="Sellos" valor="0" vacio="0" />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex min-h-[58px] flex-col gap-1.5">
-        <span className={`${p.datos} text-[9px] tracking-wider text-[var(--tinta-2)]`}>Competencias</span>
-        <div className="flex flex-wrap gap-1.5">
-          <AnimatePresence initial={false}>
-            {skills.length === 0 && (
-              <motion.span key="vacio" className={`${p.datos} text-[12px] text-[var(--tinta-2)]/45`} exit={{ opacity: 0 }}>
-                Las que escribas aparecerán aquí
-              </motion.span>
-            )}
-            {skills.slice(0, 8).map((s) => (
-              <motion.span
-                key={s.toLowerCase()}
-                layout={!reduce}
-                className={`${p.datos} rounded-full bg-[var(--sello-b)] px-2.5 py-1 text-[11px] font-bold text-white`}
-                initial={reduce ? false : { opacity: 0, scale: 0.5, rotate: -6 }}
-                animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={{ type: "spring", stiffness: 500, damping: 26 }}
-              >
-                {s}
-              </motion.span>
-            ))}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      <div className={`${p.datos} flex flex-col gap-0.5 overflow-hidden rounded-sm bg-white/55 px-2 py-2 text-[9.5px] leading-snug tracking-[0.06em] text-[var(--tinta)]`}>
-        <span className="whitespace-pre">{mrz1}</span>
-        <span className="whitespace-pre">{mrz2}</span>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Vista previa del sello de entidad (empresa) ---------- */
-
-function SelloEntidad({ empresa, contacto, pais, compacto = false }: { empresa: string; contacto: string; pais: string; compacto?: boolean }) {
-  const reduce = useReducedMotion();
-  const codigo = CODIGO[pais] ?? "";
-  const tam = compacto ? 96 : 230;
-  const sello = (
-    <motion.svg
-      viewBox="0 0 200 200"
-      width={tam}
-      height={tam}
-      className="shrink-0 text-[var(--sello-b)]"
-      initial={reduce ? false : { rotate: -12, scale: 0.9, opacity: 0 }}
-      animate={{ rotate: -8, scale: 1, opacity: 0.92 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-      aria-hidden="true"
-      style={{ mixBlendMode: "multiply" }}
-    >
-      <defs>
-        <path id="arco-sup" d="M 30 100 A 70 70 0 0 1 170 100" />
-        <path id="arco-inf" d="M 36 104 A 64 64 0 0 0 164 104" />
-      </defs>
-      <circle cx="100" cy="100" r="94" fill="none" stroke="currentColor" strokeWidth="5" />
-      <circle cx="100" cy="100" r="86" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="100" cy="100" r="54" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <text fill="currentColor" style={{ fontFamily: "var(--datos)", fontSize: 13, fontWeight: 700, letterSpacing: 3 }}>
-        <textPath href="#arco-sup" startOffset="50%" textAnchor="middle">
-          ENTIDAD COLABORADORA
-        </textPath>
-      </text>
-      <text fill="currentColor" style={{ fontFamily: "var(--datos)", fontSize: 11, letterSpacing: 3 }}>
-        <textPath href="#arco-inf" startOffset="50%" textAnchor="middle">
-          {`RETOS · HISPANIDAD FUTURA${codigo ? ` · ${codigo}` : ""}`}
-        </textPath>
-      </text>
-      <foreignObject x="50" y="62" width="100" height="76">
-        <div
-          className="flex h-full w-full flex-col items-center justify-center text-center"
-          style={{ fontFamily: "var(--datos)", color: "var(--sello-b)" }}
-        >
-          <span style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.05, wordBreak: "break-word" }}>
-            {empresa ? sinAcentos(empresa).slice(0, 28) : "TU EMPRESA"}
-          </span>
-          <span style={{ fontSize: 8.5, marginTop: 4, letterSpacing: 1 }}>{new Date().getFullYear()}</span>
-        </div>
-      </foreignObject>
-    </motion.svg>
-  );
-
-  if (compacto) {
-    return (
-      <div className={`${p.seguridad} ${r.hoja} flex items-center gap-3 rounded-xl p-3 pr-4`} aria-hidden="true">
-        {sello}
-        <div className="flex min-w-0 flex-col gap-0.5">
-          <span className={`${p.datos} text-[9px] tracking-[0.14em] text-[var(--tinta-2)]`}>SELLO DE ENTIDAD</span>
-          <span className={`${p.datos} truncate text-[14px] font-bold ${empresa ? "text-[var(--tinta)]" : "text-[var(--tinta-2)]/45"}`}>
-            {empresa ? sinAcentos(empresa) : "TU EMPRESA"}
-          </span>
-          <span className={`${p.datos} truncate text-[11px] text-[var(--tinta-2)]`}>
-            {contacto ? `Contacto: ${contacto}` : "Lo verán los estudiantes en cada reto"}
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={`${p.seguridad} ${r.hoja} flex flex-col items-center gap-5 rounded-[14px] px-6 py-8`} aria-hidden="true">
-      <span className={`${p.datos} self-start text-[10px] font-bold tracking-[0.16em] text-[var(--tinta)]`}>SELLO DE ENTIDAD</span>
-      {sello}
-      <div className="flex w-full flex-col gap-2 border-t border-[var(--tinta)]/10 pt-4">
-        <Dato etiqueta="Entidad" valor={empresa} vacio="—" />
-        <div className="grid grid-cols-[1fr_auto] gap-3">
-          <Dato etiqueta="Persona de contacto" valor={contacto} vacio="—" />
-          <Dato etiqueta="País" valor={codigo} vacio="—" />
-        </div>
-      </div>
-      <p className="text-center text-sm leading-snug text-[var(--tinta-2)]">
-        Tu sello aparecerá en el pasaporte de cada estudiante cuyo trabajo valores.
-      </p>
-    </div>
-  );
-}
-
-/* ---------- Hoja: el marco de papel donde va el formulario ---------- */
-
-function Hoja({ serie, titulo, children, sello, selloTexto }: { serie: string; titulo: string; children: React.ReactNode; sello: boolean; selloTexto: string }) {
-  return (
-    <div className={`${p.seguridad} ${r.hoja} relative overflow-hidden rounded-[18px] px-4 pb-6 pt-5 sm:px-8 sm:pb-8 sm:pt-7`}>
-      <div className="mb-5 flex items-center justify-between gap-3 border-b border-dashed border-[var(--tinta)]/20 pb-3">
-        <span className={`${p.datos} text-[11px] font-bold tracking-[0.12em] text-[var(--tinta)]`}>{titulo}</span>
-        <span className={`${r.serie} text-[11px]`}>{serie}</span>
+    <aside className="flex min-w-0 flex-col gap-6 rounded-xl border border-[var(--line)] bg-[var(--paper)] p-4 sm:p-6 lg:sticky lg:top-24 lg:p-8">
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-[15px] font-bold text-[var(--ink)]">{titulo}</h2>
+        <span className="hidden shrink-0 items-center gap-2 text-sm text-[var(--ink-2)] sm:inline-flex">
+          <span className="h-2 w-2 rounded-full bg-[var(--ok)]" aria-hidden="true" />
+          Se actualiza mientras escribes
+        </span>
       </div>
       {children}
-      <SelloRecibido visible={sello} texto={selloTexto} />
+    </aside>
+  );
+}
+
+function Pasos({ titulo, pasos }: { titulo: string; pasos: string[] }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <h3 className="text-[15px] font-bold text-[var(--ink)]">{titulo}</h3>
+      <ol className="flex flex-col gap-2.5">
+        {pasos.map((p, i) => (
+          <li key={p} className="flex items-start gap-3 text-[15px] leading-snug text-[var(--ink-2)]">
+            <span
+              className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-bold"
+              style={{ background: C.marino, color: "#fff" }}
+              aria-hidden="true"
+            >
+              {i + 1}
+            </span>
+            {p}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function Cabecera({ titulo, texto }: { titulo: string; texto: string }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <h1 className="text-[2rem] font-extrabold leading-[1.05] tracking-[-0.02em] text-[var(--ink)] sm:text-[2.6rem]">{titulo}</h1>
+      <p className="max-w-[46ch] text-base leading-relaxed text-[var(--ink-2)] sm:text-[17px]">{texto}</p>
+    </div>
+  );
+}
+
+/* En el móvil el pasaporte abierto no cabe: una tira con la tapa oro y los datos que se van rellenando */
+function PasaporteMovil({ nombre, universidad, pais }: { nombre: string; universidad: string; pais: string }) {
+  return (
+    <div className="rounded-xl p-1.5 shadow-[0_14px_30px_-16px_rgba(20,35,61,0.45)]" style={{ background: C.oro }}>
+      <div className="flex items-center gap-3 rounded-lg p-3" style={{ background: C.papel }}>
+        <div className="grid h-14 w-11 shrink-0 place-items-center rounded bg-[#dadce0] text-base font-bold text-[#9aa0a6]">
+          {nombre
+            .split(/\s+/)
+            .slice(0, 2)
+            .map((x) => x[0])
+            .join("")
+            .toUpperCase()}
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col">
+          <span className="text-xs font-bold" style={{ color: C.texto2 }}>
+            Tu pasaporte Embarca
+          </span>
+          <span className="truncate text-[15px] font-bold" style={{ color: C.marino }}>
+            {nombre}
+          </span>
+          <span className="truncate text-[13px]" style={{ color: C.texto2 }}>
+            {universidad}
+            {pais ? ` · ${pais}` : ""}
+          </span>
+        </div>
+        <span className="shrink-0 text-right text-xs leading-tight" style={{ color: C.texto2 }}>
+          0<br />sellos
+        </span>
+      </div>
     </div>
   );
 }
@@ -455,7 +234,7 @@ function enfocarPrimero(form: HTMLFormElement, errores: Errores) {
 
 /* ---------- Estudiante ---------- */
 
-export function FormEstudiante() {
+export function FormEstudiante({ selector }: { selector: React.ReactNode }) {
   const [state, action, pending] = useActionState(registerStudent, initial);
   const [nombre, setNombre] = useState("");
   const [universidad, setUniversidad] = useState("");
@@ -494,22 +273,32 @@ export function FormEstudiante() {
     startTransition(() => action(fd));
   }
 
-  return (
-    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-10">
-      <div className="min-w-0 lg:hidden">
-        <VistaPasaporte nombre={nombre} universidad={universidad} pais={pais} skills={lista} compacto />
-      </div>
+  const datos = {
+    nombre: nombre.trim() || "Tu nombre",
+    universidad: universidad.trim() || "Tu universidad",
+    pais: pais || "—",
+    retos: 0,
+    sellos: [],
+  };
 
-      <Hoja serie="Nº HF-2026" titulo="Solicitud de pasaporte" sello={pending} selloTexto="SOLICITUD RECIBIDA">
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-14">
+      <div className="flex min-w-0 flex-col gap-6">
+        {selector}
+        <Cabecera titulo="Crea tu pasaporte" texto="Un minuto y lo tienes. Cada reto que resuelvas para una empresa de España o Colombia es un sello más." />
+
+        <div className="min-w-0 lg:hidden" aria-hidden="true">
+          <PasaporteMovil nombre={datos.nombre} universidad={datos.universidad} pais={pais} />
+        </div>
+
         <form action={action} onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
           <Campo
-            n="01"
             label="Nombre y apellidos"
             name="name"
             required
             autoComplete="name"
             autoCapitalize="words"
-            placeholder="Andrés Rojas"
+            placeholder="Lucía Fernández Ortega"
             value={nombre}
             onChange={(e) => {
               setNombre(e.target.value);
@@ -518,7 +307,6 @@ export function FormEstudiante() {
             error={errores.name}
           />
           <Campo
-            n="02"
             label="Email"
             name="email"
             type="email"
@@ -532,7 +320,7 @@ export function FormEstudiante() {
             error={errores.email}
           />
           <Pais
-            n="03"
+            label="País donde estudias"
             valor={pais}
             onChange={(v) => {
               setPais(v);
@@ -541,11 +329,10 @@ export function FormEstudiante() {
             error={errores.country}
           />
           <Campo
-            n="04"
             label="Universidad"
             name="university"
             required
-            placeholder="Ej.: UNAM, Complutense…"
+            placeholder="Ej.: Complutense, Nacional de Colombia…"
             value={universidad}
             onChange={(e) => {
               setUniversidad(e.target.value);
@@ -555,7 +342,6 @@ export function FormEstudiante() {
           />
           <div className="flex flex-col gap-2.5">
             <Campo
-              n="05"
               label="Qué sabes hacer"
               name="skills"
               placeholder="python, react, análisis de datos"
@@ -568,7 +354,7 @@ export function FormEstudiante() {
                 const activa = lista.some((x) => x.toLowerCase() === s.toLowerCase());
                 return (
                   <button key={s} type="button" className={r.chip} aria-pressed={activa} onClick={() => alternar(s)}>
-                    {activa ? "✓ " : "+ "}
+                    <span aria-hidden="true">{activa ? "✓" : "+"}</span>
                     {s}
                   </button>
                 );
@@ -576,36 +362,51 @@ export function FormEstudiante() {
             </div>
           </div>
 
-          <details className="group rounded-lg bg-white/40 ring-1 ring-[var(--tinta)]/12 open:bg-white/30">
-            <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[15px] font-semibold text-[var(--tinta)] [&::-webkit-details-marker]:hidden">
-              Añadir GitHub o portfolio
-              <span className={`${p.datos} text-xs font-normal text-[var(--tinta-2)]`}>
-                Opcional <span className="inline-block transition-transform group-open:rotate-45">+</span>
-              </span>
-            </summary>
-            <div className="grid gap-5 px-4 pb-4 pt-1 sm:grid-cols-2">
-              <Campo label="GitHub (opcional)" name="github" placeholder="github.com/tu-usuario" autoCapitalize="none" spellCheck={false} />
-              <Campo label="Portfolio (opcional)" name="portfolio" placeholder="tu-web.com" autoCapitalize="none" spellCheck={false} inputMode="url" />
-            </div>
-          </details>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Campo label="GitHub (opcional)" name="github" placeholder="github.com/tu-usuario" autoCapitalize="none" spellCheck={false} />
+            <Campo label="Portfolio (opcional)" name="portfolio" placeholder="tu-web.com" autoCapitalize="none" spellCheck={false} inputMode="url" />
+          </div>
 
           <Consentimiento error={errores.consent} />
           {!pending && <AvisoServidor error={state.error} />}
-          <Enviar pending={pending}>Solicitar mi pasaporte</Enviar>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+            <Enviar pending={pending} enviando="Creando tu pasaporte…">
+              Crear mi pasaporte
+            </Enviar>
+            <span className="text-sm text-[var(--ink-2)]">Para el estudiante es gratis. Siempre.</span>
+          </div>
         </form>
-      </Hoja>
+      </div>
 
-      <aside className="hidden lg:sticky lg:top-24 lg:flex lg:flex-col lg:gap-3">
-        <VistaPasaporte nombre={nombre} universidad={universidad} pais={pais} skills={lista} />
-        <p className="px-1 text-sm text-[#f3efe6]/60">Así se verá tu pasaporte. El primer sello llega con tu primer reto valorado.</p>
-      </aside>
+      <div className="hidden min-w-0 lg:block">
+        <Vista titulo="Tu pasaporte">
+          <Pasaporte d={datos} />
+          {lista.length > 0 && (
+            <div className="flex flex-wrap gap-1.5" aria-label="Lo que sabes hacer">
+              {lista.slice(0, 8).map((s) => (
+                <span key={s.toLowerCase()} className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-[var(--ink)] ring-1 ring-[var(--line)]">
+                  {s}
+                </span>
+              ))}
+            </div>
+          )}
+          <Pasos
+            titulo="Qué pasa después"
+            pasos={[
+              "Te apuntas a un reto real de una empresa de España o Colombia.",
+              "Entregas tu trabajo antes de que cierre el embarque.",
+              "La empresa lo valora y tu pasaporte recibe su sello con la nota.",
+            ]}
+          />
+        </Vista>
+      </div>
     </div>
   );
 }
 
 /* ---------- Empresa ---------- */
 
-export function FormEmpresa() {
+export function FormEmpresa({ selector }: { selector: React.ReactNode }) {
   const [state, action, pending] = useActionState(registerCompany, initial);
   const [empresa, setEmpresa] = useState("");
   const [contacto, setContacto] = useState("");
@@ -632,16 +433,38 @@ export function FormEmpresa() {
     startTransition(() => action(fd));
   }
 
-  return (
-    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-10">
-      <div className="min-w-0 lg:hidden">
-        <SelloEntidad empresa={empresa} contacto={contacto} pais={pais} compacto />
-      </div>
+  const origen = CIUDAD[pais] ?? "———";
+  const destino = pais === "Colombia" ? "MAD" : pais ? "BOG" : "———";
+  const tarjeta = {
+    empresa: empresa.trim() || "Tu empresa",
+    origen,
+    destino,
+    titulo: "Describe qué necesitas y la IA preparará aquí tu reto",
+    datos: [
+      { etiqueta: "Duración", valor: "—" },
+      { etiqueta: "Perfil", valor: "—" },
+      { etiqueta: "Cierra", valor: "—" },
+    ],
+    puerta: "—",
+    estado: "borrador" as const,
+    pie: contacto.trim() ? (
+      <p className="text-sm text-[var(--ink-2)]">
+        Contacto: <strong className="text-[var(--ink)]">{contacto.trim()}</strong>
+      </p>
+    ) : undefined,
+  };
 
-      <Hoja serie="Nº ENT-2026" titulo="Registro de entidad" sello={pending} selloTexto="ENTIDAD REGISTRADA">
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-14">
+      <div className="flex min-w-0 flex-col gap-6">
+        {selector}
+        <Cabecera
+          titulo="Da de alta tu empresa"
+          texto="Un minuto para registrar tu empresa. Después la IA te ayuda a convertir tu necesidad en un reto real."
+        />
+
         <form action={action} onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
           <Campo
-            n="01"
             label="Empresa"
             name="name"
             required
@@ -655,7 +478,6 @@ export function FormEmpresa() {
             error={errores.name}
           />
           <Campo
-            n="02"
             label="Persona de contacto"
             name="contact_name"
             required
@@ -670,7 +492,6 @@ export function FormEmpresa() {
             error={errores.contact_name}
           />
           <Campo
-            n="03"
             label="Email de trabajo"
             name="email"
             type="email"
@@ -680,11 +501,12 @@ export function FormEmpresa() {
             autoCapitalize="none"
             spellCheck={false}
             placeholder="laura@empresa.com"
+            ayuda="Lo usamos para avisarte cuando lleguen entregas a tu reto."
             onChange={() => limpiar("email")}
             error={errores.email}
           />
           <Pais
-            n="04"
+            label="País de la empresa"
             valor={pais}
             onChange={(v) => {
               setPais(v);
@@ -693,13 +515,31 @@ export function FormEmpresa() {
             error={errores.country}
           />
           {!pending && <AvisoServidor error={state.error} />}
-          <Enviar pending={pending}>Publicar mi primer reto</Enviar>
+          <div className="flex flex-col gap-3">
+            <Enviar pending={pending} enviando="Creando tu cuenta…">
+              Crear cuenta y preparar mi primer reto
+            </Enviar>
+            <span className="text-sm text-[var(--ink-2)]">El piloto es gratuito para las empresas.</span>
+          </div>
         </form>
-      </Hoja>
+      </div>
 
-      <aside className="hidden lg:sticky lg:top-24 lg:block">
-        <SelloEntidad empresa={empresa} contacto={contacto} pais={pais} />
-      </aside>
+      <div className="min-w-0">
+        <Vista titulo="Así verán los estudiantes tu primer reto">
+          <TarjetaEmbarque t={tarjeta} />
+          <p className="text-sm leading-snug text-[var(--ink-2)]">
+            Esta es la tarjeta de embarque de tu reto. Cuando la publiques, la verán estudiantes de España y Colombia.
+          </p>
+          <Pasos
+            titulo="Qué pasa después"
+            pasos={[
+              "Cuentas tu problema con tus palabras.",
+              "La IA lo convierte en reto: tareas, entregable y criterios.",
+              "Valoras las entregas y cada nota sella el pasaporte del estudiante.",
+            ]}
+          />
+        </Vista>
+      </div>
     </div>
   );
 }

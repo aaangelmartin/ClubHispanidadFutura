@@ -1,223 +1,235 @@
 // Dueño: perfil 4 (valorar y pasaporte). Ver docs/perfiles/4-valorar-y-pasaporte.md.
+// Valorar en Embarca: lista de entregas a la izquierda, pasaporte + entrega en el centro, nota por criterio a la derecha.
 import Link from "next/link";
-import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
-import p from "@/app/empresa/_lib/pasaporte.module.css";
-import e from "@/app/empresa/_lib/empresa.module.css";
 import { notFound } from "next/navigation";
-import {
-  daysLeft,
-  formatDate,
-  getChallengeForCompany,
-  getSubmissions,
-  initials,
-  requireCompany,
-  weightedScore,
-} from "../../_lib/queries";
-import StatusChip from "../../_lib/StatusChip";
-import { countryCode, ProgressRing } from "../../_lib/visuals";
+import { C, EstadoEntrega, Nota, Pasaporte, TarjetaEmbarque } from "@/components/embarca";
+import e from "@/app/empresa/_lib/empresa.module.css";
+import { formatDate, getChallengeForCompany, getSubmissions, initials, requireCompany, weightedScore } from "../../_lib/queries";
+import { estadoEntrega, tarjetaDeReto } from "../../_lib/embarca";
 import AiSummaryBlock from "./AiSummaryBlock";
 import EvaluationForm from "./EvaluationForm";
 import { closeChallenge, closeSubmissions, requestContact } from "./actions";
 
 export const dynamic = "force-dynamic";
 
-const RUBRIC_SHADES = ["bg-ink", "bg-gold", "bg-ink-2", "bg-ink-3", "bg-ok"];
-
-export default async function ValorarReto({ params }: { params: Promise<{ id: string }> }) {
+export default async function ValorarReto({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ e?: string }>;
+}) {
   const { id } = await params;
+  const { e: elegida } = await searchParams;
   const company = await requireCompany();
   const challenge = await getChallengeForCompany(id, company.id);
   if (!challenge) notFound();
 
   const all = await getSubmissions(id);
   const delivered = all.filter((s) => s.submitted_at);
-  const enrolled = all.filter((s) => !s.submitted_at);
   const done = delivered.filter((s) => s.evaluation).length;
   const pending = delivered.length - done;
   const canEvaluate = challenge.status === "en_valoracion" || challenge.status === "cerrado";
-  const d = daysLeft(challenge.deadline);
+
+  const lista = [...delivered, ...all.filter((s) => !s.submitted_at)];
+  const s = delivered.find((x) => x.id === elegida) ?? delivered.find((x) => !x.evaluation) ?? delivered[0] ?? null;
+  const score = s?.evaluation ? weightedScore(challenge.rubric, s.evaluation.scores) : null;
 
   return (
-    <div className={`${pasaporteFonts} ${p.page}`}>
-    <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
-      <Link href="/empresa" className="text-sm text-ink-2 hover:text-ink">
-        ← Tus retos
-      </Link>
+    <main className="mx-auto flex max-w-[1240px] flex-col gap-5 px-4 py-6 sm:px-6">
+      <nav className="text-sm" style={{ color: C.texto2 }}>
+        <Link href="/empresa" className="hover:underline">
+          Mis retos
+        </Link>{" "}
+        / <span style={{ color: C.marino }}>Valorar entregas</span>
+      </nav>
 
-      {/* Cabecera del reto */}
-      <section className={`${e.hero} grid items-center gap-8 rounded-2xl p-6  sm:p-10 md:grid-cols-[1fr_auto]`}>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <StatusChip status={challenge.status} />
-            {challenge.is_example && <span className="chip border-paper/30 text-paper/80">Ejemplo piloto</span>}
-            {challenge.status === "abierto" && d !== null && d > 0 && (
-              <span className="font-mono text-xs text-paper/70">Quedan {d} días</span>
+      <section className="grid gap-4 lg:grid-cols-[1fr_300px]">
+        <TarjetaEmbarque t={tarjetaDeReto(challenge, company.name, company.country)} compacta />
+        <div className={`${e.panel} flex flex-col gap-3 p-5`}>
+          <div className="flex items-baseline justify-between gap-3">
+            <span className="text-lg font-bold" style={{ color: C.marino }}>
+              {done} de {delivered.length} valoradas
+            </span>
+            {pending > 0 && (
+              <span className="text-sm font-semibold" style={{ color: "#8a5a00" }}>
+                Quedan {pending}
+              </span>
             )}
           </div>
-          <h1 className="text-3xl font-bold text-paper sm:text-5xl">{challenge.title}</h1>
-          <p className="max-w-2xl text-lg text-paper/80">{challenge.summary}</p>
-
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            {challenge.status === "abierto" && (
-              <form action={closeSubmissions}>
-                <input type="hidden" name="challenge_id" value={challenge.id} />
-                <button className={p.botonOro}>
-                  Cerrar entregas y empezar a valorar
-                </button>
-              </form>
-            )}
-            {challenge.status === "en_valoracion" && (
-              <form action={closeChallenge} className="flex flex-wrap items-center gap-3">
-                <input type="hidden" name="challenge_id" value={challenge.id} />
-                <button
-                  className={`${p.botonOro} disabled:cursor-not-allowed disabled:opacity-40`}
-                  disabled={pending > 0}
-                >
-                  Cerrar reto
-                </button>
-                {pending > 0 && (
-                  <span className="text-sm text-paper/70">
-                    Valora {pending === 1 ? "la entrega que falta" : `las ${pending} que faltan`} para poder cerrarlo
-                  </span>
-                )}
-              </form>
-            )}
-            {challenge.status === "cerrado" && (
-              <span className="text-paper/80">Reto cerrado. Todas las valoraciones están en los pasaportes.</span>
-            )}
+          <div className="h-2 overflow-hidden rounded-full bg-[#eeeeec]">
+            <div className="h-2 rounded-full" style={{ width: `${delivered.length ? (done / delivered.length) * 100 : 0}%`, background: C.verde }} />
           </div>
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <ProgressRing value={done} total={delivered.length} size={160} />
-          <span className="font-mono text-xs uppercase tracking-widest text-paper/70">valoradas</span>
-          <span className="font-mono text-sm tabular">
-            {done} de {delivered.length}
-            {enrolled.length > 0 && ` · ${enrolled.length} sin entregar`}
-          </span>
-        </div>
-      </section>
-
-      {/* Rúbrica como barra de pesos */}
-      <section className={`${e.panel} flex flex-col gap-4 p-6`}>
-        <div className="flex items-baseline justify-between">
-          <h2 className="text-2xl font-bold">Cómo se valora</h2>
-          <span className="font-mono text-xs text-ink-3">la IA resume · tú decides</span>
-        </div>
-        <div className="flex h-4 overflow-hidden rounded-full">
-          {challenge.rubric.map((r, i) => (
-            <div key={r.criterion} className={RUBRIC_SHADES[i % RUBRIC_SHADES.length]} style={{ width: `${r.weight}%` }} />
-          ))}
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {challenge.rubric.map((r, i) => (
-            <div key={r.criterion} className="flex gap-3">
-              <span className={`mt-1.5 h-3 w-3 shrink-0 rounded-sm ${RUBRIC_SHADES[i % RUBRIC_SHADES.length]}`} />
-              <div className="flex flex-col">
-                <span className="font-semibold">
-                  {r.criterion} <span className="font-mono text-sm text-gold tabular">{r.weight}%</span>
-                </span>
-                <span className="text-sm text-ink-2">{r.description}</span>
-              </div>
-            </div>
-          ))}
+          {challenge.status === "abierto" && (
+            <form action={closeSubmissions} className="mt-auto">
+              <input type="hidden" name="challenge_id" value={challenge.id} />
+              <button className="btn btn-primary w-full">Cerrar entregas y empezar a valorar</button>
+            </form>
+          )}
+          {challenge.status === "en_valoracion" && (
+            <form action={closeChallenge} className="mt-auto flex flex-col gap-2">
+              <input type="hidden" name="challenge_id" value={challenge.id} />
+              <button className="btn w-full" disabled={pending > 0}>
+                Cerrar reto
+              </button>
+              <span className="text-xs" style={{ color: C.texto2 }}>
+                {pending > 0
+                  ? `Podrás cerrarlo cuando valores ${pending === 1 ? "la entrega que falta" : `las ${pending} que faltan`}. Nadie se queda sin respuesta.`
+                  : "Todas valoradas. Al cerrar, cada nota queda en su pasaporte."}
+              </span>
+            </form>
+          )}
+          {challenge.status === "cerrado" && (
+            <p className="mt-auto text-sm" style={{ color: C.texto2 }}>
+              Reto cerrado. Todas las valoraciones están en los pasaportes.
+            </p>
+          )}
         </div>
       </section>
 
       {challenge.status === "abierto" && delivered.length > 0 && (
-        <p className={`${e.panel} border-gold bg-gold-soft p-4`}>
-          El reto sigue abierto: puedes leer las entregas ya. La valoración se activa al cerrar las entregas.
+        <p className="rounded-xl px-4 py-3 text-sm" style={{ background: "#fdf3dc", color: C.marino, boxShadow: `inset 0 0 0 1px ${C.ambar}` }}>
+          El reto sigue abierto: ya puedes leer las entregas. La valoración se activa al cerrar las entregas.
         </p>
       )}
 
-      {/* Entregas */}
-      <section className="flex flex-col gap-6">
-        <h2 className="text-3xl font-bold">
-          Entregas <span className="font-mono text-lg text-ink-3">{delivered.length}</span>
-        </h2>
-        {delivered.length === 0 && <div className={`${e.panel} p-8 text-ink-2`}>Todavía no ha llegado ninguna entrega.</div>}
-
-        {delivered.map((s, i) => {
-          const score = s.evaluation ? weightedScore(challenge.rubric, s.evaluation.scores) : null;
-          return (
-            <article
-              key={s.id}
-              className={`${e.panel} overflow-hidden ${s.evaluation ? "" : "border-gold ring-1 ring-gold"}`}
-            >
-              <header className="flex flex-wrap items-center gap-4 border-b border-line p-6">
-                <div
-                  className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full font-display text-2xl font-bold text-paper ${
-                    s.evaluation ? "bg-ink" : "bg-gold"
-                  }`}
-                >
-                  {initials(s.student.name)}
-                </div>
-                <div className="flex min-w-0 flex-1 flex-col">
-                  <span className="font-mono text-xs text-ink-3">
-                    Entrega {i + 1} · {formatDate(s.submitted_at)}
+      <div className="grid gap-5 lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)_340px]">
+        {/* Lista de entregas */}
+        <aside className="flex min-w-0 flex-col gap-2">
+          <h2 className="text-base font-bold" style={{ color: C.marino }}>
+            Entregas <span style={{ color: C.texto2 }}>{lista.length}</span>
+          </h2>
+          {lista.length === 0 && (
+            <p className={`${e.panel} p-4 text-sm`} style={{ color: C.texto2 }}>
+              Todavía no se ha inscrito nadie.
+            </p>
+          )}
+          <ul className="flex flex-col gap-2">
+            {lista.map((x) => {
+              const nota = x.evaluation ? weightedScore(challenge.rubric, x.evaluation.scores) : null;
+              const activa = s?.id === x.id;
+              const contenido = (
+                <>
+                  <span
+                    className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-xs font-bold"
+                    style={{ background: activa ? C.oro : C.superficie, color: C.marino }}
+                  >
+                    {initials(x.student.name)}
                   </span>
-                  <h3 className="text-2xl font-bold">{s.student.name}</h3>
-                  <span className="flex items-center gap-2 text-ink-2">
-                    <span className="rounded bg-ink px-1.5 font-mono text-xs text-paper">{countryCode(s.student.country)}</span>
-                    {s.student.university}
-                  </span>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  {s.evaluation ? (
-                    <span className="flex items-baseline gap-1 rounded-xl bg-[#14233d] px-4 py-2 text-[#f3efe6]">
-                      <span className="font-display text-3xl font-bold tabular">{score !== null ? score.toFixed(1) : "—"}</span>
-                      <span className="font-mono text-xs text-[#f3efe6]/60">/10</span>
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="truncate text-sm font-bold" style={{ color: C.marino }}>
+                      {x.student.name}
                     </span>
+                    <span className="truncate text-xs" style={{ color: C.texto2 }}>
+                      {x.student.university} · {x.student.country}
+                    </span>
+                  </span>
+                  {nota !== null ? <Nota valor={nota} size="sm" /> : <EstadoEntrega estado={estadoEntrega(x, challenge.status)} />}
+                </>
+              );
+              const cls = `flex items-center gap-2.5 rounded-xl bg-white p-2.5 ${activa ? "ring-2 ring-[#c8963a]" : "ring-1 ring-[#e2e2de]"}`;
+              return (
+                <li key={x.id}>
+                  {x.submitted_at ? (
+                    <Link href={`/empresa/retos/${challenge.id}?e=${x.id}`} scroll={false} className={`${cls} hover:ring-[#c8963a]`}>
+                      {contenido}
+                    </Link>
                   ) : (
-                    <span className="chip border-gold bg-gold-soft text-gold">Por valorar</span>
+                    <div className={`${cls} opacity-70`}>{contenido}</div>
                   )}
-                  <Link href={`/pasaporte/${s.student.id}`} className="text-sm text-ink-2 hover:text-gold">
-                    Ver pasaporte →
-                  </Link>
-                </div>
-              </header>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="text-xs leading-snug" style={{ color: C.texto2 }}>
+            Por orden de entrega. La IA no ordena ni descarta a nadie.
+          </p>
+        </aside>
 
-              <div className="grid lg:grid-cols-[1.4fr_1fr]">
-                <div className="flex flex-col gap-5 p-6">
-                  {s.notes && (
-                    <blockquote className="border-l-4 border-gold pl-4 text-lg text-ink">{s.notes}</blockquote>
-                  )}
-                  {s.link && (
-                    <a href={s.link} target="_blank" rel="noreferrer" className="btn self-start">
-                      Abrir la entrega ↗
-                    </a>
-                  )}
-                  <AiSummaryBlock submissionId={s.id} initial={s.ai_summary} />
-                </div>
-
-                <aside className="flex flex-col gap-5 border-t border-line bg-bg/60 p-6 lg:border-l lg:border-t-0">
-                  {canEvaluate ? (
-                    <EvaluationForm submissionId={s.id} rubric={challenge.rubric} existing={s.evaluation} />
-                  ) : (
-                    <p className="text-ink-2">La valoración se activa al cerrar las entregas.</p>
-                  )}
-                  {s.evaluation &&
-                    (s.evaluation.contact_requested ? (
-                      <div className="rounded-md border border-ok p-4">
-                        <span className="font-semibold text-ok">Contactado.</span>{" "}
-                        <span className="text-sm">
-                          Escríbele a <span className="font-mono">{s.student.email}</span>
-                        </span>
-                      </div>
-                    ) : (
-                      <form action={requestContact}>
-                        <input type="hidden" name="submission_id" value={s.id} />
-                        <button className="btn w-full border-gold py-3 text-base text-gold hover:bg-gold-soft">
-                          Quiero contactar con {s.student.name.split(" ")[0]}
-                        </button>
-                      </form>
-                    ))}
-                </aside>
+        {/* Pasaporte + entrega */}
+        {s ? (
+          <section className="flex min-w-0 flex-col gap-4">
+            <Pasaporte
+              className="w-full max-w-[560px]"
+              d={{
+                nombre: s.student.name,
+                universidad: s.student.university,
+                pais: s.student.country,
+                retos: s.evaluation ? 1 : 0,
+                numero: `EMB${s.student.id.replace(/-/g, "").slice(0, 6).toUpperCase()}`,
+                sellos: score !== null ? [{ nota: score, empresa: company.name }] : [],
+              }}
+            />
+            <div className={`${e.panel} flex flex-col gap-4 p-5`}>
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h2 className="text-lg font-bold" style={{ color: C.marino }}>
+                  Su entrega
+                </h2>
+                <span className="text-sm" style={{ color: C.texto2 }}>
+                  Entregada el {formatDate(s.submitted_at)}
+                </span>
               </div>
-            </article>
-          );
-        })}
-      </section>
+              {s.link && (
+                <a
+                  href={s.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex min-w-0 items-center gap-3 rounded-lg p-3 ring-1 ring-[#e2e2de] hover:ring-[#c8963a]"
+                >
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md text-white" style={{ background: C.azul }} aria-hidden="true">
+                    ↗
+                  </span>
+                  <span className="min-w-0 truncate text-sm font-semibold" style={{ color: C.azul }}>
+                    {s.link.replace(/^https?:\/\//, "")}
+                  </span>
+                </a>
+              )}
+              {s.notes && (
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm font-bold" style={{ color: C.marino }}>
+                    Descripción
+                  </span>
+                  <p className="whitespace-pre-line text-[15px] leading-relaxed" style={{ color: C.marino }}>
+                    {s.notes}
+                  </p>
+                </div>
+              )}
+              <Link href={`/pasaporte/${s.student.id}`} className="self-start text-sm font-semibold hover:underline" style={{ color: C.texto2 }}>
+                Ver su pasaporte completo
+              </Link>
+            </div>
+            <AiSummaryBlock key={s.id} submissionId={s.id} initial={s.ai_summary} />
+          </section>
+        ) : (
+          <section className={`${e.panel} p-8`} style={{ color: C.texto2 }}>
+            Todavía no ha llegado ninguna entrega.
+          </section>
+        )}
+
+        {/* Valoración */}
+        {s && (
+          <aside className="flex min-w-0 flex-col gap-4 lg:col-span-2 xl:col-span-1">
+            <div className={`${e.panel} flex flex-col gap-4 p-5`}>
+              {canEvaluate ? (
+                <EvaluationForm key={s.id} submissionId={s.id} rubric={challenge.rubric} existing={s.evaluation} />
+              ) : (
+                <p style={{ color: C.texto2 }}>La valoración se activa al cerrar las entregas.</p>
+              )}
+              {s.evaluation &&
+                (s.evaluation.contact_requested ? (
+                  <div className="rounded-lg p-3 text-sm" style={{ boxShadow: `inset 0 0 0 1.5px ${C.verde}` }}>
+                    <b style={{ color: C.verde }}>Contactado.</b> Escríbele a <span className="font-mono">{s.student.email}</span>
+                  </div>
+                ) : (
+                  <form action={requestContact}>
+                    <input type="hidden" name="submission_id" value={s.id} />
+                    <button className="btn w-full">Contactar con {s.student.name.split(" ")[0]}</button>
+                  </form>
+                ))}
+            </div>
+          </aside>
+        )}
+      </div>
     </main>
-    </div>
   );
 }

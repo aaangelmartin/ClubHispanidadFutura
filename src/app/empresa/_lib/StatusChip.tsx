@@ -1,14 +1,8 @@
-import type { ChallengeStatus } from "@/lib/types";
-import { STATUS_LABEL } from "./queries";
+import type { Challenge } from "@/lib/types";
+import { EstadoReto } from "@/components/embarca";
+import { estadoReto } from "./embarca";
 
-// Dueño: perfil 4.
-const STYLE: Record<ChallengeStatus, string> = {
-  borrador: "text-ink-3",
-  abierto: "border-ink text-ink",
-  en_valoracion: "border-gold bg-gold-soft text-gold",
-  cerrado: "border-ok text-ok",
-};
-
-export default function StatusChip({ status }: { status: ChallengeStatus }) {
-  return <span className={`chip ${STYLE[status]}`}>{STATUS_LABEL[status]}</span>;
+// Dueño: perfil 4. Estado de un reto con los colores del panel de salidas de Embarca.
+export default function StatusChip({ status, deadline = null }: { status: Challenge["status"]; deadline?: string | null }) {
+  return <EstadoReto estado={estadoReto({ status, deadline })} />;
 }

@@ -41,7 +41,7 @@ export default async function RetosLayout({ children }: { children: React.ReactN
       <div className={p.tapa}>
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-5 sm:px-6">
           <div className="flex flex-col">
-            <span className={`${p.datos} text-[11px] tracking-[0.2em] text-[var(--oro)]`}>RETOS · ESPAÑA Y COLOMBIA</span>
+            <span className="text-sm font-semibold text-[var(--oro)]">Retos de España y Colombia</span>
             <span className="text-2xl font-extrabold [font-stretch:125%]">
               {yo ? `Hola, ${yo.name.split(" ")[0]}.` : "Demuestra lo que sabes hacer."}
             </span>

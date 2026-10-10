@@ -1,12 +1,11 @@
 "use client";
 // Dueño: perfil 1. Vuelve a pedir los datos del panel cada 20 s sin recargar la página
-// y muestra el indicador «En directo» con la cuenta atrás y la hora local.
+// y muestra el indicador «En directo» y la hora de Madrid.
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import s from "./panel.module.css";
 
-const hora = (d: Date) =>
-  d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Europe/Madrid" });
+const hora = (d: Date) => d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid" });
 
 export default function Refresco({ segundos = 20, caido = false }: { segundos?: number; caido?: boolean }) {
   const router = useRouter();
@@ -28,23 +27,26 @@ export default function Refresco({ segundos = 20, caido = false }: { segundos?: 
   }, [router, segundos]);
 
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-[family-name:var(--datos)] text-sm text-white/60 md:text-base">
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
       {caido ? (
-        <span className="inline-flex items-center gap-3 rounded-full border border-[var(--oro)]/50 bg-[var(--oro)]/10 px-4 py-1.5 font-bold tracking-[0.18em] text-[var(--oro)] uppercase">
-          <span className="h-2.5 w-2.5 rounded-full bg-[var(--oro)]" aria-hidden="true" />
-          Reconectando
+        <span className="inline-flex items-center gap-2.5 rounded-md border border-[#f59e0b]/60 bg-[#f59e0b]/10 px-3 py-1.5 text-sm font-bold text-[#f59e0b]">
+          <span className="h-2 w-2 rounded-full bg-[#f59e0b]" aria-hidden="true" />
+          Reconectando · otro intento en {String(restan).padStart(2, "0")} s
         </span>
       ) : (
-        <span className="inline-flex items-center gap-3 rounded-full border border-[#3ecf8e]/40 bg-[#3ecf8e]/10 px-4 py-1.5 font-bold tracking-[0.18em] text-[#3ecf8e] uppercase">
+        <span
+          className="inline-flex items-center gap-2.5 rounded-md border border-[#3fd07a]/50 bg-[#00843d]/25 px-3 py-1.5 text-sm font-bold text-[#3fd07a]"
+          title={`Se actualiza cada ${segundos} s`}
+        >
           <span className={s.vivo} aria-hidden="true" />
           En directo
         </span>
       )}
-      <span aria-live="off">
-        {caido ? "nuevo intento cada" : "se actualiza cada"} {segundos} s · <span className="tabular-nums text-white/80">{String(restan).padStart(2, "0")} s</span>
-      </span>
-      <span className="tabular-nums text-[var(--oro)]" suppressHydrationWarning>
-        {ahora ? `${hora(ahora)} Madrid` : " "}
+      <span className="flex flex-col items-end leading-none">
+        <span className="font-[family-name:var(--font-b612)] text-4xl font-bold tabular-nums text-[#c8963a] md:text-5xl" suppressHydrationWarning>
+          {ahora ? hora(ahora) : "--:--"}
+        </span>
+        <span className="mt-1.5 text-xs text-white/55">Hora de Madrid</span>
       </span>
     </div>
   );
