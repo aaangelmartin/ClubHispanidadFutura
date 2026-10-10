@@ -27,7 +27,7 @@ export default async function Header() {
 
   return (
     <HeaderShell>
-      <nav className="mx-auto flex max-w-6xl items-center gap-x-3 px-4 py-3 sm:gap-x-6 sm:px-6">
+      <nav className="mx-auto flex max-w-[1312px] items-center gap-x-3 px-5 py-3 sm:gap-x-6 sm:px-8 lg:px-16">
         <Link href="/" aria-label="Embarca, inicio" className="inline-flex shrink-0 items-center gap-2.5">
           <Isotipo size={28} />
           <span className="hf-logo-texto hidden text-[22px] font-bold tracking-[-0.03em] text-ink sm:inline">Embarca</span>

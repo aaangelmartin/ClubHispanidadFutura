@@ -49,7 +49,7 @@ export default async function Home() {
       </nav>
 
       {/* 2 · Portada */}
-      <section className="bg-ink text-white">
+      <section className="flex min-h-[calc(100svh-98px)] items-center bg-ink text-white">
         <div className={`${ENVOLTURA} grid items-center gap-14 py-16 lg:grid-cols-[1fr_1.05fr] lg:gap-16 lg:py-24`}>
           <div className="flex flex-col gap-6">
             <h1 className="text-[44px] font-bold leading-[1.02] tracking-[-0.04em] sm:text-[64px] lg:text-[72px]">El talento se demuestra.</h1>
@@ -69,7 +69,7 @@ export default async function Home() {
       </section>
 
       {/* 3 · Para empresas */}
-      <section className="bg-paper">
+      <section className="flex min-h-[calc(100svh-58px)] items-center bg-paper">
         <div className={`${ENVOLTURA} grid items-center gap-12 py-20 lg:grid-cols-2 lg:gap-[72px] lg:py-24`}>
           <Aparece className="flex flex-col gap-6">
             <span className="text-base font-bold text-blue">Para empresas</span>
@@ -88,7 +88,7 @@ export default async function Home() {
       </section>
 
       {/* 4 · Para estudiantes */}
-      <section className="bg-ink text-white">
+      <section className="flex min-h-[calc(100svh-58px)] items-center bg-ink text-white">
         <div className={`${ENVOLTURA} grid items-center gap-12 py-20 lg:grid-cols-2 lg:gap-[72px] lg:py-24`}>
           <div className="order-2 lg:order-1">
             <PasaporteEstudiante />
@@ -109,7 +109,7 @@ export default async function Home() {
       </section>
 
       {/* 5 · Nadie se queda en tierra */}
-      <section className="bg-white">
+      <section className="flex min-h-[calc(100svh-58px)] items-center bg-white">
         <div className={`${ENVOLTURA} flex flex-col gap-10 py-20 lg:py-24`}>
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <Aparece className="flex max-w-[640px] flex-col gap-4">
@@ -128,7 +128,7 @@ export default async function Home() {
       </section>
 
       {/* 6 · La IA prepara. Tú decides. */}
-      <section className="bg-paper">
+      <section className="flex min-h-[calc(100svh-58px)] items-center bg-paper">
         <div className={`${ENVOLTURA} grid items-center gap-12 py-20 lg:grid-cols-[0.8fr_1.2fr] lg:gap-[72px] lg:py-24`}>
           <Aparece className="flex flex-col gap-5">
             <h2 className={H2}>La IA prepara. Tú decides.</h2>
@@ -141,7 +141,7 @@ export default async function Home() {
       </section>
 
       {/* 7 · Llegadas de hoy */}
-      <section className="bg-ink text-white">
+      <section className="flex min-h-[calc(100svh-58px)] items-center bg-ink text-white">
         <div className={`${ENVOLTURA} flex flex-col gap-7 py-16 lg:py-20`}>
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div className="flex flex-col gap-3">
@@ -188,7 +188,7 @@ export default async function Home() {
       </section>
 
       {/* 8 · Cierre */}
-      <section className="bg-gold">
+      <section className="flex min-h-[calc(100svh-58px)] items-center bg-gold">
         <div className={`${ENVOLTURA} flex flex-col justify-between gap-8 py-16 md:flex-row md:items-center lg:py-[88px]`}>
           <h2 className={`${H2} max-w-[16ch] text-ink`}>Tu próximo junior está a punto de embarcar.</h2>
           <div className="flex flex-wrap gap-3">
