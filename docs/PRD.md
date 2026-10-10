@@ -143,8 +143,8 @@ Orden de construcción = orden de prioridad. Si no da tiempo, se corta desde aba
 | `en_valoracion` | Se pasa el `deadline` (o la empresa lo cierra antes) | No se aceptan más entregas. La IA resume cada entrega (§10.2). La empresa valora con la rúbrica |
 | `cerrado` | La empresa pulsa "Cerrar reto" | **Solo se puede si todas las entregas están valoradas.** Las valoraciones pasan a los pasaportes |
 
-- **Generación:** `generateChallenge()` en `src/lib/ai.ts`, llamada desde una Server Action. Devuelve el JSON de §10.1, que se guarda como `borrador`. La clave de la IA nunca va en el navegador.
-- **Resumen:** `summarizeSubmission()` en `src/lib/ai.ts`. Guarda el resultado en `submissions.ai_summary`. Se lanza al pasar a `en_valoracion`, o al abrir la entrega si no existe.
+- **Generación:** `generateChallenge()` en `src/lib/ai/generate.ts`, llamada desde una Server Action. Devuelve el JSON de §10.1, que se guarda como `borrador`. La clave de la IA nunca va en el navegador.
+- **Resumen:** `summarizeSubmission()` en `src/lib/ai/summarize.ts`. Guarda el resultado en `submissions.ai_summary`. Se lanza al pasar a `en_valoracion`, o al abrir la entrega si no existe.
 - **Para la demo:** la empresa puede pasar a `en_valoracion` a mano; no hay que esperar al plazo.
 - **Inscripción:** apuntarse crea la `submission` vacía; entregar rellena `link` y `notes`. Un estudiante, una entrega por reto.
 
@@ -218,7 +218,7 @@ Sé factual. No inventes lo que no está en la entrega. No uses datos personales
 - **Next.js 15 (App Router, TypeScript, Tailwind)** + **Supabase** (Postgres) + **API de Claude** (`claude-sonnet-5-5`), desplegado en **Vercel**.
 - Todo el acceso a datos y a la IA va por el servidor (Server Components y Server Actions) con la service role de Supabase. RLS activado sin políticas: el navegador no toca la base de datos ni ve claves.
 - Sin login: al registrarse se guarda una cookie con `{role, id}` (`src/lib/session.ts`).
-- Las "funciones" de §8.1 son `generateChallenge` y `summarizeSubmission` en `src/lib/ai.ts`, llamadas desde Server Actions.
+- Las "funciones" de §8.1 son `generateChallenge` (`src/lib/ai/generate.ts`) y `summarizeSubmission` (`src/lib/ai/summarize.ts`), llamadas desde Server Actions.
 - Todo el equipo trabaja con Claude Code sobre este repo. Nada de Lovable.
 
 ## 12. Decisiones tomadas (log)
@@ -232,7 +232,8 @@ Sé factual. No inventes lo que no está en la entrega. No uses datos personales
 | Pasaporte dentro del MVP | Es la contraprestación al joven: sin él la objeción del trabajo gratis no tiene respuesta |
 | La empresa valora todas las entregas | Sin valoración el pasaporte es un portfolio más |
 | Voz, LinkedIn y matching automático fuera | No caben en el tiempo y no cambian lo que hace el producto |
-| Todo el equipo con Claude Code en este repo; sin Lovable. Next.js + Supabase + Claude + Vercel | Trabajo en paralelo real: 3 personas en la app sin pisarse |
+| Todo el equipo con Claude Code en este repo; sin Lovable. Next.js + Supabase + Claude + Vercel | Trabajo en paralelo real sin pisarse |
+| App dividida en 4 partes verticales (entrada, publicar, resolver, valorar+pasaporte), cada una completa | Nadie espera a nadie: se comunican solo por la base de datos y hay datos de ejemplo desde el principio |
 | No usar "hackathon" en el pitch | El jurado está en un hackathon presencial; confunde |
 
 ## 13. Pendientes

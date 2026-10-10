@@ -1,4 +1,4 @@
-// Dueño: persona 1 (base). Landing: problema en una frase + "Soy empresa" / "Soy estudiante". Ver docs/PRD.md §8 P1.
+// Dueño: perfil 1 (entrada y demanda). Landing: problema en una frase + "Soy empresa" / "Soy estudiante". Ver docs/PRD.md §8 P1.
 import Link from "next/link";
 
 export default function Home() {

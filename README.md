@@ -12,7 +12,7 @@
 | [`AGENTS.md`](AGENTS.md) | Cómo trabajamos (personas y agentes) |
 | [`docs/PRD.md`](docs/PRD.md) | Producto: problema, reglas, MVP, IA, datos, decisiones |
 | [`docs/perfiles/`](docs/perfiles/README.md) | **Una ficha por perfil: empieza aquí** |
-| [`docs/EQUIPO.md`](docs/EQUIPO.md) | Reparto: 4 en la app, 1 en negocio, y calendario del día |
+| [`docs/EQUIPO.md`](docs/EQUIPO.md) | Reparto (4 partes de la app + negocio) y calendario |
 | [`docs/NEGOCIO.md`](docs/NEGOCIO.md) | Mercado, financiación, KPIs, aliados, plan 90 días |
 | [`docs/PITCH.md`](docs/PITCH.md) | Guion del pitch de 3 minutos |
 | [`docs/deck-mentores.html`](docs/deck-mentores.html) | Deck para validar con mentores ([publicado](https://claude.ai/code/artifact/ca73f748-aac1-4b16-b9db-db126fd59be0)) |
@@ -25,17 +25,15 @@ Next.js 15 + Supabase + API de Claude, en Vercel.
 
 ```bash
 npm install
-cp .env.example .env.local   # pide los valores a la persona 1
+cp .env.example .env.local   # valores del paso 0 (docs/perfiles/README.md)
 npm run dev                  # http://localhost:3000
 ```
 
 | Ruta | Qué es | Dueño |
 |---|---|---|
-| `/` | Landing | Persona 1 |
-| `/registro` | Registro estudiante / empresa | Persona 1 |
-| `/panel` | Panel en vivo | Persona 1 |
-| `/empresa/nuevo` | Crear reto con IA | Persona 2 |
-| `/empresa`, `/empresa/retos/[id]` | Valorar entregas | Persona 3 |
-| `/retos`, `/retos/[id]`, `/pasaporte/[id]` | Lado estudiante | Persona 4 |
+| `/`, `/registro`, `/panel` | Entrada y demanda | Perfil 1 |
+| `/empresa/nuevo`, `/empresa` | Publicar retos | Perfil 2 |
+| `/retos`, `/retos/[id]` | Resolver retos | Perfil 3 |
+| `/empresa/retos/[id]`, `/pasaporte/[id]` | Valorar y pasaporte | Perfil 4 |
 
-Esquema de la base de datos: `supabase/schema.sql` (ejecutar una vez en el SQL Editor de Supabase).
+Base de datos: ejecutar `supabase/schema.sql` y luego `supabase/seed.sql` (datos de ejemplo) en el SQL Editor de Supabase.

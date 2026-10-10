@@ -25,7 +25,7 @@ Los mentores están en la sala **ahora** y los registros necesitan horas para ll
 
 ### 3. Validación con mentores (13:45)
 - [ ] Recorre a los mentores con el deck (`docs/deck-mentores.html`) y apunta sus respuestas a las 5 preguntas.
-- [ ] Pide a cada uno **un problema real de su empresa** y pásaselo al perfil 3 para los datos de ejemplo, o al 2 para generarlo en la demo.
+- [ ] Pide a cada uno **un problema real de su empresa** y pásaselo al perfil 2: se genera en directo en la demo.
 - [ ] Pregunta a la organización: ¿el pitch dura 3 o 10 minutos? ¿Hay proyector? ¿La demo puede ser en vivo?
 - [ ] **14:00, puesta en común:** cuenta al equipo qué han dicho, y anota las decisiones en `PRD.md` §12.
 

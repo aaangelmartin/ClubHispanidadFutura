@@ -1,4 +1,4 @@
-// Dueño: persona 1. Atajo de desarrollo para hacerse pasar por una empresa o un estudiante
+// Dueño: perfil 1 (entrada y demanda). Atajo de desarrollo para hacerse pasar por una empresa o un estudiante
 // sin pasar por /registro. Ejemplo: /dev/sesion?rol=empresa&id=<uuid>&ir=/empresa
 import { NextResponse, type NextRequest } from "next/server";
 import { setSession } from "@/lib/session";

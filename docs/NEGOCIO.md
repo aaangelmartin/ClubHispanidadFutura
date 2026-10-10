@@ -1,6 +1,6 @@
 # Negocio: mercado, financiación, KPIs, aliados y plan 90 días
 
-> Borrador. Las secciones marcadas **[PENDIENTE]** las completa la persona 5, de negocio (ver `EQUIPO.md`).
+> Borrador. Las secciones marcadas **[PENDIENTE]** las completa la perfil 5, de negocio (ver `EQUIPO.md`).
 > Regla: **ninguna cifra en el pitch sin fuente enlazada aquí.**
 
 ## 1. Mercado
