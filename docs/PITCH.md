@@ -3,6 +3,11 @@
 > Dueña: perfil 5 (negocio). La demo la hace el perfil 1. Guion cerrado a las 15:15. Dos ensayos cronometrados.
 > Si dan 10 minutos: se amplían mercado, financiación y plan 90 días con `NEGOCIO.md`.
 
+**Material para ensayar:** [guion hablado y preparación](PITCH-GUION.md), [preguntas del jurado y respuestas](PREGUNTAS-JURADO.md), [aviso y reparto para agentes](PITCH-AGENTES.md).
+Marca aprobada en el issue #12: **Embarca**. El rediseño visual se trabaja aparte; este material no requiere cambiar código.
+
+La versión principal es el guion del perfil 5 en este archivo. `PITCH-GUION.md` es una alternativa de ensayo sin cifras de mercado; no sumar ambos guiones. La demo corta dura 30 segundos (`DEMO.md`). `PREGUNTAS.md` conserva las respuestas del perfil 5; `PREGUNTAS-JURADO.md` amplía las repreguntas y los límites de lo que podemos afirmar.
+
 | Tiempo | Bloque | Qué se dice |
 |---|---|---|
 | 0:00–0:25 | **Problema** | Una persona concreta: estudiante en Colombia / España, sin experiencia, sin trabajo. Un dato fuerte con fuente. *"Sin experiencia no hay trabajo; sin trabajo no hay experiencia."* |
