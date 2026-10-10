@@ -9,7 +9,11 @@
 | Dato | Valor | Fuente |
 |---|---|---|
 | Paro juvenil España (<25 años) | 22,7 % (UE: 15,4 %), agosto de 2026 · 460.000 jóvenes (EPA, 2.º trim. 2026) | Eurostat; INE. Enlaces en `PROBLEMA.md` |
-| Paro juvenil México (15–29) | 4,8 %, pero el 60 % de los jóvenes que trabajan está en la informalidad (9,2 M), datos de 2025 | México ¿cómo vamos?; Frente a la Pobreza. Enlaces en `PROBLEMA.md` |
+| Paro juvenil Colombia (15–28) | 14,1 % en mayo–julio de 2026 (15,0 % un año antes) | [DANE, boletín Mercado laboral de la juventud, 11/09/2026](https://www.dane.gov.co/files/operaciones/GEIH/bol-GEIHMLJ-may-jul2026.pdf) |
+| Empresas españolas en Colombia | Más de 800 (dato de 2023) | [Ministerio de Industria de España, vía La Moncloa](https://www.lamoncloa.gob.es/serviciosdeprensa/notasprensa/industria/Paginas/2023/040523-asistencia-financiera-espana-colombia.aspx) |
+| Inversión española acumulada en Colombia | 14.171 M€ en 2023; se ha triplicado desde 2007 (**comprobar en el informe original de CEAPI**) | [La Nota Económica, citando a CEAPI](https://lanotaeconomica.com.co/?p=51046) |
+| Dónde prevén invertir más las empresas españolas | Colombia es el 2.º país de la región, tras México (encuesta de 2025) | [Forbes Perú, citando a IE University](https://forbes.pe/economia-y-finanzas/2025-05-06/inversiones-de-empresas-espanolas-en-latinoamerica-creceran-65-este-2025/) |
+| Estudiantes de educación superior en Colombia | 2,72 M en 2025 (**comprobar**) | [SNIES, Ministerio de Educación de Colombia](https://snies.mineducacion.gov.co/1778/articles-430063_recurso_7.pdf) |
 | Empleadores que exigen experiencia previa | 78 % (estudio de la UPV, sin fecha) · 3,3 años de media pedida (Adecco, sin fecha). **Buscar un dato reciente** | Enlaces en `PROBLEMA.md` |
 | Coste de contratar vía agencia | ~15–20% del salario del primer año (comprobar) | |
 | Hispanohablantes / países | 600 M / 21 países | Guía de la hackathon |
@@ -65,7 +69,7 @@ Objetivos propuestos, **no datos medidos**. Cifras a cerrar por el equipo.
 
 | Días | Fase | Qué pasa |
 |---|---|---|
-| 0–30 | Acuerdos | 2 universidades por país (oficinas de empleo y asociaciones). 10 empresas con negocio en ambos países se comprometen a publicar. Revisión legal: RGPD, ley de datos del país LatAm, Ley de IA de la UE. |
+| 0–30 | Acuerdos | 2 universidades por país (España y Colombia) (oficinas de empleo y asociaciones). 10 empresas con negocio en ambos países se comprometen a publicar. Revisión legal: RGPD, ley de datos de Colombia (Ley 1581 de 2012), Ley de IA de la UE. |
 | 31–60 | Lanzamiento | Primeros retos abiertos. Registros de estudiantes. Primeras entregas valoradas → primeras evidencias en pasaportes. |
 | 61–90 | Medir y contar | Primeros contactos/contrataciones nacidas de un reto. Informe de resultados. Presentación en el evento de jóvenes de la Cumbre Iberoamericana. |
 
