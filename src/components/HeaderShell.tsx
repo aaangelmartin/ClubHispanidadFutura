@@ -7,8 +7,8 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 export default function HeaderShell({ children }: { children: React.ReactNode }) {
   const ruta = usePathname();
   const enPanel = ruta === "/panel" || ruta.startsWith("/panel/");
-  // En /panel (se proyecta) va sobre la tapa como la landing y no repite el enlace al propio panel.
-  const oscura = ruta === "/" || enPanel;
+  // En /panel (se proyecta) y en /registro va sobre la tapa como la landing; en /panel no repite el enlace al propio panel.
+  const oscura = ruta === "/" || enPanel || ruta === "/registro";
   const reduce = useReducedMotion();
   const { scrollY } = useScroll();
   const pad = useTransform(scrollY, [0, 140], reduce ? ["10px", "10px"] : ["16px", "8px"]);
