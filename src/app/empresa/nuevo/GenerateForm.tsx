@@ -5,7 +5,7 @@ import { generateDraft, type GenerateState } from "./actions";
 
 // Dueño: perfil 2.
 const PLACEHOLDER =
-  "Ejemplo: Somos una tienda online de cerámica con ventas en España y México. Queremos entender por qué baja la conversión en móvil. Buscamos a alguien junior con ojo para datos y UX que nos proponga mejoras concretas…";
+  "Ejemplo: Somos una tienda online de cerámica con ventas en España y Colombia. Queremos entender por qué baja la conversión en móvil. Buscamos a alguien junior con ojo para datos y UX que nos proponga mejoras concretas…";
 
 export default function GenerateForm() {
   const [state, action, pending] = useActionState<GenerateState, FormData>(generateDraft, {});

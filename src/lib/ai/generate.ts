@@ -1,5 +1,6 @@
 import "server-only";
-import { askJson } from "./client";
+import { AI_ENABLED, askJson } from "./client";
+import { generarSimulado } from "./simulada";
 import type { GeneratedChallenge } from "../types";
 
 // Dueño: perfil 2 (publicar retos). Prompt = PRD §10.1.
@@ -60,6 +61,7 @@ export function normalizeChallenge(raw: GeneratedChallenge): GeneratedChallenge 
 }
 
 export async function generateChallenge(description: string, companyName: string, companyCountry: string) {
+  if (!AI_ENABLED) return normalizeChallenge(await generarSimulado(description, companyName, companyCountry)); // IA apagada: simulada
   const raw = await askJson<GeneratedChallenge>(
     GENERATE_SYSTEM,
     `Empresa: ${companyName} (${companyCountry})\n\nLo que necesita:\n${description}`,

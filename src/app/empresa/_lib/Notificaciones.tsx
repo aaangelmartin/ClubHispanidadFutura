@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const AVISOS = [
   { t: "Valeria Ortiz ha entregado en «Rediseño del flujo de devoluciones»", h: "hace 2 h", href: "/empresa/retos/33333333-3333-4333-8333-000000000003", nuevo: true },
-  { t: "Diego Hernández ha entregado en «Rediseño del flujo de devoluciones»", h: "hace 1 día", href: "/empresa/retos/33333333-3333-4333-8333-000000000003", nuevo: true },
+  { t: "Andrés Rojas ha entregado en «Rediseño del flujo de devoluciones»", h: "hace 1 día", href: "/empresa/retos/33333333-3333-4333-8333-000000000003", nuevo: true },
   { t: "Lucía Fernández ha respondido a tu mensaje", h: "hace 1 día", href: "/empresa/mensajes", nuevo: false },
   { t: "Tu reto «¿Por qué abandonan el carrito…?» ya está publicado", h: "hace 3 días", href: "/empresa", nuevo: false },
 ];

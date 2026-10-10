@@ -1,6 +1,6 @@
 // Lanzador de la demo: todas las pantallas a un clic, con la sesión adecuada. Dueño: perfil 1.
 // Los pasos viven en ./pasos.ts; cada perfil añade los suyos.
-import Link from "next/link";
+// Enlaces <a> normales, no <Link>: Next precarga los <Link> y cada precarga de /dev/sesion cambiaría la sesión.
 import { notFound } from "next/navigation";
 import { DEMO_MODE } from "@/lib/demo";
 import { enlace, PASOS, SESIONES } from "./pasos";
@@ -24,14 +24,14 @@ export default function Demo() {
       <ol className="flex flex-col gap-3">
         {PASOS.map((p, i) => (
           <li key={p.ruta + i}>
-            <Link href={enlace(p)} className="card flex flex-wrap items-center gap-x-5 gap-y-2 p-4 hover:border-gold">
+            <a href={enlace(p)} className="card flex flex-wrap items-center gap-x-5 gap-y-2 p-4 hover:border-gold">
               <span className="font-display text-3xl font-bold text-gold tabular">{i + 1}</span>
               <div className="flex min-w-0 flex-1 flex-col">
                 <span className="font-semibold">{p.titulo}</span>
                 <span className="text-sm text-ink-2">{p.frase}</span>
               </div>
               <span className="chip">{p.como ? SESIONES[p.como].nombre : "Sin sesión"}</span>
-            </Link>
+            </a>
           </li>
         ))}
       </ol>
@@ -40,14 +40,14 @@ export default function Demo() {
         <h2 className="text-xl font-bold">Entrar como</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           {Object.entries(SESIONES).map(([key, s]) => (
-            <Link
+            <a
               key={key}
               href={enlace({ ruta: s.rol === "empresa" ? "/empresa" : "/retos", como: key as keyof typeof SESIONES })}
               className="card flex items-center justify-between gap-3 p-4 hover:border-gold"
             >
               <span>{s.nombre}</span>
               <span className="chip">{s.rol}</span>
-            </Link>
+            </a>
           ))}
         </div>
       </section>

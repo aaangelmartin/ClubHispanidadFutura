@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 type Msg = { de: "empresa" | "candidato"; texto: string; hora: string };
-type Conv = { id: string; nombre: string; uni: string; pais: string; reto: string; mensajes: Msg[] };
+type Conv = { id: string; nombre: string; uni: string; pais: string; reto: string; contactado: boolean; mensajes: Msg[] };
 
 const INICIALES = (n: string) =>
   n
@@ -73,7 +73,11 @@ export default function Chat({ conversaciones, empresa }: { conversaciones: Conv
                 {conv.uni} · {conv.pais} · Reto: {conv.reto}
               </span>
             </div>
-            <span className="rounded-full bg-[#2f7a55]/10 px-3 py-1 text-xs font-semibold text-[#2f7a55]">Candidato contactado</span>
+            {conv.contactado ? (
+              <span className="rounded-full bg-[#2f7a55]/10 px-3 py-1 text-xs font-semibold text-[#2f7a55]">Candidato contactado</span>
+            ) : (
+              <span className="rounded-full bg-[#c8963a]/15 px-3 py-1 text-xs font-semibold text-[#9a6b1c]">Nueva entrega</span>
+            )}
           </div>
           <div className="flex flex-1 flex-col gap-3 overflow-y-auto px-6 py-5">
             {conv.mensajes.map((m, i) => (

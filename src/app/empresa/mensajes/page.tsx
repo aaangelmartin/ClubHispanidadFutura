@@ -18,6 +18,7 @@ export default async function Mensajes() {
       uni: c.student.university,
       pais: c.student.country,
       reto: c.challenge.title,
+      contactado,
       mensajes: contactado
         ? [
             { de: "empresa" as const, texto: `Hola ${nombre}, soy ${nombreContacto} de ${company.name}. Nos ha gustado mucho tu entrega. ¿Te apetece una llamada de 20 minutos esta semana?`, hora: "10:12" },

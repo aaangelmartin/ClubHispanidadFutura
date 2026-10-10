@@ -68,7 +68,7 @@ Si hay un issue `bloqueo` para tu perfil, va antes que tu siguiente tarea.
 - El login real (Supabase Auth) está pendiente para después de la hackathon: issue de login real.
 
 ## IA: apagada hasta nueva orden
-- La IA tiene un interruptor: **`AI_ENABLED`**. Mientras no sea `true`, `src/lib/ai/client.ts` no hace ninguna llamada a Claude y las pantallas muestran el error con "Reintentar".
+- La IA tiene un interruptor: **`AI_ENABLED`**. Mientras no sea `true`, no se hace ninguna llamada a Claude: `generate.ts` y `summarize.ts` devuelven la **IA simulada** de `src/lib/ai/simulada.ts` (un resultado creíble construido con el texto real), para que la demo enseñe el flujo completo.
 - **No lo actives ni hagas peticiones a la API de Claude** hasta que el equipo lo diga explícitamente.
 - Nunca escribas una clave en el código, en un commit ni en un issue.
 
