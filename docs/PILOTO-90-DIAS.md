@@ -4,26 +4,45 @@
 > No sustituye a `PITCH.md` (dueño: perfil 5): se propone como versión ampliada de 60 s de ese bloque.
 > **Orden del piloto:** primero añadimos nosotros los retos, a partir de ofertas de empleo junior ya publicadas. Los jóvenes llegan motivados porque el reto es una oferta real, y las empresas entran al final, con el trabajo ya hecho.
 
-## Guion (60 s, unas 130 palabras)
+## Guion (60 s, unas 140 palabras)
 
 Dilo despacio y con una pausa breve entre tramos. Cada tramo tiene una cifra; más que eso no se recuerda.
 
 | Tiempo | Qué se dice | Qué se ve |
 |---|---|---|
-| 0:00–0:05 | **"Esto no es una idea: es un plan de 90 días que arranca en la Cumbre Iberoamericana de noviembre."** | Línea de tiempo vacía con tres tramos |
-| 0:05–0:17 | **"Días 0 a 30: empezamos nosotros. Convertimos ofertas de empleo junior ya publicadas en retos reales, y abrimos con una universidad en España y otra en Colombia."** | Tramo 1: `ofertas reales → retos · 1 + 1 universidades` |
-| 0:17–0:29 | **"Días 31 a 60: los jóvenes llegan motivados, porque cada reto es una oferta real. Entre sesenta y cien estudiantes de los dos países se inscriben y entregan."** | Tramo 2: `3 retos · 60–100 estudiantes` |
-| 0:29–0:41 | **"Días 61 a 90: vamos a las empresas con el trabajo ya hecho. Tres empresas valoran las entregas, y cada valoración es un sello en un pasaporte."** | Tramo 3: `3 empresas · entregas valoradas → sellos` |
-| 0:41–0:54 | **"Nos medimos por tres objetivos. Que al menos el 90 % de las entregas llegue valorado: si eso falla, el sello no vale. Que al menos el 60 % de los inscritos entregue. Y que nazcan cinco contactos entre empresa y estudiante."** | Tres cifras grandes: `≥ 90 %` · `≥ 60 %` · `≥ 5` |
+| 0:00–0:04 | **"Esto no es una idea: es un plan de 90 días desde la Cumbre Iberoamericana de noviembre."** | Línea de tiempo vacía con tres tramos |
+| 0:04–0:14 | **"Días 0 a 30: empezamos nosotros. Convertimos ofertas de empleo junior en retos reales, con una universidad en España y otra en Colombia."** | Tramo 1: `ofertas reales → retos · 1 + 1 universidades` |
+| 0:14–0:24 | **"Días 31 a 60: los jóvenes llegan motivados, porque el reto es una oferta real. Entre sesenta y cien se inscriben y entregan."** | Tramo 2: `3 retos · 60–100 estudiantes` |
+| 0:24–0:33 | **"Días 61 a 90: vamos a las empresas con el trabajo hecho. Tres empresas valoran, y cada valoración es un sello."** | Tramo 3: `3 empresas · entregas valoradas → sellos` |
+| 0:33–0:54 | **"Y todo se mide en la plataforma, en un embudo. Al menos el 60 % de los inscritos entrega: así sabemos si los retos motivan. Al menos el 90 % de las entregas llega valorado: así sabemos si el sello vale, y si baja de ahí, paramos y vamos a por más empresas. Y cinco contactos entre empresa y estudiante: así sabemos que funciona de verdad."** | Embudo de cuatro pasos, con `≥ 90 %` destacado |
 | 0:54–1:00 | **"Un título dice de dónde vienes. Un sello dice a dónde puedes llegar."** | Pasaporte con un único sello dorado |
 
-Si el bloque se queda en 45 s: quita la frase "Que al menos el 60 % de los inscritos entregue".
+Si el bloque se queda en 45 s: quita la frase del 60 %.
+
+## Los tres KPI
+
+Todo se mide con datos que la app ya guarda (registros, entregas, valoraciones y el botón "Contactar"), sin encuestas ni cifras a mano.
+
+```
+  INSCRITOS  →  ENTREGAN  →  VALORADAS  →  CONTACTOS
+  60–100        ≥ 60 %       ≥ 90 %        ≥ 5
+                ¿motivan?    ¿vale el      ¿funciona
+                             sello?        de verdad?
+```
+
+| KPI | Qué responde | Si falla, hacemos |
+|---|---|---|
+| **≥ 60 %** de inscritos entregan | ¿Los retos motivan? | Acortamos y afinamos los retos |
+| **≥ 90 %** de entregas valoradas | ¿El sello vale algo? | Paramos de abrir retos y vamos a por empresas |
+| **≥ 5** contactos empresa → estudiante | ¿Acaba en oportunidades? | Revisamos a qué empresas llegamos |
+
+El 90 % es el que manda: sin valoración no hay sello. La decisión de "parar y vamos a por más empresas" es una propuesta nueva: confirmarla con el perfil 5 antes de decirla en público.
 
 ## Por qué suena real
 - **Fecha de salida concreta:** la Cumbre Iberoamericana (Madrid, 4 y 5 de noviembre).
 - **No depende de que alguien diga que sí primero:** los retos salen de ofertas que ya existen. Los estudiantes tienen algo real que resolver desde el primer día.
 - **Un tamaño pequeño y defendible:** 1 universidad por país, 3 empresas, 3 retos. Es un nicho que se atiende a mano, como pide `NICHO.md`.
-- **Un KPI que da miedo decir en voz alta:** el 90 % de entregas valoradas es el que decide si el pasaporte vale. Elegirlo muestra que sabemos qué puede salir mal.
+- **Un KPI que da miedo decir en voz alta:** el 90 % de entregas valoradas es el que decide si el pasaporte vale. Elegirlo, y decir qué hacemos si falla, muestra que sabemos qué puede salir mal.
 - **Se acaba en resultados, no en promesas:** el día 90 hay un informe para patrocinadores y aliados con datos medidos.
 
 ## Diapositiva (una sola)
@@ -37,7 +56,8 @@ Marca de `BRANDING.md`: crema, marino y oro, títulos en serif. **El oro solo en
                      1 univ. España       entregan 3 retos
                      1 univ. Colombia
 
-   Objetivos:      ≥ 90 % entregas valoradas · ≥ 60 % entregan · ≥ 5 contactos
+  INSCRITOS  →  ENTREGAN  →  VALORADAS  →  CONTACTOS
+  60–100        ≥ 60 %       ≥ 90 %        ≥ 5
 ```
 
 ## Datos de respaldo (por si preguntan)
