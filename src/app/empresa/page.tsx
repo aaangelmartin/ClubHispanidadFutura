@@ -42,58 +42,93 @@ export default async function EmpresaDashboard() {
     .slice(0, 6);
 
   return (
-    <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-bold tracking-[-0.02em] sm:text-4xl" style={{ color: C.marino }}>
-            Tu terminal
-          </h1>
-          <p className="text-[15px]" style={{ color: C.texto2 }}>
-            {active} {active === 1 ? "reto en curso" : "retos en curso"} · {submitted} {submitted === 1 ? "entrega" : "entregas"} ·{" "}
-            {enrolled} {enrolled === 1 ? "persona inscrita" : "personas inscritas"}
-          </p>
+    <main className="flex flex-col">
+      <section className="bg-ink text-white">
+        <div className="mx-auto flex max-w-6xl flex-col gap-7 px-4 pb-7 pt-8 sm:px-6 sm:pb-8 sm:pt-10">
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-sm font-semibold" style={{ color: C.oro }}>
+                {company.name} · {company.country}
+              </span>
+              <h1 className="text-[34px] font-bold leading-none tracking-[-0.02em] text-white sm:text-5xl">Tu terminal</h1>
+            </div>
+            <Link href="/empresa/nuevo" className="btn btn-primary px-5 py-3 text-[15px] font-bold">
+              Publicar reto
+            </Link>
+          </div>
+
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/10 sm:grid-cols-4">
+            {[
+              { k: "Retos en curso", v: active, color: "#fff" },
+              { k: active === 1 ? "Persona inscrita" : "Personas inscritas", v: enrolled, color: "#fff" },
+              { k: "Por valorar", v: pending, color: pending > 0 ? C.oro : "#fff" },
+              { k: "Valoradas", v: evaluated, color: evaluated > 0 ? "#7fd39b" : "#fff" },
+            ].map((x) => (
+              <div key={x.k} className="flex flex-col gap-1 bg-[#14233d]/80 px-4 py-4 sm:px-5">
+                <dt className="text-sm text-white/70">{x.k}</dt>
+                <dd className="text-4xl font-bold leading-none tabular-nums tracking-[-0.02em]" style={{ color: x.color }}>
+                  {x.v}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          {pending > 0 && next && nextPending > 0 ? (
+            <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl px-5 py-4" style={{ background: C.oro, color: C.marino }}>
+              <p className="flex min-w-0 items-center gap-3 text-[15px]">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-bold text-white" style={{ background: C.marino }}>
+                  {pending}
+                </span>
+                <span>
+                  <b className="font-bold">
+                    Tienes {pending} {pending === 1 ? "entrega" : "entregas"} por valorar.
+                  </b>{" "}
+                  Cada valoración llega al pasaporte del estudiante, gane o no.
+                </span>
+              </p>
+              <Link
+                href={`/empresa/retos/${next.challenge.id}`}
+                className="rounded-lg px-4 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
+                style={{ background: C.marino }}
+              >
+                Valorar ahora
+              </Link>
+            </div>
+          ) : rows.length ? (
+            <p className="rounded-xl bg-white/10 px-5 py-4 text-[15px] text-white/90 ring-1 ring-white/10">
+              <b className="text-white">Todo valorado.</b> Buen momento para lanzar otro reto.
+            </p>
+          ) : null}
         </div>
-        <Link href="/empresa/nuevo" className="btn btn-primary px-5 py-3 text-[15px] font-bold">
-          Publicar reto
-        </Link>
-      </header>
+      </section>
 
-      {pending > 0 && next && nextPending > 0 ? (
-        <section
-          className="flex flex-wrap items-center justify-between gap-3 rounded-xl px-5 py-4"
-          style={{ background: C.oro, color: C.marino }}
-        >
-          <p className="text-[15px]">
-            <b className="font-bold">
-              Tienes {pending} {pending === 1 ? "entrega" : "entregas"} por valorar.
-            </b>{" "}
-            Cada valoración llega al pasaporte del estudiante, gane o no.
-          </p>
-          <Link
-            href={`/empresa/retos/${next.challenge.id}`}
-            className="rounded-lg px-4 py-2.5 text-sm font-bold text-white"
-            style={{ background: C.marino }}
-          >
-            Valorar ahora
-          </Link>
-        </section>
-      ) : rows.length ? (
-        <p className={`${e.panel} px-5 py-4 text-[15px]`}>Todo valorado. Buen momento para lanzar otro reto.</p>
-      ) : null}
-
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 sm:py-10">
       <section className="flex flex-col gap-4">
         <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-xl font-bold" style={{ color: C.marino }}>
+          <h2 className="text-2xl font-bold tracking-[-0.01em]" style={{ color: C.marino }}>
             Vuelos en curso
           </h2>
-          <Link href="/empresa/candidatos" className="text-sm font-semibold hover:underline" style={{ color: C.texto2 }}>
+          <Link href="/empresa/candidatos" className="text-sm font-semibold hover:underline" style={{ color: C.azul }}>
             Ver candidatos
           </Link>
         </div>
 
         {rows.length === 0 && (
-          <div className={`${e.panel} p-8 text-center`} style={{ color: C.texto2 }}>
-            Aún no has publicado ningún reto. Escribe tu problema y la IA monta el borrador y la rúbrica.
+          <div className={`${e.panel} flex flex-col items-center gap-4 px-6 py-12 text-center`}>
+            <span className="grid h-14 w-14 place-items-center rounded-full text-2xl" style={{ background: C.superficie, color: C.azul }} aria-hidden="true">
+              ✈
+            </span>
+            <div className="flex flex-col gap-1">
+              <p className="text-lg font-bold" style={{ color: C.marino }}>
+                Tu terminal aún no tiene vuelos
+              </p>
+              <p className="max-w-md text-[15px]" style={{ color: C.texto2 }}>
+                Escribe tu problema con tus palabras y la IA monta el borrador y la rúbrica. Tú decides cuándo publicarlo.
+              </p>
+            </div>
+            <Link href="/empresa/nuevo" className="btn btn-primary px-5 font-bold">
+              Publicar tu primer reto
+            </Link>
           </div>
         )}
 
@@ -104,7 +139,7 @@ export default async function EmpresaDashboard() {
           const href = c.status === "borrador" ? "/empresa/nuevo" : `/empresa/retos/${c.id}`;
           const left = n - m;
           return (
-            <div key={c.id} className="grid gap-4 lg:grid-cols-[1fr_320px]">
+            <div key={c.id} className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
               <Link href={href} className="block min-w-0 transition hover:-translate-y-0.5">
                 <TarjetaEmbarque
                   t={{
@@ -117,16 +152,33 @@ export default async function EmpresaDashboard() {
                   }}
                 />
               </Link>
-              <div className={`${e.panel} flex flex-col gap-3 p-5`}>
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="font-bold" style={{ color: C.marino }}>
-                    Entregas
-                  </h3>
-                  <span className="text-sm tabular-nums" style={{ color: C.texto2 }}>
-                    {m} de {n} valoradas
-                  </span>
+              <div className={`${e.panel} flex flex-col gap-4 p-5`}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-sm font-semibold" style={{ color: C.texto2 }}>
+                      Entregas valoradas
+                    </h3>
+                    {n > 0 ? (
+                      <span className="text-4xl font-bold leading-none tabular-nums tracking-[-0.02em]" style={{ color: C.marino }}>
+                        {m}
+                        <span className="text-xl font-semibold" style={{ color: C.texto2 }}>
+                          {" "}
+                          / {n}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="text-lg font-bold leading-snug" style={{ color: C.marino }}>
+                        Aún sin entregas
+                      </span>
+                    )}
+                  </div>
+                  {left > 0 && (
+                    <span className="rounded-md px-2 py-1 text-xs font-bold" style={{ background: "#fdf3dc", color: "#8a5a00" }}>
+                      Faltan {left}
+                    </span>
+                  )}
                 </div>
-                <div className="flex h-2 overflow-hidden rounded-full bg-[#eeeeec]" aria-hidden="true">
+                <div className="flex h-2.5 gap-0.5 overflow-hidden rounded-full bg-[#eeeeec]" aria-hidden="true">
                   {RECUENTO.map((r) =>
                     conteo[r.estado] ? (
                       <span key={r.estado} style={{ width: `${(conteo[r.estado] / total) * 100}%`, background: r.color }} />
@@ -137,7 +189,7 @@ export default async function EmpresaDashboard() {
                   {RECUENTO.filter((r) => conteo[r.estado] > 0 || r.estado === "por_valorar" || r.estado === "valorada").map((r) => (
                     <li key={r.estado} className="flex items-center justify-between gap-3">
                       <span className="flex items-center gap-2" style={{ color: C.marino }}>
-                        <span className="h-2.5 w-2.5 rounded-sm" style={{ background: r.color }} />
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: r.color }} />
                         {r.etiqueta}
                       </span>
                       <span className="font-bold tabular-nums" style={{ color: C.marino }}>
@@ -161,9 +213,12 @@ export default async function EmpresaDashboard() {
 
         <Link
           href="/empresa/nuevo"
-          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-dashed border-[#e2e2de] px-5 py-4 hover:border-[#c8963a]"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-dashed border-[#d6d4cc] bg-white/50 px-5 py-5 transition hover:border-[#c8963a] hover:bg-white"
         >
-          <span className="font-bold" style={{ color: C.marino }}>
+          <span className="flex items-center gap-2.5 font-bold" style={{ color: C.marino }}>
+            <span className="grid h-8 w-8 place-items-center rounded-full text-lg leading-none" style={{ background: C.oro }} aria-hidden="true">
+              +
+            </span>
             Publicar otro reto
           </span>
           <span className="text-sm" style={{ color: C.texto2 }}>
@@ -173,9 +228,9 @@ export default async function EmpresaDashboard() {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[2fr_3fr]">
-        <div className={`${e.panel} flex flex-col gap-4 p-5`}>
+        <div className={`${e.panel} flex flex-col gap-4 p-5 sm:p-6`}>
           <div className="flex items-baseline justify-between gap-3">
-            <h2 className="text-lg font-bold" style={{ color: C.marino }}>
+            <h2 className="text-xl font-bold" style={{ color: C.marino }}>
               De dónde vienen
             </h2>
             <span className="text-sm" style={{ color: C.texto2 }}>
@@ -183,7 +238,9 @@ export default async function EmpresaDashboard() {
             </span>
           </div>
           {byCountry.length === 0 ? (
-            <p style={{ color: C.texto2 }}>Aún no hay candidatos.</p>
+            <p className="rounded-lg px-4 py-6 text-center text-sm" style={{ background: C.superficie, color: C.texto2 }}>
+              Aún no hay candidatos. Aparecerán aquí por país en cuanto alguien se inscriba.
+            </p>
           ) : (
             <ul className="flex flex-col gap-3">
               {byCountry.map(([country, k]) => (
@@ -208,12 +265,14 @@ export default async function EmpresaDashboard() {
           </p>
         </div>
 
-        <div className={`${e.panel} flex flex-col gap-3 p-5`}>
-          <h2 className="text-lg font-bold" style={{ color: C.marino }}>
+        <div className={`${e.panel} flex flex-col gap-3 p-5 sm:p-6`}>
+          <h2 className="text-xl font-bold" style={{ color: C.marino }}>
             Actividad reciente
           </h2>
           {actividad.length === 0 ? (
-            <p style={{ color: C.texto2 }}>Cuando lleguen entregas las verás aquí.</p>
+            <p className="rounded-lg px-4 py-6 text-center text-sm" style={{ background: C.superficie, color: C.texto2 }}>
+              Cuando lleguen entregas las verás aquí, por orden de llegada.
+            </p>
           ) : (
             <ul className="flex flex-col divide-y divide-[#e2e2de]">
               {actividad.map((a, i) => (
@@ -230,6 +289,7 @@ export default async function EmpresaDashboard() {
           )}
         </div>
       </section>
+      </div>
     </main>
   );
 }
