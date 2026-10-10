@@ -1,95 +1,76 @@
 # Reparto del equipo (5 personas)
 
-Cada persona es dueña de su bloque y de sus archivos. Si algo bloquea a otro, se avisa en voz alta, no se espera.
+Cada persona es dueña de su módulo y de sus archivos. Si algo te bloquea, avisa en voz alta; no esperes.
 
-Nombres: rellenad la columna "Quién" al empezar.
+**3 personas en la app** (cada una un módulo) y **2 fuera** (negocio + demanda, y validación + contenido). El pitch empieza a las 14:30, no antes.
+
+| # | Rol | Quién | Módulo / entrega | Archivos |
+|---|---|---|---|---|
+| 1 | **Base y datos** (líder técnico) | | Proyecto, base de datos, landing, registro, panel en vivo. Integra a los demás | `src/pages/landing`, `src/pages/panel`, `src/lib`, `supabase/` |
+| 2 | **Motor de retos** (lado empresa) | | Generar reto con IA, publicar, gestionar estados, valorar entregas | `src/pages/empresa`, `supabase/functions` |
+| 3 | **Lado estudiante** | | Retos abiertos, apuntarse, entregar, pasaporte | `src/pages/estudiante`, `src/pages/pasaporte` |
+| 4 | **Negocio y demanda** | | Registros reales entrando, datos de mercado con fuente, financiación, KPIs | `docs/NEGOCIO.md` |
+| 5 | **Validación y contenido** | | Mentores, retos reales, textos de la app, datos de ejemplo, guion de la demo | `docs/DEMO.md`, `supabase/seed.sql` |
+
+---
+
+## Cómo se trabaja en paralelo en la app
+
+Lovable no deja a tres personas escribir prompts a la vez en el mismo proyecto sin pisarse. Por eso:
+
+1. **La persona 1 crea el proyecto en Lovable con Supabase y lo conecta a GitHub** (este repo o el que cree Lovable; se pone el enlace en el `README`).
+2. **La persona 1 crea las tablas** de `PRD.md` §9 tal cual. **Ese esquema es el contrato**: las personas 2 y 3 programan contra él y nadie lo cambia sin avisar.
+3. Las personas 2 y 3 trabajan **en el repo con su agente** (Claude Code o similar), cada una en sus carpetas, con `git pull --rebase` y `push` frecuentes. Lovable recoge los cambios desde GitHub.
+4. Solo la persona 1 escribe prompts en Lovable, para la base y los arreglos de integración.
+
+Mientras la persona 1 monta la base (hasta las 13:15), las personas 2 y 3 no esperan: la 2 afina los prompts y la 3 maqueta sus pantallas con datos inventados.
+
+---
 
 ## Fase 1 · Arranque (12:55–14:30)
 
-El pitch **no se hace ahora**: empieza a las 14:30. Hasta entonces, todo el mundo construye o consigue material para la demo.
+**Primeros 5 minutos, los cinco juntos:** asignar roles, elegir el país de LatAm (México o Colombia) y un nombre provisional. Si no hay acuerdo en 5 minutos, decide la persona 1.
 
-**Primeros 5 minutos, los cinco juntos:** asignar roles, elegir país LatAm (México o Colombia) y un nombre provisional. Si no hay acuerdo en 5 min, decide la persona 1.
+### 1 · Base y datos
+- [ ] **13:05** Proyecto Lovable + Supabase creado y conectado a GitHub. Enlace en el `README`.
+- [ ] **13:15** Tablas de `PRD.md` §9 creadas. Avisar a 2 y 3.
+- [ ] **13:20** Landing + registro (estudiante / empresa) + panel en vivo desplegados. Enlace a la persona 4.
+- [ ] Después: navegación entre módulos, integrar lo de 2 y 3, revisar que el flujo completo funciona de punta a punta.
 
-| # | Rol en el arranque | Qué hace ahora | Entrega y hora |
-|---|---|---|---|
-| 1 | **App** | Crea el proyecto en Lovable. P1: landing, registro (estudiante / empresa) y panel en vivo | Enlace de registro desplegado **13:20** → a la persona 4. Luego P2 |
-| 2 | **IA y datos** | Prueba el prompt de "generar reto" (`PRD.md` §10.1) en ChatGPT/Claude con 3 problemas reales hasta que salga bien. Prepara datos de ejemplo: 3 retos "ejemplo piloto" y 1 entrega con su valoración | Prompt listo **13:15** → persona 1. Datos de ejemplo **13:45** |
-| 3 | **Mercado** | Busca los 3 datos con fuente (paro juvenil España y país LatAm, ofertas junior que piden experiencia, coste de agencia) y la tabla de competidores | `NEGOCIO.md` §1 completo **14:00** |
-| 4 | **Demanda** | Prepara el mensaje de WhatsApp y la lista de grupos y contactos universitarios de los dos países. En cuanto llegue el enlace, lo envía | Mensaje listo **13:10**. Enlace enviado **13:25**. Primeros registros reales antes de las 14:00 |
-| 5 | **Validación y retos reales** | Recorre a los mentores con el deck y apunta sus respuestas a las 5 preguntas. Pide a mentores y patrocinadores **un problema real de su empresa** para usarlo en la demo. Antes, pasa a la persona 1 los textos de la landing (problema + frase + botones) | Textos landing **13:05**. Respuestas de mentores y 1–2 retos reales **14:00** |
+### 2 · Motor de retos (lado empresa)
+Ciclo de vida completo en `PRD.md` §8.1.
+- [ ] **13:15** Prompt de "generar reto" (`PRD.md` §10.1) probado con 3 problemas reales hasta que el JSON salga bien siempre.
+- [ ] **13:45** Pantalla "Publicar reto": texto libre → función que llama a la IA → reto editable → **Publicar**.
+- [ ] **14:15** Panel de la empresa: sus retos con estado, entregas de cada reto, resumen IA (prompt §10.2), valoración por rúbrica + feedback, botón **Contactar**, **Cerrar reto** (solo si todas las entregas están valoradas).
 
-**14:00, puesta en común (5 min):** qué han dicho los mentores, si algo cambia el alcance, y cuántos registros hay. Si los mentores tumban algo, se decide ahí y se anota en `PRD.md` §12.
+### 3 · Lado estudiante
+- [ ] **13:45** Retos abiertos: listado con filtro por país y área, etiqueta "ejemplo piloto", detalle del reto.
+- [ ] **14:00** Apuntarse + formulario de entrega (enlace + explicación).
+- [ ] **14:20** Pasaporte público: URL por estudiante con sus retos, nota, feedback y sello "valorado por la empresa".
 
-**14:30:** las personas 3, 4 y 5 pasan a negocio y pitch (bloques de abajo). Las personas 1 y 2 siguen con la app hasta las 15:00.
+### 4 · Negocio y demanda
+- [ ] **13:10** Mensaje de WhatsApp listo + lista de grupos y contactos universitarios de los dos países.
+- [ ] **13:25** Enlace enviado. Seguir moviéndolo.
+- [ ] **14:15** `NEGOCIO.md` §1: 3 datos con fuente (paro juvenil en los dos países, ofertas junior que piden experiencia, coste de una agencia) + competidores.
 
-| # | Rol | Quién | Entrega final | Archivos que posee |
-|---|---|---|---|---|
-| 1 | **App** (técnico principal) | | Las 5 pantallas funcionando y desplegadas | Código / proyecto Lovable |
-| 2 | **IA y demo** | | Prompts, datos de ejemplo, guion de la demo, vídeo de reserva | `docs/PRD.md` §10, `docs/DEMO.md` |
-| 3 | **Mercado y financiación** | | Datos con fuente, competidores, modelo de ingresos | `docs/NEGOCIO.md` §1–2 |
-| 4 | **Demanda, KPIs y aliados** | | Registros reales entrando, KPIs con número, aliados con nombre, plan 90 días | `docs/NEGOCIO.md` §3–5 |
-| 5 | **Pitch** | | Guion de 3 min, diapositivas, ensayos, respuestas al jurado | `docs/PITCH.md` |
+### 5 · Validación y contenido
+- [ ] **13:05** Textos de la landing a la persona 1: problema en una frase, frase del producto, botones.
+- [ ] **13:45** Recorrer a los mentores con el deck y apuntar las respuestas a las 5 preguntas. Pedirles **un problema real de su empresa**.
+- [ ] **14:00** Datos de ejemplo para la persona 1: 2 empresas (una de cada país), 3 retos "ejemplo piloto", 1 entrega buena con su valoración. Mejor si uno de los retos es el real de un mentor.
 
----
-
-## 1 · App
-**Objetivo:** que el jurado vea el producto funcionando en directo.
-- [ ] P1 Landing + registro (estudiante / empresa) + panel en vivo → **antes de 12:45**, y pasar el enlace a la persona 4.
-- [ ] P2 Empresa publica reto con IA (prompt de la persona 2).
-- [ ] P3 Listado de retos + entrega.
-- [ ] P4 Panel de empresa: resumen IA + nota por rúbrica + feedback + "Contactar".
-- [ ] P5 Pasaporte público.
-- Regla: **cortar funciones antes que retrasarse.** Orden de corte: P5 se queda en pantalla estática → P4 sin resumen IA → P3 sin filtros.
-
-## 2 · IA y demo
-**Objetivo:** que la IA haga algo visible y que la demo no pueda fallar.
-- [ ] Probar y afinar los prompts de `PRD.md` §10 con 2–3 casos reales; pasárselos a la persona 1.
-- [ ] Preparar datos de ejemplo: 1 empresa española + 1 del país LatAm, 3 retos "ejemplo piloto", 1 entrega de ejemplo buena con su valoración.
-- [ ] Escribir el **guion de la demo** (qué se pulsa y qué se dice, ~90 s) en `docs/DEMO.md`.
-- [ ] Grabar el **vídeo de reserva** (~40 s) antes de las 15:00.
-- [ ] Después: ayudar a la persona 1 con la pantalla que vaya más retrasada.
-
-## 3 · Mercado y financiación
-**Objetivo:** 3 datos fuertes con fuente y un modelo de negocio que se entienda en 20 segundos.
-- [ ] Paro juvenil España y país LatAm (fuente oficial: Eurostat/INE y el instituto del otro país).
-- [ ] Dato de ofertas junior que piden experiencia previa.
-- [ ] Coste de contratar vía agencia / coste de un proceso de selección junior.
-- [ ] Competidores: Devpost, HackerEarth, Nova, nothiring (+ los que salgan). Una línea por cada uno: qué hacen y en qué nos diferenciamos.
-- [ ] Cerrar el modelo de ingresos y precios orientativos (ver `NEGOCIO.md` §2).
-- Todo con enlace a la fuente. **Nada de cifras sin fuente en el pitch.**
-
-## 4 · Demanda, KPIs y aliados
-**Objetivo:** que el panel tenga registros reales a las 16:00 y que el plan de 90 días sea creíble.
-- [ ] En cuanto la persona 1 pase el enlace: enviarlo a grupos de WhatsApp/Telegram de universidades de España y del país LatAm, contactos, LinkedIn.
-- [ ] Pedir en la sala a mentores y patrocinadores **un reto real** de su empresa.
-- [ ] Cerrar KPIs con número (ver `NEGOCIO.md` §3).
-- [ ] Aliados con nombre concreto (universidades, instituciones) y por qué cada uno.
-- [ ] Plan de 90 días mes a mes.
-- [ ] 15:55: captura del panel en vivo para el pitch.
-
-## 5 · Pitch
-**Objetivo:** 3 minutos que el jurado recuerde, con la demo dentro.
-- [ ] Guion en `docs/PITCH.md` a partir de la estructura que ya está.
-- [ ] Diapositivas: problema, (demo), financiación, aliados, KPIs, plan 90 días, cierre.
-- [ ] Preparar respuestas a las objeciones (`PRD.md` §6).
-- [ ] Preguntar a la organización: ¿3 o 10 minutos? ¿Proyector? ¿Vídeo o en vivo?
-- [ ] Decidir quién presenta (idealmente alguien latinoamericano copresenta).
-- [ ] **Guion cerrado 15:15. Dos ensayos cronometrados antes de las 16:00.**
+**14:00 · Puesta en común (5 min):** qué han dicho los mentores, si cambia algo del alcance, cuántos registros hay y qué módulo va retrasado. Lo que se decida va a `PRD.md` §12.
 
 ---
 
-## Calendario
+## Fase 2 · Pitch y cierre (14:30–16:00)
 
-| Hora | Hito |
+| Quién | Qué |
 |---|---|
-| 12:45 | P1 desplegada y enlace de registro circulando |
-| 13:30 | P2 + P3 funcionando · datos de mercado con fuente listos |
-| 14:30 | P4 + P5 · KPIs, aliados y plan 90 días cerrados |
-| 15:00 | Vídeo de reserva grabado · congelar la app (solo arreglos) |
-| 15:15 | Guion cerrado |
-| 15:15–15:50 | Dos ensayos cronometrados |
-| 15:55 | Captura del panel en vivo |
-| 16:00 | Pitches |
+| 1, 2 y 3 | Terminar e integrar la app. **15:00 se congela**: solo arreglos. La 2 graba el vídeo de reserva (~40 s) |
+| 4 | Financiación y precios, KPIs con número, aliados con nombre, plan de 90 días (`NEGOCIO.md` §2–5) |
+| 5 | Guion del pitch (`PITCH.md`) y diapositivas; decide quién presenta. Pregunta a la organización si son 3 o 10 minutos |
+| Todos | **15:15** guion cerrado · **15:15–15:50** dos ensayos cronometrados · **15:55** captura del panel en vivo · **16:00** pitches |
 
-## Cómo trabajamos con el repo
-Ver `AGENTS.md`.
+Regla de la app: **cortar antes que retrasarse.** Orden de corte: pasaporte estático → panel de empresa sin resumen IA → listado sin filtros.
+
+Cómo trabajamos con el repo: ver `AGENTS.md`.

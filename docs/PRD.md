@@ -134,6 +134,20 @@ Orden de construcción = orden de prioridad. Si no da tiempo, se corta desde aba
 - Lista de retos completados: reto, empresa, país, nota de la empresa, feedback, enlace a la entrega, sello "valorado por la empresa".
 - Datos básicos: nombre, país, universidad, enlaces.
 
+### 8.1 · Gestión de retos (ciclo de vida)
+
+| Estado | Quién lo provoca | Qué pasa |
+|---|---|---|
+| `borrador` | La empresa pulsa "Generar" | La IA devuelve el reto (§10.1). La empresa lo edita. No lo ve nadie más |
+| `abierto` | La empresa pulsa "Publicar" | Se fija `deadline = ahora + duration_days`. Aparece en el listado; los estudiantes se apuntan y entregan |
+| `en_valoracion` | Se pasa el `deadline` (o la empresa lo cierra antes) | No se aceptan más entregas. La IA resume cada entrega (§10.2). La empresa valora con la rúbrica |
+| `cerrado` | La empresa pulsa "Cerrar reto" | **Solo se puede si todas las entregas están valoradas.** Las valoraciones pasan a los pasaportes |
+
+- **Generación:** función de servidor (Supabase Edge Function o similar) `generate-challenge`. Recibe `{company_id, description}` y devuelve el JSON de §10.1, que se guarda como `borrador`. La clave de la IA nunca va en el navegador.
+- **Resumen:** función `summarize-submission`. Recibe `{submission_id}` y guarda `ai_summary`. Se lanza al pasar a `en_valoracion`, o al abrir la entrega si no existe.
+- **Para la demo:** la empresa puede pasar a `en_valoracion` a mano; no hay que esperar al plazo.
+- **Inscripción:** apuntarse crea la `submission` vacía; entregar rellena `link` y `notes`. Un estudiante, una entrega por reto.
+
 ### Demo a prueba de fallos
 - Una empresa, un reto y **una entrega de ejemplo ya cargada** para no depender de escribir en directo.
 - Vídeo de reserva de ~40 s grabado antes de las 15:00.
@@ -146,8 +160,9 @@ Login complejo, pagos, chat, voz, LinkedIn, matching automático, panel de unive
 ```
 students      id, name, email, country, university, skills[], links{github,portfolio}, consent_at, created_at
 companies     id, name, contact_name, email, country, created_at
-challenges    id, company_id, title, summary, context, profile, deliverable, duration_days,
-              rubric[{criterion, weight, description}], suggested_prize, is_example, status, created_at
+challenges    id, company_id, title, summary, context, task, profile, deliverable, duration_days,
+              rubric[{criterion, weight, description}], suggested_prize, warnings[], is_example,
+              status (borrador|abierto|en_valoracion|cerrado), deadline, created_at
 submissions   id, challenge_id, student_id, link, notes, ai_summary, created_at
 evaluations   id, submission_id, scores[{criterion, score}], feedback, contact_requested, created_at
 ```
