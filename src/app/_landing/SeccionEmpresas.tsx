@@ -2,8 +2,8 @@
 // Dueño: perfil 1. Para empresas: «mesa de control» donde llegan entregas de España y Colombia.
 // Ligado al scroll: llegan los documentos, la IA los resume (sin nota) y una persona pone el sello.
 import Link from "next/link";
-import { useRef } from "react";
-import { motion, useMotionValue, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useEffect, useRef } from "react";
+import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform, type MotionValue } from "motion/react";
 import p from "./pasaporte.module.css";
 
 type Entrega = {
@@ -63,7 +63,7 @@ function Fila({ e, i, prog }: { e: Entrega; i: number; prog: MotionValue<number>
   const d = i * 0.07;
   const docX = useTransform(prog, [0.04 + d, 0.2 + d], [80, 0]);
   const docO = useTransform(prog, [0.04 + d, 0.16 + d], [0, 1]);
-  const iaO = useTransform(prog, [0.28 + d, 0.4 + d, 0.62, 0.74], [0, 1, 1, 0.55]);
+  const iaO = useTransform(prog, [0.28 + d, 0.4 + d, 0.62, 0.74], [0, 1, 1, 0.85]);
   const iaX = useTransform(prog, [0.28 + d, 0.4 + d], [-28, 0]);
   const lineas = useTransform(prog, [0.3 + d, 0.46 + d], ["0%", "100%"]);
   const selloS = useTransform(prog, [0.6 + d, 0.67 + d], [2.2, 1]);
@@ -140,11 +140,20 @@ function Fila({ e, i, prog }: { e: Entrega; i: number; prog: MotionValue<number>
 export default function SeccionEmpresas() {
   const reduce = useReducedMotion();
   const mesa = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: mesa, offset: ["start 0.55", "end end"] });
-  const fijo = useMotionValue(1);
-  const prog = reduce ? fijo : scrollYProgress;
+  // La secuencia se reproduce una vez al entrar en pantalla (sin fijar la sección al scroll).
+  const visible = useInView(mesa, { once: true, amount: 0.3 });
+  const prog = useMotionValue(0);
+  useEffect(() => {
+    if (reduce) {
+      prog.set(1);
+      return;
+    }
+    if (!visible) return;
+    const anim = animate(prog, 1, { duration: 3.2, ease: [0.2, 0.7, 0.2, 1] });
+    return () => anim.stop();
+  }, [visible, reduce, prog]);
 
-  const prepara = useTransform(prog, [0.24, 0.36, 0.58, 0.68], [0.28, 1, 1, 0.4]);
+  const prepara = useTransform(prog, [0.24, 0.36, 0.58, 0.68], [0.28, 1, 1, 0.8]);
   const decide = useTransform(prog, [0.56, 0.66], [0.28, 1]);
   const raya = useTransform(prog, [0.56, 0.7], ["0%", "100%"]);
 
@@ -171,8 +180,8 @@ export default function SeccionEmpresas() {
         </div>
       </div>
 
-      <div ref={mesa} style={reduce ? undefined : { height: "280vh" }}>
-        <div className={`${reduce ? "" : "sticky top-0 h-[100svh]"} flex flex-col justify-center overflow-hidden`}>
+      <div ref={mesa}>
+        <div className="flex flex-col justify-center overflow-hidden">
           <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8">
             <div className="mb-5 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 lg:mb-8">
               <p className={`${p.display} text-[30px] sm:text-[44px] lg:text-[56px]`}>
