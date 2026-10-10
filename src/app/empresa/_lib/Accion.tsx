@@ -19,16 +19,20 @@ export default function Accion({
   children,
   hecho,
   className = "btn",
+  label,
 }: {
   children: React.ReactNode;
   hecho: string;
   className?: string;
+  label?: string;
 }) {
   const [toast, setToast] = useState<string | null>(null);
   return (
     <>
       <button
         type="button"
+        aria-label={label}
+        title={label}
         className={className}
         onClick={() => {
           setToast(hecho);

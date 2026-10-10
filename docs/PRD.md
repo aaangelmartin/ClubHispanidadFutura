@@ -236,6 +236,9 @@ Sé factual. No inventes lo que no está en la entrega. No uses datos personales
 | Todo el equipo con Claude Code en este repo; sin Lovable. Next.js + Supabase + Claude + Vercel | Trabajo en paralelo real sin pisarse |
 | App dividida en 4 partes verticales (entrada, publicar, resolver, valorar+pasaporte), cada una completa | Nadie espera a nadie: se comunican solo por la base de datos y hay datos de ejemplo desde el principio |
 | País LatAm del piloto: **Colombia** (antes provisional: México) | Paro juvenil del 14,1 % (DANE, may–jul 2026): el problema se cuenta con una sola cifra. Más de 800 empresas españolas y 2.º país donde más prevén invertir. Fuentes en `NEGOCIO.md` §1 |
+| Hoy no se hace campaña de registros reales; el panel solo cuenta registros reales y se enseña tal cual | El reto pide un MVP *capaz* de cualificar demanda real, y ningún criterio del jurado puntúa registros de hoy. Sábado, con dos horas y las 07:00 en Colombia, saldrían pocos. El tiempo va al modelo y al pitch |
+| Primer perfil del piloto: **tecnología junior (desarrollo y datos)** | Es más fácil convertir una oferta de trabajo en un reto y el resultado se comprueba (funciona o no). El 78 % de las tecnológicas en España no cubre sus vacantes (ManpowerGroup, 2026). Otros perfiles, después |
+| Modelo de ingresos: publicar es gratis; la empresa paga por contacto de candidato o por un plan premium. Sin comisión por contratación | No se puede comprobar si la empresa contrata. Los retos se crean a partir de ofertas de trabajo ya publicadas, y así hay oferta desde el primer día. Detalle en `NEGOCIO.md` §2 |
 | No usar "hackathon" en el pitch | El jurado está en un hackathon presencial; confunde |
 
 ## 13. Pendientes
