@@ -14,7 +14,7 @@ La versión principal es el guion del perfil 5 en este archivo. `PITCH-GUION.md`
 | 0:25–0:40 | **Solución** | *"Cogemos una oferta de trabajo. La IA la convierte en un reto real online. Estudiantes de España y Colombia lo resuelven, y la empresa ve el trabajo antes de contratar."* |
 | 0:40–1:10 | **Demo en vivo** | Versión de 30 segundos de `DEMO.md`: feed de Andrés → reto con rúbrica → la empresa publica con IA → la empresa valora → pasaporte. El panel no se enseña si está a cero. |
 | 1:10–1:35 | **Por qué funciona** | *"Si no ganas, no pierdes."* Pasaporte y mejores soluciones para aprender. La IA comprueba frente a la rúbrica y da feedback; decide una persona (Ley de IA de la UE). |
-| 1:35–2:15 | **Negocio** | Estudiante y universidad gratis. Publicar un reto es gratis. La empresa paga por contacto de candidato (250 €) o un plan premium (1.900 €). Una agencia: más de 3.400 € por un junior. Sin comisión por contratación. |
+| 1:35–2:15 | **Negocio** | Estudiante y universidad gratis. Publicar un reto es gratis. La empresa paga por contacto de candidato (250 €) o un plan premium (1.500 €: todos los contactos de su reto y máxima visibilidad). Sin comisión por contratación. |
 | 2:15–2:50 | **Piloto 90 días + aliados** | España + Colombia, 2 universidades, 3 empresas, 100 estudiantes. Perfil: tecnología junior. Incentivo para la universidad. Primeras puertas. |
 | 2:50–3:00 | **Cierre** | *"El CV dice lo que hiciste. Aquí demuestras lo que sabes hacer."* |
 
@@ -54,9 +54,9 @@ Tres avisos para coordinar con el perfil 1:
 
 **1:35–2:15 · Negocio**
 > El estudiante no paga nunca. La universidad tampoco.
-> Publicar un reto es gratis. Vamos a la empresa con su reto ya resuelto, y paga solo por el contacto de quien lo ha resuelto: 250 euros.
-> Cinco contactos son 1.250 euros. Una agencia le cobra más de 3.400 por contratar a un junior.
-> Y un plan premium, 1.900 euros, para diseñar su reto con nosotros y destacarlo.
+> Publicar un reto es gratis. La empresa paga 250 euros por cada contacto de quien lo ha resuelto.
+> Resolver el reto no basta para contratar: hay que entrevistar. Para cubrir un puesto, una empresa entrevista entre cuatro y siete personas. Son entre 1.000 y 1.750 euros.
+> Con el plan premium, 1.500 euros, tiene todos los contactos de su reto, y su reto sale el primero.
 
 **2:15–2:50 · Piloto de 90 días**
 > España y Colombia. Dos universidades, tres empresas, cien estudiantes.
@@ -74,6 +74,7 @@ Fuentes de cada cifra: `NEGOCIO.md` §1 y §2. Andrés es el estudiante de ejemp
 - **"La IA ya programa. ¿Para qué contratar junior?"** Por eso el título ya no basta: la empresa necesita ver a la persona trabajar. Eso es lo que enseña el reto.
 - **"¿Podéis vender el contacto de un estudiante?"** Solo con su consentimiento explícito, que da al registrarse y puede retirar. RGPD y Ley 1581 de 2012 de Colombia.
 - **"¿Usáis ofertas de otras empresas sin permiso?"** El reto se inspira en la oferta. No usamos la marca de la empresa sin su permiso.
+- **"¿Con qué os comparáis en precio?"** No con una agencia: para puestos junior las empresas usan portales de empleo, universidades y prácticas. Nos comparamos con lo que ya pagan por anunciar y filtrar: un anuncio trae candidaturas sin filtrar, y las herramientas de pruebas técnicas cuestan unos 5.000 $ al año. Aquí pagan solo por quien ya ha resuelto el reto. El precio se valida en el piloto.
 - **"¿Por qué no cobráis por contratación?"** Porque no podemos comprobar si la empresa contrata. Cobramos por algo que sí vemos: el acceso al contacto.
 - **"¿La IA de la demo es real?"** Responder la verdad: hoy va en modo simulado para no depender de la red (`DEMO.md`). El código que llama a Claude existe (`src/lib/ai/generate.ts` y `summarize.ts`) y se activa con un interruptor.
 - El resto: ver `PRD.md` §6 (trabajo gratis, diferenciación, competidores, IA que decide, viabilidad 90 días).
