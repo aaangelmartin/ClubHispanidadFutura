@@ -2,7 +2,7 @@ import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import type { AiSummary, Challenge, GeneratedChallenge, Submission } from "./types";
 
-// Dueña: persona 2 (motor de retos). Prompts = PRD §10.
+// Dueña: persona 2 (crear retos). La persona 3 usa summarizeSubmission. Prompts = PRD §10.
 
 const MODEL = "claude-sonnet-5-5";
 

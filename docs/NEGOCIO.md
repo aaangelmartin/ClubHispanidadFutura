@@ -1,9 +1,9 @@
 # Negocio: mercado, financiación, KPIs, aliados y plan 90 días
 
-> Borrador. Las secciones marcadas **[PENDIENTE]** las completan las personas 3 y 4 (ver `EQUIPO.md`).
+> Borrador. Las secciones marcadas **[PENDIENTE]** las completa la persona 5, de negocio (ver `EQUIPO.md`).
 > Regla: **ninguna cifra en el pitch sin fuente enlazada aquí.**
 
-## 1. Mercado (persona 3)
+## 1. Mercado
 
 ### Datos del problema
 | Dato | Valor | Fuente |
@@ -23,7 +23,7 @@
 | LinkedIn / InfoJobs | CVs y ofertas | Allí se muestra un CV; aquí se demuestra trabajo |
 | [PENDIENTE] | | |
 
-## 2. Financiación (persona 3)
+## 2. Financiación
 
 | Quién | Qué paga | Por qué le compensa |
 |---|---|---|
@@ -35,7 +35,7 @@
 
 Precios orientativos: **[PENDIENTE]** (precio por reto, % de comisión por contratación, siempre por debajo del 15–20% de agencia).
 
-## 3. KPIs del piloto (persona 4)
+## 3. KPIs del piloto
 
 Objetivos propuestos, **no datos medidos**. Cifras a cerrar por el equipo.
 
@@ -49,7 +49,7 @@ Objetivos propuestos, **no datos medidos**. Cifras a cerrar por el equipo.
 | % mujeres y % fuera de capitales | [PENDIENTE, p.ej. ≥ 45%] | Inclusión |
 | KPI del día: registros reales en el panel a las 16:00 | — | "Cualificar demanda real" |
 
-## 4. Aliados (persona 4)
+## 4. Aliados
 
 | Aliado | Para qué |
 |---|---|
@@ -61,7 +61,7 @@ Objetivos propuestos, **no datos medidos**. Cifras a cerrar por el equipo.
 | Cámaras de comercio bilaterales | Acceso a empresas con negocio en los dos países |
 | CAF / BID Lab | Financiación de impacto en LatAm |
 
-## 5. Plan piloto de 90 días (persona 4)
+## 5. Plan piloto de 90 días
 
 | Días | Fase | Qué pasa |
 |---|---|---|

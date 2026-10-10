@@ -1,6 +1,6 @@
 # Pitch (3 minutos)
 
-> Dueña: persona 5. Guion cerrado a las 15:15. Dos ensayos cronometrados.
+> Dueña: persona 5 (negocio). La demo la hace la persona 1. Guion cerrado a las 15:15. Dos ensayos cronometrados.
 > Si dan 10 minutos: se amplían mercado, financiación y plan 90 días con `NEGOCIO.md`.
 
 | Tiempo | Bloque | Qué se dice |

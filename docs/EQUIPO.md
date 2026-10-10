@@ -1,73 +1,89 @@
 # Reparto del equipo (5 personas)
 
-Cada persona es dueña de su módulo y de sus archivos. Si algo te bloquea, avisa en voz alta; no esperes.
+**4 personas en la app** (un módulo cada una) y **1 en negocio** (todo lo que no es código). Cada persona es dueña de su módulo y de sus archivos. Si algo te bloquea, avisa en voz alta; no esperes.
 
-**3 personas en la app** (cada una un módulo) y **2 fuera** (negocio + demanda, y validación + contenido). El pitch empieza a las 14:30, no antes.
-
-| # | Rol | Quién | Módulo / entrega | Archivos |
+| # | Rol | Quién | Qué construye / entrega | Archivos |
 |---|---|---|---|---|
-| 1 | **Base y datos** (líder técnico) | | Supabase, Vercel, landing, registro, panel en vivo. Integra a los demás | `src/app/page.tsx`, `src/app/registro`, `src/app/panel`, `src/lib/` (salvo `ai.ts`), `supabase/schema.sql` |
-| 2 | **Motor de retos** (lado empresa) | | Generar reto con IA, publicar, gestionar estados, valorar entregas | `src/app/empresa/`, `src/lib/ai.ts` |
-| 3 | **Lado estudiante** | | Retos abiertos, apuntarse, entregar, pasaporte | `src/app/retos/`, `src/app/pasaporte/` |
-| 4 | **Negocio y demanda** | | Registros reales entrando, datos de mercado con fuente, financiación, KPIs | `docs/NEGOCIO.md` |
-| 5 | **Validación y contenido** | | Mentores, retos reales, textos de la app, datos de ejemplo, guion de la demo | `docs/DEMO.md`, `supabase/seed.sql` |
+| 1 | **Base e integración** (líder técnico) | | Supabase, Vercel, landing, registro, panel en vivo. Integra a los demás y prepara la demo | `src/app/page.tsx`, `src/app/registro/`, `src/app/panel/`, `src/lib/` (salvo `ai.ts`), `supabase/schema.sql` |
+| 2 | **Crear retos** (empresa) | | La empresa describe su problema, la IA genera el reto, la empresa lo edita y lo publica | `src/app/empresa/nuevo/`, `src/lib/ai.ts` |
+| 3 | **Valorar entregas** (empresa) | | Mis retos, entregas con resumen IA, nota por rúbrica, feedback, contactar, cerrar reto. Datos de ejemplo | `src/app/empresa/page.tsx`, `src/app/empresa/retos/`, `supabase/seed.sql` |
+| 4 | **Lado estudiante** | | Retos abiertos, apuntarse, entregar, pasaporte público | `src/app/retos/`, `src/app/pasaporte/` |
+| 5 | **Negocio** | | Validación con mentores, registros reales, mercado, financiación, partners, KPIs, plan de 90 días y pitch | `docs/NEGOCIO.md`, `docs/PITCH.md`, `docs/deck-mentores.html` |
 
 ---
 
 ## Cómo se trabaja en paralelo en la app
 
-Todos trabajamos **con Claude Code sobre este repo**. Nada de Lovable.
+Todos con **Claude Code sobre este repo**. Stack: **Next.js 15 + Supabase + API de Claude**, despliegue en **Vercel**. Reglas completas en `AGENTS.md`.
 
-1. Stack: **Next.js 15 (App Router) + Supabase + API de Claude**, despliegue en **Vercel**. La base ya está montada: `npm install && npm run dev`.
-2. **El esquema `supabase/schema.sql` es el contrato** entre módulos. Las personas 2 y 3 programan contra él; nadie lo cambia sin avisar.
-3. Cada persona toca **solo sus carpetas** (tabla de arriba). Lo compartido (`src/lib/`) es de la persona 1: si necesitas algo ahí, pídelo o avisa antes.
-4. `git pull --rebase` antes de empezar y antes de cada `push`. Commits pequeños y frecuentes a `main`.
-5. Mientras la persona 1 crea Supabase y Vercel (hasta las 13:15), las personas 2 y 3 no esperan: la 2 prueba los prompts y la 3 maqueta sus pantallas con datos inventados.
+1. **`supabase/schema.sql` es el contrato** entre módulos (y `src/lib/types.ts` lo refleja). Nadie lo cambia sin avisar.
+2. Cada persona toca **solo sus archivos** (tabla de arriba). `src/lib/` es de la persona 1, salvo `ai.ts`, que es de la persona 2. La 3 usa `summarizeSubmission` de `ai.ts` pero no lo edita sin avisar.
+3. `git pull --rebase` antes de empezar y antes de cada `push`. `npm run build` tiene que pasar antes de subir.
+4. Mientras la persona 1 crea Supabase y Vercel (hasta las 13:15), nadie espera: 2 prueba el prompt, 3 escribe los datos de ejemplo y 4 maqueta con datos inventados.
 
-## Fase 1 · Arranque (12:55–14:30)
+### Cómo encajan los módulos (el flujo de la demo)
+
+```
+Empresa se registra (1) → describe su problema y publica el reto (2)
+  → estudiante lo ve, se apunta y entrega (4)
+  → empresa ve la entrega con el resumen IA, la valora y la contacta (3)
+  → la valoración aparece en el pasaporte del estudiante (4)
+  → el panel en vivo lo cuenta todo (1)
+```
+Cada flecha cruza de un módulo a otro **solo a través de la base de datos**. Si tu pantalla necesita datos de otro módulo que aún no existen, usa los de `supabase/seed.sql`.
+
+---
+
+## Fase 1 · Construir (13:00–15:00)
 
 **Primeros 5 minutos, los cinco juntos:** asignar roles, elegir el país de LatAm (México o Colombia) y un nombre provisional. Si no hay acuerdo en 5 minutos, decide la persona 1.
 
-### 1 · Base y datos
-- [ ] **13:05** Proyecto de Supabase creado, `supabase/schema.sql` ejecutado en el SQL Editor. Pasar `.env.local` a todo el equipo (por privado, nunca al repo).
-- [ ] **13:15** Proyecto de Vercel conectado al repo, con las 3 variables de entorno. URL en el `README`.
-- [ ] **13:20** Landing + registro (estudiante / empresa) + panel en vivo desplegados. Enlace a la persona 4.
-- [ ] Después: navegación entre módulos, integrar lo de 2 y 3, revisar que el flujo completo funciona de punta a punta.
+### 1 · Base e integración
+- [ ] **13:10** Proyecto de Supabase creado y `supabase/schema.sql` ejecutado. Pasar `.env.local` a los otros 3 (por privado, nunca al repo).
+- [ ] **13:15** Vercel conectado al repo con las 3 variables. URL en el `README`.
+- [ ] **13:30** Landing (textos de la persona 5) + `/registro` (estudiante / empresa, con consentimiento) que guarda en la base y fija la sesión. Desplegado → enlace a la persona 5.
+- [ ] **13:50** `/panel`: registros por país y universidad, retos publicados y entregas. Solo datos reales; los de ejemplo no cuentan.
+- [ ] **14:00–15:00** Navegación entre módulos, integrar, recorrer el flujo completo de la demo de punta a punta y arreglar lo que se rompa.
 
-### 2 · Motor de retos (lado empresa)
-Ciclo de vida completo en `PRD.md` §8.1.
-- [ ] **13:15** Prompt de "generar reto" (`PRD.md` §10.1) probado con 3 problemas reales hasta que el JSON salga bien siempre.
-- [ ] **13:45** `/empresa/nuevo`: texto libre → Server Action que llama a `generateChallenge` (`src/lib/ai.ts`) → reto editable guardado como `borrador` → **Publicar**.
-- [ ] **14:15** `/empresa` y `/empresa/retos/[id]`: sus retos con estado, entregas de cada reto, resumen IA (prompt §10.2), valoración por rúbrica + feedback, botón **Contactar**, **Cerrar reto** (solo si todas las entregas están valoradas).
+### 2 · Crear retos (empresa)
+- [ ] **13:15** Prompt de generar reto (`PRD.md` §10.1) probado con 3 problemas reales hasta que el JSON salga bien siempre.
+- [ ] **13:50** `/empresa/nuevo`: texto libre → Server Action con `generateChallenge` → reto guardado como `borrador` y mostrado en un formulario editable (incluidos los avisos de la IA).
+- [ ] **14:15** Botón **Publicar** → estado `abierto` con `deadline`. Pantalla de "reto publicado" con enlace al reto.
+- [ ] **14:15–15:00** Pulir: estado de carga mientras la IA genera (tarda unos segundos; en la demo tiene que quedar bien) y ayudar a la persona 3 si va retrasada.
 
-### 3 · Lado estudiante
-- [ ] **13:45** `/retos`: listado con filtro por país y área, etiqueta "ejemplo piloto", detalle del reto.
-- [ ] **14:00** `/retos/[id]`: apuntarse + formulario de entrega (enlace + explicación).
-- [ ] **14:20** `/pasaporte/[id]`: página pública con sus retos, nota, feedback y sello "valorado por la empresa".
+### 3 · Valorar entregas (empresa)
+- [ ] **13:15** `supabase/seed.sql`: 2 empresas (una de cada país), 3 retos `is_example = true` (uno en `en_valoracion`), 3 estudiantes, 3 entregas y 1 valoración. Pasarlo a la 1 para cargarlo.
+- [ ] **13:50** `/empresa`: retos de la empresa con su estado y número de entregas.
+- [ ] **14:20** `/empresa/retos/[id]`: entregas con el resumen de la IA (`summarizeSubmission`), nota por criterio de la rúbrica + feedback, botón **Contactar**.
+- [ ] **14:40** Cambio de estado a `en_valoracion` a mano y **Cerrar reto** (solo si todas las entregas están valoradas). Ciclo de vida en `PRD.md` §8.1.
 
-### 4 · Negocio y demanda
-- [ ] **13:10** Mensaje de WhatsApp listo + lista de grupos y contactos universitarios de los dos países.
-- [ ] **13:25** Enlace enviado. Seguir moviéndolo.
-- [ ] **14:15** `NEGOCIO.md` §1: 3 datos con fuente (paro juvenil en los dos países, ofertas junior que piden experiencia, coste de una agencia) + competidores.
+### 4 · Lado estudiante
+- [ ] **13:50** `/retos`: listado de retos `abiertos` con filtro por país y área, etiqueta "ejemplo piloto".
+- [ ] **14:10** `/retos/[id]`: detalle del reto, **Me apunto** y formulario de entrega (enlace + explicación). Si no hay sesión de estudiante, mandar a `/registro`.
+- [ ] **14:40** `/pasaporte/[id]`: página pública con datos del estudiante y cada reto con empresa, país, nota, feedback y sello "valorado por la empresa".
 
-### 5 · Validación y contenido
-- [ ] **13:05** Textos de la landing a la persona 1: problema en una frase, frase del producto, botones.
-- [ ] **13:45** Recorrer a los mentores con el deck y apuntar las respuestas a las 5 preguntas. Pedirles **un problema real de su empresa**.
-- [ ] **14:00** Datos de ejemplo para la persona 1: 2 empresas (una de cada país), 3 retos "ejemplo piloto", 1 entrega buena con su valoración. Mejor si uno de los retos es el real de un mentor.
+### 5 · Negocio
+Detalle en `NEGOCIO.md` y `PITCH.md`.
+- [ ] **13:10** Textos de la landing a la persona 1: el problema en una frase, la frase del producto y los dos botones.
+- [ ] **13:15** Mensaje de WhatsApp listo y lista de grupos y contactos universitarios de los dos países. **Enviar el enlace de registro en cuanto llegue (~13:30).**
+- [ ] **13:45** Mentores: recorrerlos con el deck, apuntar sus respuestas a las 5 preguntas y pedirles **un problema real de su empresa** (se lo pasa a la persona 3 para los datos de ejemplo).
+- [ ] **14:15** Mercado: 3 datos con fuente (paro juvenil en los dos países, ofertas junior que piden experiencia, coste de una agencia) + tabla de competidores.
+- [ ] **14:45** Financiación y precios, partners con nombre, KPIs con número y plan de 90 días.
+- [ ] **15:00** Guion del pitch y diapositivas.
 
 **14:00 · Puesta en común (5 min):** qué han dicho los mentores, si cambia algo del alcance, cuántos registros hay y qué módulo va retrasado. Lo que se decida va a `PRD.md` §12.
 
 ---
 
-## Fase 2 · Pitch y cierre (14:30–16:00)
+## Fase 2 · Cerrar y ensayar (15:00–16:00)
 
 | Quién | Qué |
 |---|---|
-| 1, 2 y 3 | Terminar e integrar la app. **15:00 se congela**: solo arreglos. La 2 graba el vídeo de reserva (~40 s) |
-| 4 | Financiación y precios, KPIs con número, aliados con nombre, plan de 90 días (`NEGOCIO.md` §2–5) |
-| 5 | Guion del pitch (`PITCH.md`) y diapositivas; decide quién presenta. Pregunta a la organización si son 3 o 10 minutos |
+| 1 | **15:00 se congela la app**: solo arreglos. Graba el vídeo de reserva de la demo (~40 s) |
+| 2, 3 y 4 | Arreglos que pida la 1. Preparar en la app la empresa, el reto y la entrega de la demo |
+| 5 | Cerrar el guion y las diapositivas. Preguntar a la organización: ¿3 o 10 minutos? ¿Proyector? |
 | Todos | **15:15** guion cerrado · **15:15–15:50** dos ensayos cronometrados · **15:55** captura del panel en vivo · **16:00** pitches |
 
-Regla de la app: **cortar antes que retrasarse.** Orden de corte: pasaporte estático → panel de empresa sin resumen IA → listado sin filtros.
+Quién presenta: la persona 5 lleva el pitch y la 1 hace la demo. Si hay alguien latinoamericano en el equipo, que copresente.
 
-Cómo trabajamos con el repo: ver `AGENTS.md`.
+**Regla de la app: cortar antes que retrasarse.** Orden de corte: pasaporte sin sello ni filtros → valoración sin resumen IA → listado sin filtros.
