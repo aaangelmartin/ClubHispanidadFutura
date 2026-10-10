@@ -8,16 +8,21 @@
    Detalle y reglas de uso en docs/BRANDING.md. Tema claro único (se proyecta en la demo). */
 
 :root {
-  --bg: #eae3d6;      /* fondo de página, crema */
-  --paper: #f6f1e7;   /* tarjetas y superficies */
-  --ink: #14233d;     /* texto principal, azul marino */
-  --ink-2: #4a5568;   /* texto secundario */
-  --ink-3: #7a8496;   /* etiquetas, ayudas */
-  --line: rgba(20, 35, 61, 0.14);
-  --gold: #a9781f;    /* acento: lo importante y la acción principal */
-  --gold-soft: rgba(169, 120, 31, 0.12);
-  --ok: #2f6b4f;      /* estados: valorado, cerrado bien */
-  --warn: #9a5b13;    /* estados: falta algo */
+  /* Embarca · versión Hispanidad Futura: marino y oro del Club sobre blanco, con la señalética de
+     aeropuerto para los estados (verde, ámbar, rojo) y el azul para servicios. Ver docs/BRANDING.md. */
+  --bg: #ffffff;      /* fondo de página */
+  --paper: #f4f2ec;   /* superficies y tarjetas */
+  --ink: #14233d;     /* marino del Club: texto, paneles, portada */
+  --ink-2: #5f6166;   /* texto secundario */
+  --ink-3: #8a8d93;   /* ayudas */
+  --line: #e2e2de;
+  --gold: #c8963a;    /* oro del Club: camino principal y botón principal */
+  --gold-soft: rgba(200, 150, 58, 0.14);
+  --ok: #00843d;      /* verde: embarcando, valorado, todo bien */
+  --warn: #f59e0b;    /* ámbar: cierra pronto, aviso */
+  --red: #d21034;     /* rojo: cerrado, no entregada, tinta del sello */
+  --blue: #0b4ea2;    /* azul: servicios secundarios, entregada */
+  --blue-soft: #e6eef8;
 }
 
 /* «inline»: estas variables no existen en CSS; fuera de las clases de Tailwind usa las de next/font
@@ -33,9 +38,12 @@
   --color-gold-soft: var(--gold-soft);
   --color-ok: var(--ok);
   --color-warn: var(--warn);
-  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-source-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, Menlo, monospace;
+  --color-red: var(--red);
+  --color-blue: var(--blue);
+  --color-blue-soft: var(--blue-soft);
+  --font-display: var(--font-hanken), system-ui, sans-serif;
+  --font-sans: var(--font-hanken), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-b612), ui-monospace, Menlo, monospace;
   --font-script: var(--font-lobster), Georgia, serif;   /* solo marca: «Hispanidad Futura» */
   --font-escudo: var(--font-raleway), system-ui, sans-serif; /* solo marca: palabra del escudo */
 }
@@ -47,15 +55,16 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-source-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-hanken), system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 17px;
   line-height: 1.5;
 }
 
 /* Ojo: los tokens de @theme inline no existen como variables CSS; aquí van las de next/font. */
 h1, h2, h3 {
-  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
-  letter-spacing: -0.01em;
+  font-family: var(--font-hanken), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
@@ -67,11 +76,12 @@ h1, h2, h3 {
     border-radius: 6px;
   }
   .eyebrow {
-    font-family: var(--font-plex-mono), ui-monospace, Menlo, monospace;
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold);
+    font-family: var(--font-hanken), system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #8f6a22; /* oro oscurecido: legible sobre blanco */
   }
   .btn {
     display: inline-flex;
@@ -91,12 +101,12 @@ h1, h2, h3 {
     border-color: var(--gold);
   }
   .btn-primary {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: var(--paper);
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
   }
   .btn-primary:hover {
-    background: #0c1526;
+    background: #b9862c;
   }
   .btn:disabled {
     opacity: 0.45;
@@ -107,10 +117,11 @@ h1, h2, h3 {
     align-items: center;
     border-radius: 999px;
     padding: 2px 10px;
-    font-family: var(--font-plex-mono), ui-monospace, Menlo, monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-family: var(--font-hanken), system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
     border: 1px solid var(--line);
     color: var(--ink-2);
   }
@@ -131,4 +142,32 @@ h1, h2, h3 {
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* Texturas de pasaporte: ningún fondo es liso del todo.
+   Marino con rayas finas en diagonal (la tapa), papel con guilloché (la página de seguridad)
+   y oro con rayado suave. Solo añaden background-image; el color lo pone la clase de Tailwind. */
+section.bg-ink,
+main.bg-ink,
+header.bg-ink,
+footer.bg-ink {
+  background-image:
+    radial-gradient(1200px 520px at 88% -10%, rgba(200, 150, 58, 0.16), transparent 60%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 6px);
+}
+section.bg-paper,
+main.bg-paper,
+aside.bg-paper {
+  background-image:
+    repeating-radial-gradient(circle at 0% 100%, transparent 0 9px, rgba(20, 35, 61, 0.05) 9px 10px),
+    repeating-radial-gradient(circle at 100% 0%, transparent 0 13px, rgba(20, 35, 61, 0.05) 13px 14px);
+}
+section.bg-gold,
+nav.bg-gold {
+  background-image: repeating-linear-gradient(135deg, rgba(20, 35, 61, 0.06) 0 2px, transparent 2px 7px);
+}
+body {
+  background-image:
+    repeating-radial-gradient(circle at 100% 0%, transparent 0 15px, rgba(20, 35, 61, 0.022) 15px 16px);
+  background-attachment: fixed;
 }

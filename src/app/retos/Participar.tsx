@@ -21,7 +21,7 @@ export default function Participar({
       />
       {apuntado && (
         <>
-          <label className="block">
+          <label className="block text-sm font-semibold">
             Enlace a tu solución
             <input
               className="field mt-1"
@@ -37,7 +37,7 @@ export default function Participar({
               abrirlo.
             </span>
           </label>
-          <label className="block">
+          <label className="block text-sm font-semibold">
             ¿Qué has hecho?
             <textarea
               className="field mt-1"
@@ -64,7 +64,7 @@ export default function Participar({
           {state.ok}
         </p>
       )}
-      <button className="btn btn-primary w-full sm:w-auto" disabled={pending}>
+      <button className="btn btn-primary w-full" disabled={pending}>
         {pending ? "Guardando…" : apuntado ? "Enviar entrega" : "Me apunto"}
       </button>
     </form>

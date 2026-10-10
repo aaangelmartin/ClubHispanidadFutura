@@ -20,7 +20,7 @@ export default function Notificaciones() {
         type="button"
         aria-label={`Notificaciones${nuevas ? `, ${nuevas} nuevas` : ""}`}
         onClick={() => setAbierto((v) => !v)}
-        className="relative grid h-10 w-10 place-items-center rounded-full bg-white/70 ring-1 ring-black/10 hover:ring-[#c8963a]"
+        className="relative grid h-10 w-10 place-items-center rounded-full bg-white ring-1 ring-[#e2e2de] hover:ring-[#c8963a]"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
           <path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
@@ -33,7 +33,7 @@ export default function Notificaciones() {
         )}
       </button>
       {abierto && (
-        <div className="absolute right-0 z-50 mt-2 w-[340px] overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/10">
+        <div className="absolute right-0 z-50 mt-2 w-[min(340px,calc(100vw-2rem))] overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/10">
           <div className="flex items-center justify-between border-b border-black/5 px-4 py-3">
             <span className="font-bold">Notificaciones</span>
             <button type="button" className="text-xs text-[#4f5d73] hover:text-[#14233d]" onClick={() => setLeidas(true)}>

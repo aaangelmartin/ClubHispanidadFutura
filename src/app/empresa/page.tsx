@@ -1,26 +1,20 @@
-// Dueño: perfil 4 (valorar y pasaporte): dashboard de la empresa. Ver docs/perfiles/4-valorar-y-pasaporte.md.
+// Dueño: perfil 4 (valorar y pasaporte): panel de la empresa en Embarca, «Tu terminal».
+// La empresa es el aeropuerto: cada reto es una tarjeta de embarque y cada entrega se valora.
 import Link from "next/link";
-import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
-import p from "@/app/empresa/_lib/pasaporte.module.css";
+import { C, EstadoEntrega, TarjetaEmbarque, type EstadoEntregaValor } from "@/components/embarca";
 import e from "@/app/empresa/_lib/empresa.module.css";
-import { daysLeft, getCompanyChallenges, requireCompany } from "./_lib/queries";
-import StatusChip from "./_lib/StatusChip";
-import { Avatars, countryCode, ProgressRing, SegmentBar } from "./_lib/visuals";
+import { getCompanyChallenges, requireCompany } from "./_lib/queries";
+import { estadoEntrega, tarjetaDeReto } from "./_lib/embarca";
 
 export const dynamic = "force-dynamic";
 
-function Countdown({ deadline, status }: { deadline: string | null; status: string }) {
-  if (status === "cerrado") return <span className="font-mono text-xs text-ok">Cerrado</span>;
-  if (status === "borrador") return <span className="font-mono text-xs text-ink-3">Sin publicar</span>;
-  const d = daysLeft(deadline);
-  if (d === null) return null;
-  if (d <= 0) return <span className="font-mono text-xs text-ink-3">Plazo cerrado</span>;
-  return (
-    <span className="flex items-baseline gap-1 font-mono text-xs text-ink-2">
-      Quedan <b className="font-display text-xl text-ink tabular">{d}</b> {d === 1 ? "día" : "días"}
-    </span>
-  );
-}
+const RECUENTO: { estado: EstadoEntregaValor; etiqueta: string; color: string }[] = [
+  { estado: "inscrito", etiqueta: "Inscritos sin entregar", color: "#c9cbcf" },
+  { estado: "entregada", etiqueta: "Entregadas", color: C.azul },
+  { estado: "por_valorar", etiqueta: "Por valorar", color: C.oro },
+  { estado: "valorada", etiqueta: "Valoradas", color: C.verde },
+  { estado: "no_entregada", etiqueta: "No entregadas", color: C.rojo },
+];
 
 export default async function EmpresaDashboard() {
   const company = await requireCompany();
@@ -30,7 +24,6 @@ export default async function EmpresaDashboard() {
   const enrolled = people.length;
   const submitted = rows.reduce((n, r) => n + r.submitted, 0);
   const evaluated = rows.reduce((n, r) => n + r.evaluated, 0);
-  const contacted = rows.reduce((n, r) => n + r.contacted, 0);
   const pending = submitted - evaluated;
   const active = rows.filter((r) => r.challenge.status === "abierto" || r.challenge.status === "en_valoracion").length;
 
@@ -41,193 +34,202 @@ export default async function EmpresaDashboard() {
     people.reduce<Record<string, number>>((acc, p) => ((acc[p.country] = (acc[p.country] ?? 0) + 1), acc), {}),
   ).sort((a, b) => b[1] - a[1]);
 
-  const funnel = [
-    { label: "Apuntados", value: enrolled },
-    { label: "Entregaron", value: submitted },
-    { label: "Valorados", value: evaluated },
-    { label: "Contactados", value: contacted, gold: true },
-  ];
-  const funnelMax = Math.max(1, ...funnel.map((f) => f.value));
+  const actividad = rows
+    .flatMap((r) =>
+      r.people.map((p) => ({ ...p, reto: r.challenge, estado: estadoEntrega({ submitted_at: p.submitted ? "x" : null, evaluation: p.evaluated || null }, r.challenge.status) })),
+    )
+    .filter((a) => a.submitted)
+    .slice(0, 6);
 
   return (
-    <div className={`${pasaporteFonts} ${p.page}`}>
-    <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
-      {/* Cabecera: saludo, siguiente acción y progreso */}
-      <section className={`${e.hero} grid items-center gap-8 rounded-2xl p-6  sm:p-10 md:grid-cols-[1fr_auto]`}>
-        <div className="flex flex-col gap-4">
-          <span className="eyebrow">
-            {company.name} · {company.country}
-          </span>
-          <h1 className="text-4xl font-bold text-paper sm:text-6xl">Hola, {company.contact_name.split(" ")[0]}.</h1>
-          <p className="max-w-xl text-lg text-paper/80 sm:text-xl">
-            {pending > 0 ? (
-              <>
-                Tienes <b className="text-gold">{pending} {pending === 1 ? "entrega" : "entregas"}</b> esperando tu
-                valoración. Cada una llega al pasaporte del estudiante, gane o no.
-              </>
-            ) : rows.length ? (
-              <>Todo valorado. Buen momento para lanzar otro reto.</>
-            ) : (
-              <>Cuéntanos qué necesitas resolver y la IA lo convierte en un reto listo para publicar.</>
-            )}
+    <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-bold tracking-[-0.02em] sm:text-4xl" style={{ color: C.marino }}>
+            Tu terminal
+          </h1>
+          <p className="text-[15px]" style={{ color: C.texto2 }}>
+            {active} {active === 1 ? "reto en curso" : "retos en curso"} · {submitted} {submitted === 1 ? "entrega" : "entregas"} ·{" "}
+            {enrolled} {enrolled === 1 ? "persona inscrita" : "personas inscritas"}
           </p>
-          <div className="flex flex-wrap gap-3 pt-2">
-            {nextPending > 0 && next && (
-              <Link href={`/empresa/retos/${next.challenge.id}`} className={p.botonOro}>
-                Valorar ahora →
+        </div>
+        <Link href="/empresa/nuevo" className="btn btn-primary px-5 py-3 text-[15px] font-bold">
+          Publicar reto
+        </Link>
+      </header>
+
+      {pending > 0 && next && nextPending > 0 ? (
+        <section
+          className="flex flex-wrap items-center justify-between gap-3 rounded-xl px-5 py-4"
+          style={{ background: C.oro, color: C.marino }}
+        >
+          <p className="text-[15px]">
+            <b className="font-bold">
+              Tienes {pending} {pending === 1 ? "entrega" : "entregas"} por valorar.
+            </b>{" "}
+            Cada valoración llega al pasaporte del estudiante, gane o no.
+          </p>
+          <Link
+            href={`/empresa/retos/${next.challenge.id}`}
+            className="rounded-lg px-4 py-2.5 text-sm font-bold text-white"
+            style={{ background: C.marino }}
+          >
+            Valorar ahora
+          </Link>
+        </section>
+      ) : rows.length ? (
+        <p className={`${e.panel} px-5 py-4 text-[15px]`}>Todo valorado. Buen momento para lanzar otro reto.</p>
+      ) : null}
+
+      <section className="flex flex-col gap-4">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-xl font-bold" style={{ color: C.marino }}>
+            Vuelos en curso
+          </h2>
+          <Link href="/empresa/candidatos" className="text-sm font-semibold hover:underline" style={{ color: C.texto2 }}>
+            Ver candidatos
+          </Link>
+        </div>
+
+        {rows.length === 0 && (
+          <div className={`${e.panel} p-8 text-center`} style={{ color: C.texto2 }}>
+            Aún no has publicado ningún reto. Escribe tu problema y la IA monta el borrador y la rúbrica.
+          </div>
+        )}
+
+        {rows.map(({ challenge: c, people: ps, submitted: n, evaluated: m }) => {
+          const conteo = Object.fromEntries(RECUENTO.map((r) => [r.estado, 0])) as Record<EstadoEntregaValor, number>;
+          for (const p of ps) conteo[estadoEntrega({ submitted_at: p.submitted ? "x" : null, evaluation: p.evaluated || null }, c.status)]++;
+          const total = Math.max(1, ps.length);
+          const href = c.status === "borrador" ? "/empresa/nuevo" : `/empresa/retos/${c.id}`;
+          const left = n - m;
+          return (
+            <div key={c.id} className="grid gap-4 lg:grid-cols-[1fr_320px]">
+              <Link href={href} className="block min-w-0 transition hover:-translate-y-0.5">
+                <TarjetaEmbarque
+                  t={{
+                    ...tarjetaDeReto(c, company.name, company.country),
+                    pie: c.is_example ? (
+                      <span className="text-xs font-semibold" style={{ color: C.texto2 }}>
+                        Ejemplo del piloto
+                      </span>
+                    ) : undefined,
+                  }}
+                />
               </Link>
-            )}
-            <Link href="/empresa/nuevo" className={p.botonClaro}>
-              Publicar un reto nuevo
-            </Link>
-          </div>
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <ProgressRing value={evaluated} total={submitted} size={168} />
-          <span className="font-mono text-xs uppercase tracking-widest text-paper/70">entregas valoradas</span>
-          <span className="font-mono text-sm text-paper tabular">
-            {evaluated} de {submitted}
-          </span>
-        </div>
-      </section>
-
-      {/* Cifras */}
-      <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {[
-          { label: "Retos activos", value: active, hint: `${rows.length} en total` },
-          { label: "Entregas recibidas", value: submitted, hint: `${enrolled} apuntados` },
-          { label: "Por valorar", value: pending, hint: pending ? "te están esperando" : "al día", gold: pending > 0 },
-          { label: "Contactados", value: contacted, hint: "candidatos que te interesan" },
-        ].map((s) => (
-          <div key={s.label} className={`${e.panel} flex flex-col gap-1 p-5 ${s.gold ? "border-gold bg-gold-soft" : ""}`}>
-            <span className="font-mono text-xs uppercase tracking-widest text-ink-3">{s.label}</span>
-            <span className={`font-display text-5xl font-bold tabular ${s.gold ? "text-gold" : ""}`}>{s.value}</span>
-            <span className="text-sm text-ink-2">{s.hint}</span>
-          </div>
-        ))}
-      </section>
-
-      {/* Embudo y países */}
-      <section className="grid gap-4 lg:grid-cols-[3fr_2fr]">
-        <div className={`${e.panel} flex flex-col gap-5 p-6`}>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <h2 className="text-2xl font-bold">Embudo de talento</h2>
-            <span className="font-mono text-xs text-ink-3">todos tus retos</span>
-          </div>
-          <div className="flex flex-col gap-3">
-            {funnel.map((f) => (
-              <div key={f.label} className="grid grid-cols-[96px_1fr_40px] items-center gap-3">
-                <span className="text-sm text-ink-2">{f.label}</span>
-                <div className="h-8 rounded bg-bg">
-                  <div
-                    className={`h-8 rounded ${f.gold ? "bg-gold" : "bg-ink"}`}
-                    style={{ width: `${Math.max(f.value ? 4 : 0, (f.value / funnelMax) * 100)}%` }}
-                  />
+              <div className={`${e.panel} flex flex-col gap-3 p-5`}>
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="font-bold" style={{ color: C.marino }}>
+                    Entregas
+                  </h3>
+                  <span className="text-sm tabular-nums" style={{ color: C.texto2 }}>
+                    {m} de {n} valoradas
+                  </span>
                 </div>
-                <span className="text-right font-display text-2xl font-bold tabular">{f.value}</span>
+                <div className="flex h-2 overflow-hidden rounded-full bg-[#eeeeec]" aria-hidden="true">
+                  {RECUENTO.map((r) =>
+                    conteo[r.estado] ? (
+                      <span key={r.estado} style={{ width: `${(conteo[r.estado] / total) * 100}%`, background: r.color }} />
+                    ) : null,
+                  )}
+                </div>
+                <ul className="flex flex-col gap-1.5 text-sm">
+                  {RECUENTO.filter((r) => conteo[r.estado] > 0 || r.estado === "por_valorar" || r.estado === "valorada").map((r) => (
+                    <li key={r.estado} className="flex items-center justify-between gap-3">
+                      <span className="flex items-center gap-2" style={{ color: C.marino }}>
+                        <span className="h-2.5 w-2.5 rounded-sm" style={{ background: r.color }} />
+                        {r.etiqueta}
+                      </span>
+                      <span className="font-bold tabular-nums" style={{ color: C.marino }}>
+                        {conteo[r.estado]}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                {c.status !== "borrador" && (
+                  <Link
+                    href={href}
+                    className={`btn mt-auto w-full ${left > 0 && (c.status === "en_valoracion" || c.status === "cerrado") ? "btn-primary" : ""}`}
+                  >
+                    {left > 0 && (c.status === "en_valoracion" || c.status === "cerrado") ? `Valorar ${left}` : "Ver entregas"}
+                  </Link>
+                )}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          );
+        })}
 
-        <div className={`${e.panel} flex flex-col gap-5 p-6`}>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <h2 className="text-2xl font-bold">De dónde vienen</h2>
-            <span className="font-mono text-xs text-ink-3">{enrolled} candidatos</span>
+        <Link
+          href="/empresa/nuevo"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-dashed border-[#e2e2de] px-5 py-4 hover:border-[#c8963a]"
+        >
+          <span className="font-bold" style={{ color: C.marino }}>
+            Publicar otro reto
+          </span>
+          <span className="text-sm" style={{ color: C.texto2 }}>
+            Escribe tu problema; la IA monta el borrador y la rúbrica.
+          </span>
+        </Link>
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-[2fr_3fr]">
+        <div className={`${e.panel} flex flex-col gap-4 p-5`}>
+          <div className="flex items-baseline justify-between gap-3">
+            <h2 className="text-lg font-bold" style={{ color: C.marino }}>
+              De dónde vienen
+            </h2>
+            <span className="text-sm" style={{ color: C.texto2 }}>
+              {enrolled} {enrolled === 1 ? "candidato" : "candidatos"}
+            </span>
           </div>
           {byCountry.length === 0 ? (
-            <p className="text-ink-2">Aún no hay candidatos.</p>
+            <p style={{ color: C.texto2 }}>Aún no hay candidatos.</p>
           ) : (
-            <>
-              <div className="flex h-10 overflow-hidden rounded">
-                {byCountry.map(([country, n], i) => (
-                  <div
-                    key={country}
-                    className={`flex items-center justify-center font-mono text-xs text-paper ${i % 2 ? "bg-gold" : "bg-ink"}`}
-                    style={{ width: `${(n / enrolled) * 100}%` }}
-                  >
-                    {countryCode(country)}
-                  </div>
-                ))}
-              </div>
-              <ul className="flex flex-col gap-2">
-                {byCountry.map(([country, n], i) => (
-                  <li key={country} className="flex items-center justify-between gap-3">
-                    <span className="flex items-center gap-2">
-                      <span className={`h-3 w-3 rounded-sm ${i % 2 ? "bg-gold" : "bg-ink"}`} />
+            <ul className="flex flex-col gap-3">
+              {byCountry.map(([country, k]) => (
+                <li key={country} className="flex flex-col gap-1.5">
+                  <span className="flex items-center justify-between gap-3 text-sm">
+                    <span className="font-semibold" style={{ color: C.marino }}>
                       {country}
                     </span>
-                    <span className="font-mono tabular">
-                      {n} · {Math.round((n / enrolled) * 100)}%
+                    <span className="tabular-nums" style={{ color: C.texto2 }}>
+                      {k} · {Math.round((k / enrolled) * 100)} %
                     </span>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-sm text-ink-2">Talento de los dos lados del Atlántico, sin CV ni visado.</p>
-            </>
+                  </span>
+                  <span className="h-2 rounded-full bg-[#eeeeec]">
+                    <span className="block h-2 rounded-full" style={{ width: `${(k / enrolled) * 100}%`, background: C.marino }} />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="text-sm" style={{ color: C.texto2 }}>
+            Talento de los dos lados del Atlántico, sin CV ni visado.
+          </p>
+        </div>
+
+        <div className={`${e.panel} flex flex-col gap-3 p-5`}>
+          <h2 className="text-lg font-bold" style={{ color: C.marino }}>
+            Actividad reciente
+          </h2>
+          {actividad.length === 0 ? (
+            <p style={{ color: C.texto2 }}>Cuando lleguen entregas las verás aquí.</p>
+          ) : (
+            <ul className="flex flex-col divide-y divide-[#e2e2de]">
+              {actividad.map((a, i) => (
+                <li key={a.name + i} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 py-2.5">
+                  <span className="min-w-0 text-sm" style={{ color: C.marino }}>
+                    <b>{a.name}</b>
+                    <span style={{ color: C.texto2 }}> entregó en </span>
+                    {a.reto.title}
+                  </span>
+                  <EstadoEntrega estado={a.estado} />
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </section>
-
-      {/* Retos */}
-      <section className="flex flex-col gap-4">
-        <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-3xl font-bold">Tus retos</h2>
-          <Link href="/empresa/candidatos" className="text-sm text-ink-2 hover:text-ink">
-            Ver todos los candidatos →
-          </Link>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {rows.map(({ challenge: c, people: ps, submitted: n, evaluated: m }) => {
-            const left = n - m;
-            return (
-              <Link
-                key={c.id}
-                href={c.status === "borrador" ? "/empresa/nuevo" : `/empresa/retos/${c.id}`}
-                className={`${e.panel} group flex flex-col gap-4 p-6 transition hover:-translate-y-0.5 hover:border-gold ${
-                  left > 0 ? "border-gold" : ""
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <StatusChip status={c.status} />
-                    {c.is_example && <span className="chip">Ejemplo piloto</span>}
-                  </div>
-                  <Countdown deadline={c.deadline} status={c.status} />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-2xl font-bold leading-tight">{c.title}</h3>
-                  <p className="line-clamp-2 text-ink-2">{c.summary}</p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <SegmentBar evaluated={m} submitted={n} />
-                  <div className="flex justify-between font-mono text-xs text-ink-2 tabular">
-                    <span>
-                      {m} {m === 1 ? "valorada" : "valoradas"}{left > 0 && <b className="text-gold"> · {left} por valorar</b>}
-                    </span>
-                    <span>{n} entregas</span>
-                  </div>
-                </div>
-                <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4">
-                  {ps.length ? <Avatars people={ps} /> : <span className="text-sm text-ink-3">Sin candidatos todavía</span>}
-                  <span className="font-semibold text-ink group-hover:text-gold">
-                    {left > 0 ? "Valorar →" : "Ver entregas →"}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-          <Link
-            href="/empresa/nuevo"
-            className="flex min-h-48 flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed border-line p-6 text-center hover:border-gold"
-          >
-            <span className="font-display text-4xl text-gold">+</span>
-            <span className="font-semibold">Publicar un reto nuevo</span>
-            <span className="text-sm text-ink-2">Escribe tu problema; la IA monta el reto y la rúbrica.</span>
-          </Link>
-        </div>
-      </section>
     </main>
-    </div>
   );
 }

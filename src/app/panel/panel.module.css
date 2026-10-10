@@ -1,16 +1,24 @@
-/* Dueño: perfil 1. Panel de llegadas: casillas split-flap, filas del tablero y el punto «en directo». */
+/* Dueño: perfil 1. Tablero de llegadas Embarca: fondo marino, casillas split-flap en oro, punto «en directo». */
+
+.tablero {
+  background: #14233d;
+  background-image:
+    radial-gradient(1200px 520px at 88% -10%, rgba(200, 150, 58, 0.16), transparent 60%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 6px);
+  color: #fff;
+}
 
 .casilla {
   position: relative;
   display: inline-grid;
   place-items: center;
   perspective: 400px;
-  border-radius: 0.14em;
-  background: linear-gradient(180deg, #1d2e4c 0%, #172741 49.5%, #0c1628 50.5%, #13213a 100%);
+  border-radius: 0.1em;
+  color: #c8963a;
+  background: linear-gradient(180deg, #0f1b30 0%, #0d182b 49.5%, #0a1424 50.5%, #0c1729 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-    0 0.06em 0.12em rgba(0, 0, 0, 0.45);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0.04em 0.1em rgba(0, 0, 0, 0.45);
   overflow: hidden;
 }
 /* La bisagra horizontal de la casilla */
@@ -20,32 +28,23 @@
   inset: 50% 0 auto 0;
   height: 2px;
   transform: translateY(-1px);
-  background: rgba(5, 10, 20, 0.85);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: #14233d;
   pointer-events: none;
-}
-.casilla::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 50%, rgba(0, 0, 0, 0.18));
-  pointer-events: none;
-  z-index: 1;
 }
 
 .vivo {
   position: relative;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 999px;
-  background: #3ecf8e;
+  background: #3fd07a;
 }
 .vivo::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 999px;
-  background: #3ecf8e;
+  background: #3fd07a;
   animation: latido 1.6s ease-out infinite;
 }
 @keyframes latido {
@@ -53,20 +52,32 @@
   to { transform: scale(3); opacity: 0; }
 }
 
-.marco {
-  border: 1px solid rgba(243, 239, 230, 0.1);
-  background: rgba(8, 15, 28, 0.42);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+.etiqueta {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
 }
 
-.filaPar {
-  background: rgba(255, 255, 255, 0.025);
+.fila {
+  background: rgba(255, 255, 255, 0.035);
 }
 
-.barra {
-  background: repeating-linear-gradient(90deg, var(--oro) 0 10px, transparent 10px 13px);
+.cursor {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.12em;
+  vertical-align: -0.08em;
+  background: #c8963a;
+  animation: parpadeo 1.1s steps(1) infinite;
+}
+@keyframes parpadeo {
+  50% { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vivo::after { animation: none; }
+  .vivo::after,
+  .cursor { animation: none; }
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3, IBM_Plex_Mono, Lobster, Raleway, Archivo, B612_Mono } from "next/font/google";
+import { Fraunces, Source_Sans_3, IBM_Plex_Mono, Lobster, Raleway, Archivo, B612_Mono, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 
@@ -12,11 +12,13 @@ const lobster = Lobster({ variable: "--font-lobster", subsets: ["latin"], weight
 const raleway = Raleway({ variable: "--font-raleway", subsets: ["latin"], weight: ["800"] });
 // Landing (pasaporte de talento): Archivo extendida para titulares y B612 Mono para los datos del pasaporte.
 const archivo = Archivo({ variable: "--font-archivo", subsets: ["latin"], axes: ["wdth"] });
+// Embarca: Hanken Grotesk para todo el texto y B612 Mono solo para códigos de documento (MRZ, rutas, puertas).
+const hanken = Hanken_Grotesk({ variable: "--font-hanken", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 const b612 = B612_Mono({ variable: "--font-b612", subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
-  title: "Retos reales · Club Hispanidad Futura",
-  description: "Retos reales online de empresas para estudiantes de España y Latinoamérica",
+  title: "Embarca · Retos reales de empresas · Club Hispanidad Futura",
+  description: "Empresas de España y Colombia publican retos reales. Estudiantes los resuelven en días y cada entrega valorada queda en su pasaporte.",
 };
 
 export default function RootLayout({
@@ -26,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${fraunces.variable} ${sourceSans.variable} ${plexMono.variable} ${lobster.variable} ${raleway.variable} ${archivo.variable} ${b612.variable} antialiased`}>
+      <body className={`${fraunces.variable} ${sourceSans.variable} ${plexMono.variable} ${lobster.variable} ${raleway.variable} ${archivo.variable} ${b612.variable} ${hanken.variable} antialiased`}>
         <Header />
         {children}
       </body>

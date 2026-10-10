@@ -1,61 +1,66 @@
-// Cabecera con todas las rutas de la app ya enlazadas, para que ningún perfil dependa de otro.
+// Cabecera de Embarca: los enlaces cambian según quién eres (visitante, estudiante o empresa).
 // Dueño: perfil 1 (puede cambiar el estilo; las rutas no se cambian sin avisar).
-import Link from "next/link";
 import { getSession } from "@/lib/session";
-import Marca from "@/components/Marca";
+import { db } from "@/lib/supabase";
+import { DEMO_MODE } from "@/lib/demo";
 import HeaderShell from "@/components/HeaderShell";
+import NavEmbarca, { type AccionNav, type EnlaceNav } from "@/components/NavEmbarca";
+
+// Nombre de quien tiene la sesión, para enseñarlo en la barra. Si la base de datos falla, no se muestra.
+async function nombreDe(role: "student" | "company", id: string): Promise<string | undefined> {
+  try {
+    const tabla = role === "student" ? "students" : "companies";
+    const { data } = await db().from(tabla).select("name").eq("id", id).maybeSingle();
+    return (data?.name as string | undefined) ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 export default async function Header() {
   const session = await getSession();
-  const links =
-    session?.role === "company"
-      ? [
-          { href: "/empresa/nuevo", label: "Publicar reto" },
-          { href: "/empresa", label: "Mis retos" },
-          { href: "/empresa/candidatos", label: "Candidatos" },
-        ]
-      : session?.role === "student"
-        ? [
-            { href: "/retos", label: "Retos" },
-            { href: `/pasaporte/${session.id}`, label: "Mi pasaporte" },
-          ]
-        : [
-            { href: "/retos", label: "Retos" },
-            { href: "/registro", label: "Registrarse" },
-          ];
+  const demo: AccionNav[] = DEMO_MODE ? [{ href: "/demo", label: "Demo", tipo: "texto" }] : [];
+
+  let enlaces: EnlaceNav[];
+  let acciones: AccionNav[];
+  let quien: string | undefined;
+
+  if (session?.role === "company") {
+    quien = await nombreDe("company", session.id);
+    enlaces = [
+      { href: "/empresa", label: "Terminal" },
+      { href: "/empresa/nuevo", label: "Publicar reto" },
+      { href: "/empresa/candidatos", label: "Candidatos" },
+      { href: "/panel", label: "Panel en vivo" },
+    ];
+    acciones = [...demo, { href: "/salir", label: "Salir", tipo: "secundaria" }];
+  } else if (session?.role === "student") {
+    quien = await nombreDe("student", session.id);
+    enlaces = [
+      { href: "/estudiante", label: "Inicio" },
+      { href: "/retos", label: "Retos" },
+      { href: `/pasaporte/${session.id}`, label: "Mi pasaporte" },
+      { href: "/panel", label: "Panel en vivo" },
+    ];
+    acciones = [...demo, { href: "/salir", label: "Salir", tipo: "secundaria" }];
+  } else {
+    enlaces = [
+      { href: "/retos", label: "Retos" },
+      { href: "/#empresas", label: "Para empresas" },
+      { href: "/#estudiantes", label: "Para estudiantes" },
+      { href: "/panel", label: "Panel en vivo" },
+    ];
+    acciones = [
+      ...demo,
+      { href: "/entrar", label: "Entrar", tipo: "texto" },
+      { href: "/registro?rol=estudiante", label: "Soy estudiante", tipo: "secundaria" },
+      { href: "/registro?rol=empresa", label: "Soy empresa", tipo: "principal" },
+    ];
+  }
 
   return (
     <HeaderShell>
-      <nav className="mx-auto flex max-w-6xl items-center gap-x-4 px-4 py-[var(--hpad,12px)] sm:gap-x-6 sm:px-6">
-        <Link
-          href="/"
-          aria-label="Inicio · Retos Hispanidad Futura"
-          className="shrink-0 origin-left [transform:scale(var(--hescala,1))]"
-        >
-          <Marca size={34} fondo="var(--marca-fondo, var(--paper))" compacta />
-        </Link>
-        {links.map((l) => (
-          <Link key={l.href} href={l.href} className="whitespace-nowrap text-sm text-ink-2 hover:text-ink">
-            {l.label}
-          </Link>
-        ))}
-        <span className="ml-auto" aria-hidden="true" />
-        <Link
-          href="/panel"
-          className="hf-panel inline-flex items-center gap-2 whitespace-nowrap text-sm text-ink-2 hover:text-ink"
-        >
-          <span className="relative flex h-2 w-2" aria-hidden="true">
-            <span className="absolute inset-0 animate-ping rounded-full bg-ok opacity-60 motion-reduce:hidden" />
-            <span className="relative h-2 w-2 rounded-full bg-ok" />
-          </span>
-          <span>
-            Panel<span className="hidden sm:inline"> en vivo</span>
-          </span>
-        </Link>
-        <Link href="/demo" className="chip shrink-0 border-gold text-gold hover:bg-gold-soft">
-          Demo
-        </Link>
-      </nav>
+      <NavEmbarca enlaces={enlaces} acciones={acciones} quien={quien} />
     </HeaderShell>
   );
 }

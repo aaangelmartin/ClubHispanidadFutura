@@ -6,7 +6,7 @@ import s from "./panel.module.css";
 
 function Casilla({ caracter, retraso, quieto, tenue }: { caracter: string; retraso: number; quieto: boolean; tenue: boolean }) {
   return (
-    <span className={`${s.casilla} h-[1.32em] w-[0.86em] transition-colors duration-500 ${tenue ? "text-white/25" : ""}`}>
+    <span className={`${s.casilla} h-[1.32em] w-[0.86em] transition-colors duration-500`} style={tenue ? { color: "rgba(200,150,58,0.3)" } : undefined}>
       <AnimatePresence initial={false} mode="popLayout">
         <motion.span
           key={caracter}
