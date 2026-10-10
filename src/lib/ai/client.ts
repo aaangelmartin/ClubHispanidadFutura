@@ -5,7 +5,11 @@ import Anthropic from "@anthropic-ai/sdk";
 
 export const MODEL = "claude-sonnet-5-5";
 
+// Interruptor: la IA está APAGADA salvo que AI_ENABLED=true. No lo actives sin que el equipo lo diga.
+export const AI_ENABLED = process.env.AI_ENABLED === "true";
+
 function client() {
+  if (!AI_ENABLED) throw new Error("La IA está desactivada (AI_ENABLED no es true)");
   if (!process.env.ANTHROPIC_API_KEY) throw new Error("Falta ANTHROPIC_API_KEY en .env.local");
   return new Anthropic();
 }

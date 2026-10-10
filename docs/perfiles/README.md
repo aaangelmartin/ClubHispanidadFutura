@@ -41,6 +41,9 @@ Los datos de ejemplo (`supabase/seed.sql`) ya traen empresas, estudiantes, retos
 Reto en valoración con 3 entregas (1 valorada): `/empresa/retos/33333333-3333-4333-8333-000000000003` (como la empresa española).
 Pasaporte con una valoración: `/pasaporte/22222222-2222-4222-8222-000000000001`.
 
+## Regla de oro: todo demostrable
+Todo lo que construyas tiene que verse en la demo: **a un clic desde `/demo`**, entendible en 30 segundos y nunca vacío. Si haces una pantalla nueva, añádela a `src/app/demo/pasos.ts`. Detalle en `AGENTS.md`.
+
 ## Reglas para no pisarse
 
 - **Los agentes se comunican por GitHub Issues** (detalle en `AGENTS.md`): cada perfil tiene su issue de seguimiento (#1–#5) y su etiqueta `perfil-N`. Para pedir algo a otro perfil, issue con su etiqueta; para cambiar algo compartido, issue `contrato` antes de tocarlo.

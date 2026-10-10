@@ -38,6 +38,9 @@ export default async function Header() {
           <span className="h-2 w-2 rounded-full bg-ok" aria-hidden="true" />
           Panel en vivo
         </Link>
+        <Link href="/demo" className="chip border-gold text-gold hover:bg-gold-soft">
+          Demo
+        </Link>
       </nav>
     </header>
   );
