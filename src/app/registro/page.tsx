@@ -5,6 +5,9 @@ import type { Metadata } from "next";
 import r from "./registro.module.css";
 import { FormEmpresa, FormEstudiante } from "./Formularios";
 import { getSession } from "@/lib/session";
+import FormEntrar from "../entrar/Formulario";
+import { salir } from "../salir/actions";
+import EntrarDemo from "../entrar/Demo";
 
 export const metadata: Metadata = { title: "Registro · Embarca" };
 
@@ -44,10 +47,28 @@ export default async function Registro({ searchParams }: { searchParams: Promise
             <Link href={sesion.role === "company" ? "/empresa" : "/estudiante"} className="font-semibold text-blue hover:underline">
               Ir a mi inicio
             </Link>
-            <Link href="/salir" className="font-semibold text-blue hover:underline">Salir y crear otra</Link>
+            <form action={salir} className="contents">
+              <button type="submit" className="font-semibold text-blue hover:underline">Salir y crear otra</button>
+            </form>
           </p>
         )}
+        {/* Entrar con una cuenta que ya existe, o directo al panel en modo demo */}
+        {!sesion && (
+          <section
+            aria-labelledby="ya-tengo-cuenta"
+            className="mb-8 grid gap-5 rounded-xl bg-white p-5 ring-1 ring-line sm:p-6 lg:grid-cols-[1fr_1.2fr] lg:items-end lg:gap-10"
+          >
+            <div className="flex flex-col gap-2">
+              <h2 id="ya-tengo-cuenta" className="text-lg font-bold text-ink">
+                ¿Ya tienes cuenta? <span className="font-normal text-ink-2">Entra y vas directo a {empresa ? "tu terminal" : "tu inicio"}.</span>
+              </h2>
+              <FormEntrar compacto />
+            </div>
+            <EntrarDemo fila />
+          </section>
+        )}
         {empresa ? <FormEmpresa selector={selector} /> : <FormEstudiante selector={selector} />}
+
       </div>
     </main>
   );

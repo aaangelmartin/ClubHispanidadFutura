@@ -24,6 +24,7 @@ export default async function Header() {
   let enlaces: EnlaceNav[];
   let acciones: AccionNav[];
   let quien: string | undefined;
+  const rol = session?.role === "student" ? "estudiante" : session?.role === "company" ? "empresa" : undefined;
 
   if (session?.role === "company") {
     quien = await nombreDe("company", session.id);
@@ -38,7 +39,7 @@ export default async function Header() {
     quien = await nombreDe("student", session.id);
     enlaces = [
       { href: "/estudiante", label: "Inicio" },
-      { href: "/retos", label: "Retos" },
+      { href: "/retos", label: "Retos abiertos" },
       { href: `/pasaporte/${session.id}`, label: "Mi pasaporte" },
       { href: "/panel", label: "Panel en vivo" },
     ];
@@ -60,7 +61,7 @@ export default async function Header() {
 
   return (
     <HeaderShell>
-      <NavEmbarca enlaces={enlaces} acciones={acciones} quien={quien} />
+      <NavEmbarca enlaces={enlaces} acciones={acciones} quien={quien} rol={rol} />
     </HeaderShell>
   );
 }

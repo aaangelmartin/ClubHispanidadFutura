@@ -1,4 +1,5 @@
 -- Datos de ejemplo. Ejecutar en Supabase → SQL Editor DESPUÉS de schema.sql.
+-- Se puede ejecutar varias veces: las filas que ya existen se saltan (on conflict do nothing).
 -- Emails @ejemplo.test y retos con is_example = true: el panel en vivo los excluye.
 -- País LatAm del piloto: Colombia (issue #8).
 --
@@ -14,12 +15,14 @@
 
 insert into companies (id, name, contact_name, email, country) values
 ('11111111-1111-4111-8111-000000000001', 'Ibérica Retail', 'Marta Gil', 'talento@iberica.ejemplo.test', 'España'),
-('11111111-1111-4111-8111-000000000002', 'Andina Pagos', 'Camila Restrepo', 'talento@andina.ejemplo.test', 'Colombia');
+('11111111-1111-4111-8111-000000000002', 'Andina Pagos', 'Camila Restrepo', 'talento@andina.ejemplo.test', 'Colombia')
+on conflict do nothing;
 
 insert into students (id, name, email, country, university, skills, github, portfolio, consent_at) values
 ('22222222-2222-4222-8222-000000000001', 'Lucía Fernández', 'lucia@ejemplo.test', 'España', 'Universidad Complutense de Madrid', '{análisis de datos,python,ux}', 'https://github.com/ejemplo-lucia', null, now()),
 ('22222222-2222-4222-8222-000000000002', 'Andrés Rojas', 'andres@ejemplo.test', 'Colombia', 'Universidad Nacional de Colombia', '{marketing digital,contenido,ux}', null, 'https://ejemplo.test/diego', now()),
-('22222222-2222-4222-8222-000000000003', 'Valeria Ortiz', 'valeria@ejemplo.test', 'Colombia', 'Universidad de Antioquia', '{diseño,figma,investigación de usuarios}', null, 'https://ejemplo.test/valeria', now());
+('22222222-2222-4222-8222-000000000003', 'Valeria Ortiz', 'valeria@ejemplo.test', 'Colombia', 'Universidad de Antioquia', '{diseño,figma,investigación de usuarios}', null, 'https://ejemplo.test/valeria', now())
+on conflict do nothing;
 
 insert into challenges (id, company_id, description, title, summary, context, task, profile, deliverable, duration_days, rubric, suggested_prize, warnings, is_example, status, deadline) values
 ('33333333-3333-4333-8333-000000000001', '11111111-1111-4111-8111-000000000001',
@@ -54,7 +57,8 @@ insert into challenges (id, company_id, description, title, summary, context, ta
  'Enlace a Figma con wireframes y un documento de una página con el razonamiento.',
  5,
  '[{"criterion":"Diagnóstico","weight":40,"description":"Los problemas elegidos salen de las quejas reales"},{"criterion":"Solución","weight":40,"description":"El rediseño los resuelve y es viable"},{"criterion":"Presentación","weight":20,"description":"Claro y fácil de revisar"}]',
- '300 € y entrevista con producto', '{}', true, 'en_valoracion', now() - interval '1 day');
+ '300 € y entrevista con producto', '{}', true, 'en_valoracion', now() - interval '1 day')
+on conflict do nothing;
 
 insert into submissions (id, challenge_id, student_id, link, notes, submitted_at) values
 ('44444444-4444-4444-8444-000000000001', '33333333-3333-4333-8333-000000000003', '22222222-2222-4222-8222-000000000001',
@@ -65,12 +69,14 @@ insert into submissions (id, challenge_id, student_id, link, notes, submitted_at
  'El problema principal es que el formulario pide demasiados datos. Lo reduje de 9 campos a 4 y añadí la opción de devolver en tienda.', now() - interval '2 days'),
 ('44444444-4444-4444-8444-000000000003', '33333333-3333-4333-8333-000000000003', '22222222-2222-4222-8222-000000000003',
  'https://figma.com/ejemplo/valeria-devoluciones',
- 'Hice 5 entrevistas cortas además de leer las quejas. Los tres problemas: no se entiende el plazo, no hay seguimiento y el reembolso tarda. Wireframes de las tres pantallas nuevas.', now() - interval '1 day');
+ 'Hice 5 entrevistas cortas además de leer las quejas. Los tres problemas: no se entiende el plazo, no hay seguimiento y el reembolso tarda. Wireframes de las tres pantallas nuevas.', now() - interval '1 day')
+on conflict do nothing;
 
 insert into evaluations (id, submission_id, scores, feedback, contact_requested) values
 ('55555555-5555-4555-8555-000000000001', '44444444-4444-4444-8444-000000000001',
  '[{"criterion":"Diagnóstico","score":9},{"criterion":"Solución","score":8},{"criterion":"Presentación","score":8}]',
- 'Muy buen trabajo agrupando las quejas: el dato del 60% es justo lo que necesitábamos. La pantalla de seguimiento es viable. Faltó pensar en devoluciones parciales.', true);
+ 'Muy buen trabajo agrupando las quejas: el dato del 60% es justo lo que necesitábamos. La pantalla de seguimiento es viable. Faltó pensar en devoluciones parciales.', true)
+on conflict do nothing;
 
 -- Resúmenes de IA de ejemplo, escritos a mano, para que la demo enseñe qué hace la IA sin llamarla.
 update submissions set ai_summary = '{"what_it_does":"Agrupa las 50 quejas en 6 temas y detecta que el 60% son sobre no saber en qué estado está la devolución. Propone una pantalla de seguimiento, un aviso al recibir el paquete y mover el botón de devolver dentro del pedido.","by_criterion":[{"criterion":"Diagnóstico","observations":"Cuantifica los problemas a partir de las quejas reales; el dato del 60% está bien sustentado."},{"criterion":"Solución","observations":"Las tres propuestas atacan el problema principal y son viables con la app actual."},{"criterion":"Presentación","observations":"Wireframes claros; el razonamiento cabe en una página."}],"strengths":["Prioriza con datos","Propuesta concreta y viable"],"questions_for_reviewer":["¿Cubre las devoluciones parciales?"]}'

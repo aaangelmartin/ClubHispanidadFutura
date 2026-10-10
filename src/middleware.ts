@@ -1,9 +1,12 @@
 // Accesos directos de la demo: /empresa/* entra como la empresa de ejemplo y /estudiante como el estudiante
 // de ejemplo, si no hay ya una sesión de ese rol.
 // Solo con DEMO_MODE=true; sin él no hace nada (la app pide registro como siempre).
+// No entra solo si la persona ha pulsado «Salir» (cookie chf_salir) y nunca cambia una sesión por otra:
+// si ya eres estudiante y abres /empresa (o al revés), te lleva a tu propio inicio.
 import { NextResponse, type NextRequest } from "next/server";
 
 const COOKIE = "chf_session";
+const SALIO = "chf_salir"; // la pone «Salir»; dura hasta cerrar el navegador y solo frena la entrada automática
 const EMPRESA_DEMO = { role: "company", id: "11111111-1111-4111-8111-000000000001" }; // Ibérica Retail (seed)
 const ESTUDIANTE_DEMO = { role: "student", id: "22222222-2222-4222-8222-000000000002" }; // Andrés Rojas (seed)
 
@@ -18,6 +21,10 @@ export function middleware(req: NextRequest) {
   }
   const demo = req.nextUrl.pathname.startsWith("/estudiante") ? ESTUDIANTE_DEMO : EMPRESA_DEMO;
   if (rol === demo.role) return NextResponse.next();
+  if (rol === "student" || rol === "company") {
+    return NextResponse.redirect(new URL(rol === "student" ? "/estudiante" : "/empresa", req.url));
+  }
+  if (req.cookies.has(SALIO)) return NextResponse.next();
 
   const valor = JSON.stringify(demo);
   req.cookies.set(COOKIE, valor); // para esta misma petición

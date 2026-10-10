@@ -17,7 +17,7 @@ import PasaporteVivo, { useEscritura } from "./PasaporteVivo";
 import { CRITERIOS, PASAPORTE_EJEMPLO, RESUMEN_IA, SALIDAS, TARJETA_EJEMPLO } from "./datos";
 
 /* ── Tarjeta de embarque que «sale impresa» desde abajo ── */
-function TarjetaImpresa({ activo, retraso, giro = 0, destello = false }: { activo: boolean; retraso: number; giro?: number; destello?: boolean }) {
+function TarjetaImpresa({ activo, retraso, giro = 0 }: { activo: boolean; retraso: number; giro?: number }) {
   const quieto = useReducedMotion();
   return (
     <motion.div
@@ -38,15 +38,6 @@ function TarjetaImpresa({ activo, retraso, giro = 0, destello = false }: { activ
       className="relative"
     >
       <TarjetaEmbarque t={TARJETA_EJEMPLO} compacta />
-      {destello && !quieto && (
-        <motion.span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-xl"
-          initial={{ boxShadow: "0 0 0 0 rgba(0,132,61,0)" }}
-          animate={activo ? { boxShadow: ["0 0 0 0 rgba(0,132,61,0)", "0 0 0 6px rgba(0,132,61,0.55)", "0 0 0 0 rgba(0,132,61,0)"] } : undefined}
-          transition={{ duration: 0.7, delay: retraso + 0.75, times: [0, 0.4, 1] }}
-        />
-      )}
     </motion.div>
   );
 }
@@ -83,7 +74,7 @@ export function PortadaAnimada() {
         className="relative z-30 -mt-12 ml-[6%] sm:absolute sm:bottom-0 sm:left-[18%] sm:right-[-6%] sm:ml-0 sm:mt-0"
         style={quieto ? undefined : { y: yTar }}
       >
-        <TarjetaImpresa activo retraso={2.15} giro={-4} destello />
+        <TarjetaImpresa activo retraso={2.15} giro={-4} />
       </motion.div>
     </div>
   );
@@ -108,7 +99,7 @@ export function EmpresaEscribe() {
       <div className="flex items-center gap-2 text-sm font-semibold text-blue">
         <span aria-hidden="true">↓</span> La IA lo convierte en un reto
       </div>
-      <TarjetaImpresa activo={visto} retraso={1.75} giro={0} destello />
+      <TarjetaImpresa activo={visto} retraso={1.75} giro={0} />
     </div>
   );
 }

@@ -134,7 +134,7 @@ export default async function Pasaporte({ params }: { params: Promise<{ id: stri
                 compacta
                 t={{
                   empresa: `${e.challenge.company.name} · ${e.challenge.company.country}`,
-                  ...ruta(e.challenge.company.country),
+                  ...ruta(e.challenge.company.country, student.country),
                   titulo: e.challenge.title,
                   puerta: puerta(e.challenge.id),
                   estado: estadoReto({ status: e.challenge.status, deadline: null }),

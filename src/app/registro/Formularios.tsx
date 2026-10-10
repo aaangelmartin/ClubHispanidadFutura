@@ -147,7 +147,7 @@ function AvisoServidor({ error }: { error: string | null }) {
 /* Columna derecha: superficie de papel con la vista previa en vivo */
 function Vista({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
-    <aside className="flex min-w-0 flex-col gap-6 rounded-xl border border-[var(--line)] bg-[var(--paper)] p-4 sm:p-6 lg:sticky lg:top-24 lg:p-8">
+    <aside className="flex min-w-0 flex-col gap-6 rounded-xl border border-[var(--line)] bg-[var(--paper)] p-4 sm:p-6 lg:p-8">
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-[15px] font-bold text-[var(--ink)]">{titulo}</h2>
         <span className="hidden shrink-0 items-center gap-2 text-sm text-[var(--ink-2)] sm:inline-flex">
@@ -378,7 +378,7 @@ export function FormEstudiante({ selector }: { selector: React.ReactNode }) {
         </form>
       </div>
 
-      <div className="hidden min-w-0 lg:block">
+      <div className="hidden min-w-0 lg:sticky lg:block lg:self-start" style={{ top: 80 }}>
         <Vista titulo="Tu pasaporte">
           <Pasaporte d={datos} />
           {lista.length > 0 && (
@@ -524,7 +524,7 @@ export function FormEmpresa({ selector }: { selector: React.ReactNode }) {
         </form>
       </div>
 
-      <div className="min-w-0">
+      <div className="min-w-0 lg:sticky lg:self-start" style={{ top: 80 }}>
         <Vista titulo="Así verán los estudiantes tu primer reto">
           <TarjetaEmbarque t={tarjeta} />
           <p className="text-sm leading-snug text-[var(--ink-2)]">

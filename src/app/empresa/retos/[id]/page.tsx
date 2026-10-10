@@ -36,29 +36,43 @@ export default async function ValorarReto({
   const score = s?.evaluation ? weightedScore(challenge.rubric, s.evaluation.scores) : null;
 
   return (
-    <main className="mx-auto flex max-w-[1240px] flex-col gap-5 px-4 py-6 sm:px-6">
-      <nav className="text-sm" style={{ color: C.texto2 }}>
-        <Link href="/empresa" className="hover:underline">
-          Mis retos
-        </Link>{" "}
-        / <span style={{ color: C.marino }}>Valorar entregas</span>
-      </nav>
+    <main className="mx-auto flex max-w-[1240px] flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8">
+      <header className="flex flex-col gap-1.5">
+        <nav className="text-sm" style={{ color: C.texto2 }} aria-label="Ruta">
+          <Link href="/empresa" className="font-semibold hover:underline">
+            Tu terminal
+          </Link>{" "}
+          <span aria-hidden="true">/</span> <span>{challenge.title}</span>
+        </nav>
+        <h1 className="text-3xl font-bold tracking-[-0.02em] sm:text-4xl" style={{ color: C.marino }}>
+          Valorar entregas
+        </h1>
+      </header>
 
-      <section className="grid gap-4 lg:grid-cols-[1fr_300px]">
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
         <TarjetaEmbarque t={tarjetaDeReto(challenge, company.name, company.country)} compacta />
         <div className={`${e.panel} flex flex-col gap-3 p-5`}>
           <div className="flex items-baseline justify-between gap-3">
-            <span className="text-lg font-bold" style={{ color: C.marino }}>
-              {done} de {delivered.length} valoradas
+            <span className="flex flex-col gap-1">
+              <span className="text-sm font-semibold" style={{ color: C.texto2 }}>
+                Valoradas
+              </span>
+              <span className="text-4xl font-bold leading-none tabular-nums tracking-[-0.02em]" style={{ color: C.marino }}>
+                {done}
+                <span className="text-xl font-semibold" style={{ color: C.texto2 }}>
+                  {" "}
+                  / {delivered.length}
+                </span>
+              </span>
             </span>
             {pending > 0 && (
-              <span className="text-sm font-semibold" style={{ color: "#8a5a00" }}>
+              <span className="rounded-md px-2 py-1 text-xs font-bold" style={{ background: "#fdf3dc", color: "#8a5a00" }}>
                 Quedan {pending}
               </span>
             )}
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-[#eeeeec]">
-            <div className="h-2 rounded-full" style={{ width: `${delivered.length ? (done / delivered.length) * 100 : 0}%`, background: C.verde }} />
+          <div className="h-2.5 overflow-hidden rounded-full bg-[#eeeeec]">
+            <div className="h-2.5 rounded-full" style={{ width: `${delivered.length ? (done / delivered.length) * 100 : 0}%`, background: C.verde }} />
           </div>
           {challenge.status === "abierto" && (
             <form action={closeSubmissions} className="mt-auto">
@@ -96,12 +110,12 @@ export default async function ValorarReto({
       <div className="grid gap-5 lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)_340px]">
         {/* Lista de entregas */}
         <aside className="flex min-w-0 flex-col gap-2">
-          <h2 className="text-base font-bold" style={{ color: C.marino }}>
-            Entregas <span style={{ color: C.texto2 }}>{lista.length}</span>
+          <h2 className="text-lg font-bold" style={{ color: C.marino }}>
+            Entregas <span className="font-semibold" style={{ color: C.texto2 }}>{lista.length}</span>
           </h2>
           {lista.length === 0 && (
-            <p className={`${e.panel} p-4 text-sm`} style={{ color: C.texto2 }}>
-              Todavía no se ha inscrito nadie.
+            <p className={`${e.panel} px-4 py-6 text-center text-sm`} style={{ color: C.texto2 }}>
+              Todavía no se ha inscrito nadie. Las entregas aparecerán aquí por orden de llegada.
             </p>
           )}
           <ul className="flex flex-col gap-2">
@@ -201,8 +215,16 @@ export default async function ValorarReto({
             <AiSummaryBlock key={s.id} submissionId={s.id} initial={s.ai_summary} />
           </section>
         ) : (
-          <section className={`${e.panel} p-8`} style={{ color: C.texto2 }}>
-            Todavía no ha llegado ninguna entrega.
+          <section className={`${e.panel} flex flex-col items-center gap-2 px-6 py-14 text-center lg:col-span-1 xl:col-span-2`}>
+            <span className="grid h-14 w-14 place-items-center rounded-full text-2xl" style={{ background: C.superficie, color: C.azul }} aria-hidden="true">
+              ✈
+            </span>
+            <p className="text-lg font-bold" style={{ color: C.marino }}>
+              Todavía no ha llegado ninguna entrega
+            </p>
+            <p className="max-w-sm text-[15px]" style={{ color: C.texto2 }}>
+              Cuando alguien entregue, verás aquí su pasaporte, su trabajo y la rúbrica para valorarlo.
+            </p>
           </section>
         )}
 

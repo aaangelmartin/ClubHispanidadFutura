@@ -1,6 +1,6 @@
 // Presentación de los retos como tarjetas de embarque. Solo deriva datos de lo que ya existe
 // (país de la empresa, plazo, estado): no guarda ni inventa nada.
-import type { EstadoEntregaValor, EstadoRetoValor } from "@/components/embarca";
+import { rutaReto, type EstadoEntregaValor, type EstadoRetoValor } from "@/components/embarca";
 
 const CODIGO: Record<string, string> = { España: "MAD", Colombia: "BOG", México: "MEX" };
 
@@ -14,11 +14,8 @@ export const codigoPais = (pais: string) =>
     .replace(/[^A-Z]/g, "")
     .slice(0, 3);
 
-/** Ruta del reto: de la empresa al otro lado del Atlántico, donde está el talento. */
-export const ruta = (pais: string) => {
-  const origen = codigoPais(pais);
-  return { origen, destino: origen === "BOG" ? "MAD" : "BOG" };
-};
+/** Ruta real del reto: sale de la ciudad de la empresa y llega al país del estudiante (o «En remoto»). */
+export const ruta = (pais: string, paisEstudiante?: string | null) => rutaReto(pais, paisEstudiante);
 
 /** Puerta estable a partir del id del reto (decorativa). */
 export const puerta = (id: string) => {
