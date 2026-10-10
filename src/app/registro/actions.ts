@@ -20,6 +20,14 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Busca por email; si no existe, inserta. Devuelve el id o un mensaje de error.
 async function upsertByEmail(table: "students" | "companies", row: Record<string, unknown>) {
+  try {
+    return await guardar(table, row);
+  } catch {
+    return { error: "No hemos podido guardar tus datos. Inténtalo de nuevo en un momento." };
+  }
+}
+
+async function guardar(table: "students" | "companies", row: Record<string, unknown>) {
   const supabase = db();
   const email = row.email as string;
   const found = await supabase.from(table).select("id").eq("email", email).maybeSingle();
