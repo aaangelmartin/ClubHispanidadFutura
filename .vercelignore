@@ -1,0 +1,12 @@
+# Lo que no debe subir un `vercel deploy` hecho desde un portátil.
+.env*
+!.env.example
+.agents
+.claude
+skills-lock.json
+.next
+.next-*
+design
+docs
+supabase
+*.pen

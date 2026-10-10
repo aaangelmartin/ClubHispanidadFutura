@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* Escanear todo src explícitamente: en el build de Vercel la detección automática se saltaba las carpetas
+   que empiezan por _ (empresa/_lib, _landing) y faltaban sus clases. */
+@source "..";
 
 /* Marca: la misma del deck de mentores y de la guía del Club Hispanidad Futura.
    Crema de fondo, azul marino para el texto y oro como único acento.
