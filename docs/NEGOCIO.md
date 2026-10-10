@@ -51,12 +51,14 @@
 | Concepto | Precio propuesto | Rango realista | Notas |
 |---|---|---|---|
 | Publicar un reto | **Gratis** | | La IA lo crea a partir de una oferta de trabajo |
-| Contacto de un candidato que ha completado el reto | **250 €** | 150–300 € | La empresa paga por quien ya ha demostrado que sabe hacerlo |
-| Plan premium, por reto | **1.900 €** | 1.500–2.500 € | Reto diseñado con la empresa, destacado en las universidades de los dos países y con 10 contactos incluidos |
+| Contacto de un candidato que ha completado el reto | **250 €** | 200–500 € | Referencia: en Parker Dewey las empresas pagan 200–600 $ por el trabajo de un estudiante en un proyecto real ([precios](https://www.parkerdewey.com/pricing)) |
+| Plan premium, por reto | **1.500 €** | 1.250–1.750 € | Todos los contactos de quienes han resuelto el reto, y el reto destacado por encima de los demás. Equivale a 6 contactos |
 | Comisión por contratación | **Descartada** | | No podemos comprobar si la empresa contrata |
 | Universidad y estudiante | Gratis | | Handshake es gratis para universidades y estudiantes: paga la empresa |
 
-**Techo:** una contratación completa con nosotros tiene que costar menos que con una agencia (unos 3.400 € para un junior). Por encima de eso deja de ser "más asequible".
+**Por qué una empresa elige el premium (cálculo nuestro):** resolver el reto no basta para contratar; hay que entrevistar y valorar las competencias personales. Para cubrir un puesto se entrevista a entre 4 y 7 personas: el 27 % de los entrevistados acaba contratado ([CareerPlug 2025, vía Pin](https://www.pin.com/blog/recruitment-funnel-benchmarks)) y la media es de 7 entrevistados por puesto ([Robert Half, 2018](https://www.benefitspro.com/amp/2018/03/22/are-you-spending-too-much-time-reading-resumes/)). A 250 € por contacto, cubrir un puesto cuesta entre 1.000 y 1.750 €. El premium cuesta 1.500 € y da todos los contactos: compensa a partir del sexto. Ningún dato es específico de España ni de perfiles junior.
+
+**Con qué se compara el precio:** con lo que la empresa ya paga por anunciar y filtrar candidatos junior (portales y herramientas de pruebas), **no con una agencia** (ver el aviso de abajo).
 
 ### Lo que paga hoy una empresa (con fuente)
 
@@ -66,15 +68,15 @@
 | Salario de un programador junior en España | 22.573 € brutos al año de media (rango habitual: 18.000–25.000 €) | [Indeed España, agosto de 2026](https://es.indeed.com/career/programador-junior/salaries) |
 | **Agencia para contratar a un junior (cálculo nuestro)** | **3.400–5.600 €** (15–25 % de 22.573 €) | Las dos filas anteriores |
 | Coste medio por contratación, puestos no directivos (EE. UU.) | 5.475 $ | [SHRM, informe de 2025](https://www.shrm.org/in/about/press-room/shrm-releases-2025-benchmarking-reports--how-does-your-organizat) |
-| Publicidad de empleo: coste por candidatura sin filtrar (EE. UU.) | 19,32 $ de mediana | [Appcast, informe de 2026, vía HR Dive](https://www.hrdive.com/news/cost-per-hire-application-increase-2025-recruitment-appcast/812612/) |
+| Publicidad de empleo (EE. UU.) | 19,32 $ por candidatura sin filtrar y 1.340 $ por contratación, de mediana | [Appcast, informe de 2026, vía HR Dive](https://www.hrdive.com/news/cost-per-hire-application-increase-2025-recruitment-appcast/812612/) |
 | LinkedIn Recruiter Corporate | 10.800–15.000 $ por licencia y año (datos de compradores) | [Pin](https://pin.com/blog/linkedin-recruiter-pricing-2026) |
 | Pruebas técnicas: HackerRank Pro / Codility Scale | Unos 5.000 $ / 6.000 $ al año (cifras de terceros) | [Lodely](https://www.lodely.com/blog/hackerrank-pricing-2026) · [Noon](https://www.noon.ai/blog/articles/328-codility-pricing-2026) |
 | Handshake Pro | 450 $ al mes, unos 5.400 $ al año | [Pin](https://www.pin.com/blog/handshake-pricing) |
 | Tiempo para cubrir un puesto técnico en España | 2–3 meses (estimación de Adecco) | [CIO España](https://www.cio.com/article/4093859/asi-afrontan-los-cio-el-reto-de-la-busqueda-de-talento.html) |
 
-**El retorno para la empresa (cálculo nuestro, con un supuesto):** si compra 5 contactos para hacer una contratación, paga 1.250 €. Con una agencia pagaría entre 3.400 y 5.600 €: **entre un 63 % y un 78 % menos.** El supuesto de "5 contactos por contratación" no está medido; se comprueba en el piloto.
+**Aviso: la comparación con la agencia no vale para puestos junior.** Las empresas españolas usan agencias de selección sobre todo para directivos. Para perfiles técnicos usan presentaciones en universidades, portales de empleo y centros de formación ([informe Infoempleo Adecco, 6.000 encuestas](https://loentiendo.com/donde-buscan-candidatos-las-empresas/); dato antiguo). Los titulados encuentran su primer empleo por contactos personales (37 %), autopresentación (31 %) y portales (18 %) ([Barómetro de empleabilidad 2015](https://www.aprendemas.com/es/blog/mundo-educativo/los-contactos-personales-el-metodo-mas-efectivo-para-los-titulados-que-encuentran-empleo-66059)). Las filas de agencia de la tabla se dejan como contexto, no como argumento.
 
-**Dos límites honestos:** (1) nadie ha confirmado todavía que una empresa pague estos precios: es lo primero que mide el piloto. (2) Muchas empresas no usan agencia para puestos junior, sino portales de empleo; para ellas el valor es el tiempo de filtrado que se ahorran, no el ahorro frente a la agencia.
+**El retorno real para la empresa:** cinco contactos a 250 € son 1.250 €, parecido a lo que cuesta la publicidad de empleo por cada contratación (1.340 $ de mediana en EE. UU.). No es más barato: la diferencia es que el anuncio trae candidaturas sin filtrar y aquí llegan personas que ya han resuelto el reto. **El ahorro de tiempo de filtrado no está medido**; es lo que tiene que demostrar el piloto.
 
 ### Cómo llegamos al mercado
 1. **Convertimos ofertas de trabajo ya publicadas en retos**, sin esperar a que la empresa los pida. Así hay retos desde el primer día.
