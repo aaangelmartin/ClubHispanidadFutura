@@ -1,5 +1,7 @@
 // Dueño: perfil 4 (valorar y pasaporte): dashboard de la empresa. Ver docs/perfiles/4-valorar-y-pasaporte.md.
 import Link from "next/link";
+import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
+import p from "@/app/empresa/_lib/pasaporte.module.css";
 import { daysLeft, getCompanyChallenges, requireCompany } from "./_lib/queries";
 import StatusChip from "./_lib/StatusChip";
 import { Avatars, countryCode, ProgressRing, SegmentBar } from "./_lib/visuals";
@@ -47,9 +49,10 @@ export default async function EmpresaDashboard() {
   const funnelMax = Math.max(1, ...funnel.map((f) => f.value));
 
   return (
+    <div className={`${pasaporteFonts} ${p.page} ${p.seguridad} min-h-screen`}>
     <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
       {/* Cabecera: saludo, siguiente acción y progreso */}
-      <section className="grid items-center gap-8 rounded-lg bg-ink p-6 text-paper sm:p-10 md:grid-cols-[1fr_auto]">
+      <section className={`${p.tapa} grid items-center gap-8 rounded-2xl p-6  sm:p-10 md:grid-cols-[1fr_auto]`}>
         <div className="flex flex-col gap-4">
           <span className="eyebrow">
             {company.name} · {company.country}
@@ -69,11 +72,11 @@ export default async function EmpresaDashboard() {
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             {nextPending > 0 && next && (
-              <Link href={`/empresa/retos/${next.challenge.id}`} className="btn border-gold bg-gold text-paper hover:brightness-110">
+              <Link href={`/empresa/retos/${next.challenge.id}`} className={p.botonOro}>
                 Valorar ahora →
               </Link>
             )}
-            <Link href="/empresa/nuevo" className="btn border-paper/30 bg-transparent text-paper hover:border-gold">
+            <Link href="/empresa/nuevo" className={p.botonClaro}>
               Publicar un reto nuevo
             </Link>
           </div>
@@ -95,7 +98,7 @@ export default async function EmpresaDashboard() {
           { label: "Por valorar", value: pending, hint: pending ? "te están esperando" : "al día", gold: pending > 0 },
           { label: "Contactados", value: contacted, hint: "candidatos que te interesan" },
         ].map((s) => (
-          <div key={s.label} className={`card flex flex-col gap-1 p-5 ${s.gold ? "border-gold bg-gold-soft" : ""}`}>
+          <div key={s.label} className={`${p.hoja} flex flex-col gap-1 p-5 ${s.gold ? "border-gold bg-gold-soft" : ""}`}>
             <span className="font-mono text-xs uppercase tracking-widest text-ink-3">{s.label}</span>
             <span className={`font-display text-5xl font-bold tabular ${s.gold ? "text-gold" : ""}`}>{s.value}</span>
             <span className="text-sm text-ink-2">{s.hint}</span>
@@ -105,7 +108,7 @@ export default async function EmpresaDashboard() {
 
       {/* Embudo y países */}
       <section className="grid gap-4 lg:grid-cols-[3fr_2fr]">
-        <div className="card flex flex-col gap-5 p-6">
+        <div className={`${p.hoja} flex flex-col gap-5 p-6`}>
           <div className="flex items-baseline justify-between">
             <h2 className="text-2xl font-bold">Embudo de talento</h2>
             <span className="font-mono text-xs text-ink-3">todos tus retos</span>
@@ -126,7 +129,7 @@ export default async function EmpresaDashboard() {
           </div>
         </div>
 
-        <div className="card flex flex-col gap-5 p-6">
+        <div className={`${p.hoja} flex flex-col gap-5 p-6`}>
           <div className="flex items-baseline justify-between">
             <h2 className="text-2xl font-bold">De dónde vienen</h2>
             <span className="font-mono text-xs text-ink-3">{enrolled} candidatos</span>
@@ -180,7 +183,7 @@ export default async function EmpresaDashboard() {
               <Link
                 key={c.id}
                 href={c.status === "borrador" ? "/empresa/nuevo" : `/empresa/retos/${c.id}`}
-                className={`card group flex flex-col gap-4 p-6 transition hover:-translate-y-0.5 hover:border-gold ${
+                className={`${p.hoja} group flex flex-col gap-4 p-6 transition hover:-translate-y-0.5 hover:border-gold ${
                   left > 0 ? "border-gold" : ""
                 }`}
               >
@@ -224,5 +227,6 @@ export default async function EmpresaDashboard() {
         </div>
       </section>
     </main>
+    </div>
   );
 }

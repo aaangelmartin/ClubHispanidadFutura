@@ -1,8 +1,11 @@
 // Dueño: perfil 4 (valorar y pasaporte). Todas las personas que han entregado a algún reto de la empresa.
 // Sin ranking automático: orden por fecha de entrega (PRD §5).
 import Link from "next/link";
+import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
+import p from "@/app/empresa/_lib/pasaporte.module.css";
 import { formatDate, getCandidates, initials, requireCompany, weightedScore } from "../_lib/queries";
-import { countryCode, ProgressRing } from "../_lib/visuals";
+import { countryCode } from "../_lib/visuals";
+import Sello, { fechaSello } from "../_lib/Sello";
 
 export const dynamic = "force-dynamic";
 
@@ -32,8 +35,9 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
   });
 
   return (
+    <div className={`${pasaporteFonts} ${p.page} ${p.seguridad} min-h-screen`}>
     <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
-      <section className="flex flex-wrap items-end justify-between gap-6 rounded-lg bg-ink p-6 text-paper sm:p-10">
+      <section className={`${p.tapa} flex flex-wrap items-end justify-between gap-6 rounded-2xl p-6  sm:p-10`}>
         <div className="flex flex-col gap-3">
           <span className="eyebrow">{company.name}</span>
           <h1 className="text-4xl font-bold text-paper sm:text-5xl">Candidatos</h1>
@@ -68,16 +72,16 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
         ))}
       </nav>
 
-      {rows.length === 0 && <div className="card p-10 text-center text-ink-2">No hay candidatos con este filtro.</div>}
+      {rows.length === 0 && <div className={`${p.hoja} p-10 text-center text-ink-2`}>No hay candidatos con este filtro.</div>}
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {rows.map((c) => {
+        {rows.map((c, idx) => {
           const score = c.evaluation ? weightedScore(c.challenge.rubric, c.evaluation.scores) : null;
           const contacted = !!c.evaluation?.contact_requested;
           return (
             <article
               key={c.id}
-              className={`card flex flex-col gap-4 p-5 ${!c.evaluation ? "border-gold" : contacted ? "border-ok" : ""}`}
+              className={`${p.hoja} flex flex-col gap-4 p-5 ${!c.evaluation ? "border-gold" : contacted ? "border-ok" : ""}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div
@@ -88,7 +92,15 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
                   {initials(c.student.name)}
                 </div>
                 {score !== null ? (
-                  <ProgressRing value={score} total={10} size={64} tone="light" label={score.toFixed(1)} />
+                  <Sello
+                    i={idx}
+                    forma="circulo"
+                    size={84}
+                    empresa={company.name}
+                    lugar={company.country}
+                    fecha={fechaSello(c.evaluation!.created_at)}
+                    nota={score.toFixed(1).replace(".", ",")}
+                  />
                 ) : (
                   <span className="chip border-gold bg-gold-soft text-gold">Por valorar</span>
                 )}
@@ -123,5 +135,6 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
         })}
       </section>
     </main>
+    </div>
   );
 }

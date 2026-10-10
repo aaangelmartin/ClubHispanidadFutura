@@ -1,0 +1,132 @@
+/* Dueño: perfil 4. El mismo lenguaje visual que la landing de Ángel (src/app/_landing/pasaporte.module.css):
+   tapa marino, papel de seguridad, datos en B612 Mono y sellos de tinta. Se usa en dashboard, valorar,
+   candidatos y pasaporte. */
+
+.page {
+  --tapa: #14233d;
+  --tapa-2: #0f1b30;
+  --papel: #eef1ee;
+  --papel-linea: rgba(20, 35, 61, 0.07);
+  --tinta: #14233d;
+  --tinta-2: #4f5d73;
+  --oro: #c8963a;
+  --sello-a: #b23a48;
+  --sello-b: #2d6a8f;
+  --sello-c: #2f7a55;
+  --display: var(--font-archivo), system-ui, sans-serif;
+  --datos: var(--font-b612), ui-monospace, monospace;
+  /* Los componentes que ya usan los tokens de la marca heredan el lenguaje pasaporte: */
+  --gold: var(--oro);
+  --gold-soft: rgba(200, 150, 58, 0.14);
+  --ink: var(--tinta);
+  --ink-2: var(--tinta-2);
+  --font-fraunces: var(--font-archivo);
+  --font-plex-mono: var(--font-b612);
+  color: var(--tinta);
+  font-family: var(--display);
+}
+
+.page :global(.font-display) {
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Titulares: Archivo extendida y muy negra */
+.page h1,
+.page h2,
+.page h3,
+.display {
+  font-family: var(--display);
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+
+.datos {
+  font-family: var(--datos);
+}
+
+/* Papel de seguridad: muaré de círculos, como el guilloché de un pasaporte */
+.seguridad {
+  background-color: var(--papel);
+  background-image:
+    repeating-radial-gradient(circle at 0% 100%, transparent 0 9px, var(--papel-linea) 9px 10px),
+    repeating-radial-gradient(circle at 100% 0%, transparent 0 13px, var(--papel-linea) 13px 14px);
+}
+
+/* Tapa del pasaporte: marino con textura diagonal y un brillo dorado */
+.tapa {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(200, 150, 58, 0.16), transparent 60%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.018) 0 2px, transparent 2px 6px),
+    var(--tapa);
+  color: #f3efe6;
+}
+
+/* Tarjeta sobre el papel */
+.hoja {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(20, 35, 61, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 12px 30px -18px rgba(20, 35, 61, 0.35);
+}
+
+.botonOro {
+  background: var(--oro);
+  color: var(--tapa);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 12px 22px;
+  box-shadow: 0 10px 24px -10px rgba(200, 150, 58, 0.7);
+  transition: transform 0.15s ease;
+}
+.botonOro:hover {
+  transform: translateY(-2px);
+}
+.botonClaro {
+  border: 1px solid rgba(243, 239, 230, 0.35);
+  color: #f3efe6;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 12px 22px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.botonClaro:hover {
+  transform: translateY(-2px);
+  border-color: var(--oro);
+}
+
+/* Sellos de tinta */
+.sello {
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+  transform: rotate(var(--r, -8deg));
+}
+.selloAnim {
+  opacity: 0;
+  animation: sellar 0.45s cubic-bezier(0.3, 1.5, 0.5, 1) forwards;
+}
+@keyframes sellar {
+  0% { opacity: 0; transform: scale(1.9) rotate(var(--r, -8deg)); filter: blur(3px); }
+  70% { opacity: 0.92; filter: blur(0); }
+  100% { opacity: 0.88; transform: scale(1) rotate(var(--r, -8deg)); }
+}
+
+/* Lomo del pasaporte abierto */
+.lomo {
+  background: linear-gradient(90deg, transparent, rgba(20, 35, 61, 0.22) 46%, rgba(20, 35, 61, 0.32) 50%, rgba(20, 35, 61, 0.22) 54%, transparent);
+}
+
+.libro {
+  transform: rotate(-1.5deg);
+  filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.35));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selloAnim {
+    animation: none;
+    opacity: 0.88;
+  }
+}
