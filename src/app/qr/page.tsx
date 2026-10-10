@@ -13,7 +13,7 @@ export default async function Qr() {
     type: "svg",
     margin: 1,
     errorCorrectionLevel: "M",
-    color: { dark: "#0b4ea2", light: "#ffffff" },
+    color: { dark: "#14233d", light: "#ffffff" },
   });
 
   return (
