@@ -1,5 +1,5 @@
 "use client";
-// Dueño: perfil 4. Formulario de valoración: nota por criterio + feedback. La nota la pone la empresa.
+// Dueño: perfil 4. Valoración con deslizadores por criterio + feedback. La nota la pone la empresa.
 import { useActionState, useMemo, useState } from "react";
 import type { Evaluation, RubricItem } from "@/lib/types";
 import { saveEvaluation, type EvalState } from "./actions";
@@ -14,55 +14,56 @@ export default function EvaluationForm({
   existing: Evaluation | null;
 }) {
   const [state, action, pending] = useActionState<EvalState, FormData>(saveEvaluation, {});
-  const [scores, setScores] = useState<string[]>(
-    rubric.map((r) => {
-      const s = existing?.scores.find((x) => x.criterion === r.criterion);
-      return s ? String(s.score) : "";
-    }),
+  const [scores, setScores] = useState<number[]>(
+    rubric.map((r) => existing?.scores.find((x) => x.criterion === r.criterion)?.score ?? 5),
   );
 
   const weighted = useMemo(() => {
-    let total = 0;
-    let weights = 0;
-    rubric.forEach((r, i) => {
-      const n = Number(scores[i]);
-      if (scores[i] === "" || Number.isNaN(n)) return;
-      total += n * r.weight;
-      weights += r.weight;
-    });
-    return weights ? (total / weights).toFixed(1) : null;
+    const w = rubric.reduce((n, r) => n + r.weight, 0);
+    return w ? rubric.reduce((n, r, i) => n + scores[i]! * r.weight, 0) / w : 0;
   }, [rubric, scores]);
 
   return (
-    <form action={action} className="flex flex-col gap-4">
+    <form action={action} className="flex flex-col gap-5">
       <input type="hidden" name="submission_id" value={submissionId} />
-      <div className="grid gap-3 sm:grid-cols-2">
-        {rubric.map((r, i) => (
-          <label key={r.criterion} htmlFor={`score_${submissionId}_${i}`} className="flex flex-col gap-1">
-            <span className="flex items-baseline justify-between gap-2 text-sm">
-              <b>{r.criterion}</b>
-              <span className="font-mono text-xs text-ink-3">{r.weight}%</span>
-            </span>
-            <span className="text-xs text-ink-3">{r.description}</span>
-            <input
-              id={`score_${submissionId}_${i}`}
-              name={`score_${i}`}
-              type="number"
-              min={0}
-              max={10}
-              step={0.5}
-              required
-              placeholder="0–10"
-              className="field tabular"
-              value={scores[i]}
-              onChange={(e) => setScores((prev) => prev.map((v, k) => (k === i ? e.target.value : v)))}
-            />
-          </label>
-        ))}
+
+      <div className="flex items-end justify-between gap-3 border-b border-line pb-4">
+        <div className="flex flex-col">
+          <span className="eyebrow">Tu valoración</span>
+          <span className="text-sm text-ink-3">Nota ponderada con la rúbrica</span>
+        </div>
+        <div className="flex items-baseline gap-1">
+          <span className="font-display text-5xl font-bold text-ink tabular">{weighted.toFixed(1)}</span>
+          <span className="font-mono text-sm text-ink-3">/10</span>
+        </div>
       </div>
+
+      {rubric.map((r, i) => (
+        <label key={r.criterion} htmlFor={`score_${submissionId}_${i}`} className="flex flex-col gap-2">
+          <span className="flex items-baseline justify-between gap-2">
+            <span className="font-semibold">
+              {r.criterion} <span className="font-mono text-xs font-normal text-ink-3">{r.weight}%</span>
+            </span>
+            <span className="font-display text-2xl font-bold text-gold tabular">{scores[i]}</span>
+          </span>
+          <input
+            id={`score_${submissionId}_${i}`}
+            name={`score_${i}`}
+            type="range"
+            min={0}
+            max={10}
+            step={0.5}
+            value={scores[i]}
+            onChange={(e) => setScores((prev) => prev.map((v, k) => (k === i ? Number(e.target.value) : v)))}
+            className="w-full accent-[var(--gold)]"
+          />
+          <span className="text-xs text-ink-3">{r.description}</span>
+        </label>
+      ))}
+
       <label htmlFor={`feedback_${submissionId}`} className="flex flex-col gap-1">
-        <span className="text-sm">
-          <b>Feedback para el estudiante</b> <span className="text-ink-3">(lo verá en su pasaporte)</span>
+        <span className="font-semibold">
+          Feedback <span className="text-sm font-normal text-ink-3">· lo verá en su pasaporte</span>
         </span>
         <textarea
           id={`feedback_${submissionId}`}
@@ -74,18 +75,12 @@ export default function EvaluationForm({
           className="field"
         />
       </label>
-      <div className="flex flex-wrap items-center gap-4">
-        <button type="submit" className="btn btn-primary" disabled={pending}>
-          {pending ? "Guardando…" : existing ? "Actualizar valoración" : "Guardar valoración"}
-        </button>
-        {weighted && (
-          <span className="font-mono text-sm text-ink-2 tabular">
-            Nota ponderada: <b className="text-ink">{weighted}</b> / 10
-          </span>
-        )}
-        {state.error && <span className="text-sm text-warn">{state.error}</span>}
-        {state.ok && !pending && <span className="text-sm text-ok">Guardada. Ya está en su pasaporte.</span>}
-      </div>
+
+      <button type="submit" className="btn btn-primary w-full py-3 text-base" disabled={pending}>
+        {pending ? "Guardando…" : existing ? "Actualizar valoración" : "Guardar valoración"}
+      </button>
+      {state.error && <p className="text-sm text-warn">{state.error}</p>}
+      {state.ok && !pending && <p className="text-sm text-ok">Guardada. Ya está en su pasaporte.</p>}
     </form>
   );
 }

@@ -31,7 +31,7 @@ export default function AiSummaryBlock({ submissionId, initial }: { submissionId
       {!summary && !error && <p className="animate-pulse text-sm text-ink-2">Resumiendo la entrega frente a la rúbrica…</p>}
       {error && (
         <div className="flex items-center gap-3 text-sm text-warn">
-          No se ha podido generar el resumen.
+          El resumen de la IA no está disponible ahora.
           <button type="button" className="btn" onClick={() => setAttempt((a) => a + 1)}>
             Reintentar
           </button>

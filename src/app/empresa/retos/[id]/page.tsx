@@ -1,13 +1,24 @@
 // Dueño: perfil 4 (valorar y pasaporte). Ver docs/perfiles/4-valorar-y-pasaporte.md.
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatDate, getChallengeForCompany, getSubmissions, requireCompany, weightedScore } from "../../_lib/queries";
+import {
+  daysLeft,
+  formatDate,
+  getChallengeForCompany,
+  getSubmissions,
+  initials,
+  requireCompany,
+  weightedScore,
+} from "../../_lib/queries";
 import StatusChip from "../../_lib/StatusChip";
+import { countryCode, ProgressRing } from "../../_lib/visuals";
 import AiSummaryBlock from "./AiSummaryBlock";
 import EvaluationForm from "./EvaluationForm";
 import { closeChallenge, closeSubmissions, requestContact } from "./actions";
 
 export const dynamic = "force-dynamic";
+
+const RUBRIC_SHADES = ["bg-ink", "bg-gold", "bg-ink-2", "bg-ink-3", "bg-ok"];
 
 export default async function ValorarReto({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -18,127 +29,186 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
   const all = await getSubmissions(id);
   const delivered = all.filter((s) => s.submitted_at);
   const enrolled = all.filter((s) => !s.submitted_at);
-  const pending = delivered.filter((s) => !s.evaluation).length;
+  const done = delivered.filter((s) => s.evaluation).length;
+  const pending = delivered.length - done;
   const canEvaluate = challenge.status === "en_valoracion" || challenge.status === "cerrado";
+  const d = daysLeft(challenge.deadline);
 
   return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-10 sm:px-6">
-      <Link href="/empresa" className="text-sm text-ink-2 hover:text-ink">← Tus retos</Link>
+    <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
+      <Link href="/empresa" className="text-sm text-ink-2 hover:text-ink">
+        ← Tus retos
+      </Link>
 
-      <section className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <StatusChip status={challenge.status} />
-          {challenge.is_example && <span className="chip">Ejemplo piloto</span>}
-          {challenge.deadline && <span className="text-sm text-ink-3">Plazo: {formatDate(challenge.deadline)}</span>}
+      {/* Cabecera del reto */}
+      <section className="grid items-center gap-8 rounded-lg bg-ink p-6 text-paper sm:p-10 md:grid-cols-[1fr_auto]">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusChip status={challenge.status} />
+            {challenge.is_example && <span className="chip border-paper/30 text-paper/80">Ejemplo piloto</span>}
+            {challenge.status === "abierto" && d !== null && d > 0 && (
+              <span className="font-mono text-xs text-paper/70">Quedan {d} días</span>
+            )}
+          </div>
+          <h1 className="text-3xl font-bold text-paper sm:text-5xl">{challenge.title}</h1>
+          <p className="max-w-2xl text-lg text-paper/80">{challenge.summary}</p>
+
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            {challenge.status === "abierto" && (
+              <form action={closeSubmissions}>
+                <input type="hidden" name="challenge_id" value={challenge.id} />
+                <button className="btn border-gold bg-gold text-paper hover:brightness-110">
+                  Cerrar entregas y empezar a valorar
+                </button>
+              </form>
+            )}
+            {challenge.status === "en_valoracion" && (
+              <form action={closeChallenge} className="flex flex-wrap items-center gap-3">
+                <input type="hidden" name="challenge_id" value={challenge.id} />
+                <button
+                  className="btn border-gold bg-gold text-paper hover:brightness-110 disabled:bg-transparent disabled:text-paper/60"
+                  disabled={pending > 0}
+                >
+                  Cerrar reto
+                </button>
+                {pending > 0 && (
+                  <span className="text-sm text-paper/70">
+                    Valora {pending === 1 ? "la entrega que falta" : `las ${pending} que faltan`} para poder cerrarlo
+                  </span>
+                )}
+              </form>
+            )}
+            {challenge.status === "cerrado" && (
+              <span className="text-paper/80">Reto cerrado. Todas las valoraciones están en los pasaportes.</span>
+            )}
+          </div>
         </div>
-        <h1 className="text-4xl font-bold">{challenge.title}</h1>
-        <p className="max-w-3xl text-lg text-ink-2">{challenge.summary}</p>
+        <div className="flex flex-col items-center gap-2">
+          <ProgressRing value={done} total={delivered.length} size={160} />
+          <span className="font-mono text-xs uppercase tracking-widest text-paper/70">valoradas</span>
+          <span className="font-mono text-sm tabular">
+            {done} de {delivered.length}
+            {enrolled.length > 0 && ` · ${enrolled.length} sin entregar`}
+          </span>
+        </div>
+      </section>
 
-        <div className="card flex flex-col gap-3 p-5">
-          <span className="eyebrow">Rúbrica</span>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {challenge.rubric.map((r) => (
-              <div key={r.criterion} className="flex flex-col gap-1">
-                <span className="flex items-baseline justify-between gap-2">
-                  <b>{r.criterion}</b>
-                  <span className="font-mono text-sm text-gold tabular">{r.weight}%</span>
+      {/* Rúbrica como barra de pesos */}
+      <section className="card flex flex-col gap-4 p-6">
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-2xl font-bold">Cómo se valora</h2>
+          <span className="font-mono text-xs text-ink-3">la IA resume · tú decides</span>
+        </div>
+        <div className="flex h-4 overflow-hidden rounded-full">
+          {challenge.rubric.map((r, i) => (
+            <div key={r.criterion} className={RUBRIC_SHADES[i % RUBRIC_SHADES.length]} style={{ width: `${r.weight}%` }} />
+          ))}
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {challenge.rubric.map((r, i) => (
+            <div key={r.criterion} className="flex gap-3">
+              <span className={`mt-1.5 h-3 w-3 shrink-0 rounded-sm ${RUBRIC_SHADES[i % RUBRIC_SHADES.length]}`} />
+              <div className="flex flex-col">
+                <span className="font-semibold">
+                  {r.criterion} <span className="font-mono text-sm text-gold tabular">{r.weight}%</span>
                 </span>
                 <span className="text-sm text-ink-2">{r.description}</span>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="card flex flex-wrap items-center justify-between gap-4 p-5">
-        <p className="font-mono text-sm tabular">
-          {delivered.length} {delivered.length === 1 ? "entrega" : "entregas"} · {delivered.length - pending} valoradas
-          {enrolled.length > 0 && ` · ${enrolled.length} apuntados sin entregar`}
-        </p>
-        {challenge.status === "abierto" && (
-          <form action={closeSubmissions}>
-            <input type="hidden" name="challenge_id" value={challenge.id} />
-            <button className="btn btn-primary">Cerrar entregas y empezar a valorar</button>
-          </form>
-        )}
-        {challenge.status === "en_valoracion" && (
-          <form action={closeChallenge} className="flex flex-wrap items-center gap-3">
-            <input type="hidden" name="challenge_id" value={challenge.id} />
-            {pending > 0 && (
-              <span className="text-sm text-warn">
-                Faltan {pending} {pending === 1 ? "entrega" : "entregas"} por valorar
-              </span>
-            )}
-            <button className="btn btn-primary" disabled={pending > 0}>Cerrar reto</button>
-          </form>
-        )}
-        {challenge.status === "cerrado" && <span className="text-sm text-ok">Reto cerrado: todas las valoraciones están en los pasaportes.</span>}
-      </section>
-
       {challenge.status === "abierto" && delivered.length > 0 && (
-        <p className="text-sm text-ink-2">
-          El reto sigue abierto. Puedes leer las entregas ya; la valoración se abre al cerrar las entregas.
+        <p className="card border-gold bg-gold-soft p-4">
+          El reto sigue abierto: puedes leer las entregas ya. La valoración se activa al cerrar las entregas.
         </p>
       )}
 
+      {/* Entregas */}
       <section className="flex flex-col gap-6">
-        {delivered.length === 0 && (
-          <div className="card p-8 text-ink-2">Todavía no ha llegado ninguna entrega.</div>
-        )}
+        <h2 className="text-3xl font-bold">
+          Entregas <span className="font-mono text-lg text-ink-3">{delivered.length}</span>
+        </h2>
+        {delivered.length === 0 && <div className="card p-8 text-ink-2">Todavía no ha llegado ninguna entrega.</div>}
+
         {delivered.map((s, i) => {
           const score = s.evaluation ? weightedScore(challenge.rubric, s.evaluation.scores) : null;
           return (
-            <article key={s.id} className={`card flex flex-col gap-5 p-6 ${s.evaluation ? "" : "border-gold"}`}>
-              <header className="flex flex-wrap items-start justify-between gap-4">
-                <div className="flex flex-col gap-1">
-                  <span className="font-mono text-xs text-ink-3">Entrega {i + 1} · {formatDate(s.submitted_at)}</span>
-                  <h2 className="text-2xl font-bold">{s.student.name}</h2>
-                  <span className="text-sm text-ink-2">
-                    {s.student.university} · {s.student.country}
+            <article
+              key={s.id}
+              className={`card overflow-hidden ${s.evaluation ? "" : "border-gold ring-1 ring-gold"}`}
+            >
+              <header className="flex flex-wrap items-center gap-4 border-b border-line p-6">
+                <div
+                  className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full font-display text-2xl font-bold text-paper ${
+                    s.evaluation ? "bg-ink" : "bg-gold"
+                  }`}
+                >
+                  {initials(s.student.name)}
+                </div>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <span className="font-mono text-xs text-ink-3">
+                    Entrega {i + 1} · {formatDate(s.submitted_at)}
+                  </span>
+                  <h3 className="text-2xl font-bold">{s.student.name}</h3>
+                  <span className="flex items-center gap-2 text-ink-2">
+                    <span className="rounded bg-ink px-1.5 font-mono text-xs text-paper">{countryCode(s.student.country)}</span>
+                    {s.student.university}
                   </span>
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   {s.evaluation ? (
-                    <span className="chip border-ok text-ok">Valorada · {score} / 10</span>
+                    <span className="flex items-baseline gap-1">
+                      <span className="font-display text-4xl font-bold tabular">{score}</span>
+                      <span className="font-mono text-xs text-ink-3">/10</span>
+                    </span>
                   ) : (
                     <span className="chip border-gold bg-gold-soft text-gold">Por valorar</span>
                   )}
-                  <Link href={`/pasaporte/${s.student.id}`} className="text-sm text-ink-2 hover:text-ink">
+                  <Link href={`/pasaporte/${s.student.id}`} className="text-sm text-ink-2 hover:text-gold">
                     Ver pasaporte →
                   </Link>
                 </div>
               </header>
 
-              <div className="flex flex-col gap-2">
-                {s.link && (
-                  <a href={s.link} target="_blank" rel="noreferrer" className="break-all text-sm text-gold underline">
-                    {s.link}
-                  </a>
-                )}
-                {s.notes && <p className="text-ink">{s.notes}</p>}
-              </div>
-
-              <AiSummaryBlock submissionId={s.id} initial={s.ai_summary} />
-
-              {canEvaluate ? (
-                <EvaluationForm submissionId={s.id} rubric={challenge.rubric} existing={s.evaluation} />
-              ) : null}
-
-              {s.evaluation && (
-                <div className="flex flex-wrap items-center gap-3 border-t border-line pt-4">
-                  {s.evaluation.contact_requested ? (
-                    <span className="text-sm">
-                      <b className="text-ok">Contactado.</b> Escríbele a{" "}
-                      <span className="font-mono">{s.student.email}</span>
-                    </span>
-                  ) : (
-                    <form action={requestContact}>
-                      <input type="hidden" name="submission_id" value={s.id} />
-                      <button className="btn">Contactar con {s.student.name.split(" ")[0]}</button>
-                    </form>
+              <div className="grid lg:grid-cols-[1.4fr_1fr]">
+                <div className="flex flex-col gap-5 p-6">
+                  {s.notes && (
+                    <blockquote className="border-l-4 border-gold pl-4 text-lg text-ink">{s.notes}</blockquote>
                   )}
+                  {s.link && (
+                    <a href={s.link} target="_blank" rel="noreferrer" className="btn self-start">
+                      Abrir la entrega ↗
+                    </a>
+                  )}
+                  <AiSummaryBlock submissionId={s.id} initial={s.ai_summary} />
                 </div>
-              )}
+
+                <aside className="flex flex-col gap-5 border-t border-line bg-bg/60 p-6 lg:border-l lg:border-t-0">
+                  {canEvaluate ? (
+                    <EvaluationForm submissionId={s.id} rubric={challenge.rubric} existing={s.evaluation} />
+                  ) : (
+                    <p className="text-ink-2">La valoración se activa al cerrar las entregas.</p>
+                  )}
+                  {s.evaluation &&
+                    (s.evaluation.contact_requested ? (
+                      <div className="rounded-md border border-ok p-4">
+                        <span className="font-semibold text-ok">Contactado.</span>{" "}
+                        <span className="text-sm">
+                          Escríbele a <span className="font-mono">{s.student.email}</span>
+                        </span>
+                      </div>
+                    ) : (
+                      <form action={requestContact}>
+                        <input type="hidden" name="submission_id" value={s.id} />
+                        <button className="btn w-full border-gold py-3 text-base text-gold hover:bg-gold-soft">
+                          Quiero contactar con {s.student.name.split(" ")[0]}
+                        </button>
+                      </form>
+                    ))}
+                </aside>
+              </div>
             </article>
           );
         })}

@@ -49,6 +49,7 @@ body {
   line-height: 1.5;
 }
 
+/* Ojo: los tokens de @theme inline no existen como variables CSS; aquí van las de next/font. */
 h1, h2, h3 {
   font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   letter-spacing: -0.01em;
