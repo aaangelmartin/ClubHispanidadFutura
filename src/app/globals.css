@@ -40,13 +40,14 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-sans);
+  font-family: var(--font-source-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 17px;
   line-height: 1.5;
 }
 
+/* Ojo: los tokens de @theme inline no existen como variables CSS; aquí van las de next/font. */
 h1, h2, h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
@@ -59,7 +60,7 @@ h1, h2, h3 {
     border-radius: 6px;
   }
   .eyebrow {
-    font-family: var(--font-mono);
+    font-family: var(--font-plex-mono), ui-monospace, Menlo, monospace;
     font-size: 12px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -99,7 +100,7 @@ h1, h2, h3 {
     align-items: center;
     border-radius: 999px;
     padding: 2px 10px;
-    font-family: var(--font-mono);
+    font-family: var(--font-plex-mono), ui-monospace, Menlo, monospace;
     font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;

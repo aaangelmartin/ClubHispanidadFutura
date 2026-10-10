@@ -23,26 +23,54 @@ export async function requireCompany(): Promise<Company> {
   return data as Company;
 }
 
+export type DashboardPerson = { name: string; country: string; submitted: boolean; evaluated: boolean; contacted: boolean };
+
 export async function getCompanyChallenges(companyId: string) {
   const { data, error } = await db()
     .from("challenges")
-    .select("*, submissions(id, submitted_at, evaluations(id, contact_requested))")
+    .select("*, submissions(id, submitted_at, students(name, country), evaluations(id, contact_requested))")
     .eq("company_id", companyId)
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
 
   return (data ?? []).map((c) => {
-    const subs = ((c.submissions ?? []) as { id: string; submitted_at: string | null; evaluations: unknown }[]).filter(
-      (s) => s.submitted_at,
-    );
-    const evals = subs.map((s) => one(s.evaluations as { id: string; contact_requested: boolean }[] | null));
+    const people: DashboardPerson[] = (
+      (c.submissions ?? []) as { submitted_at: string | null; students: unknown; evaluations: unknown }[]
+    ).map((s) => {
+      const st = one(s.students as { name: string; country: string }[] | null);
+      const ev = one(s.evaluations as { id: string; contact_requested: boolean }[] | null);
+      return {
+        name: st?.name ?? "—",
+        country: st?.country ?? "",
+        submitted: !!s.submitted_at,
+        evaluated: !!ev,
+        contacted: !!ev?.contact_requested,
+      };
+    });
+    const delivered = people.filter((p) => p.submitted);
     return {
       challenge: c as Challenge,
-      submitted: subs.length,
-      evaluated: evals.filter(Boolean).length,
-      contacted: evals.filter((e) => e?.contact_requested).length,
+      people,
+      enrolled: people.length,
+      submitted: delivered.length,
+      evaluated: delivered.filter((p) => p.evaluated).length,
+      contacted: delivered.filter((p) => p.contacted).length,
     };
   });
+}
+
+export function daysLeft(deadline: string | null): number | null {
+  if (!deadline) return null;
+  return Math.ceil((new Date(deadline).getTime() - Date.now()) / 86_400_000);
+}
+
+export function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]!.toUpperCase())
+    .join("");
 }
 
 export async function getChallengeForCompany(challengeId: string, companyId: string) {
