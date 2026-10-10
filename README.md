@@ -25,6 +25,15 @@
 
 **Producción: https://club-hispanidad-futura.vercel.app** · recorrido de la demo: https://club-hispanidad-futura.vercel.app/demo
 
+**Accesos directos (modo demo):**
+| Entrada | Enlace |
+|---|---|
+| Recorrido completo | https://club-hispanidad-futura.vercel.app/demo |
+| Empresa (entra como Ibérica Retail) | https://club-hispanidad-futura.vercel.app/empresa |
+| Estudiante (entra como Andrés, Colombia) | https://club-hispanidad-futura.vercel.app/estudiante |
+| Pasaporte del estudiante | https://club-hispanidad-futura.vercel.app/estudiante/pasaporte |
+| Landing · Registro · Panel en vivo | `/` · `/registro` · `/panel` |
+
 Vercel (equipo Noa) + Supabase en la nube (Frankfurt, creado desde el Marketplace de Vercel, con los datos de ejemplo cargados). La IA está apagada (`AI_ENABLED=false`).
 **Desplegar:** de momento a mano, lo hace Álvaro (`vercel deploy --prod`). Para que cada push a `main` se despliegue solo, Ángel tiene que dar acceso a Vercel a este repo de GitHub.
 
