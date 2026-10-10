@@ -2,8 +2,10 @@
 // sin pasar por /registro. Ejemplo: /dev/sesion?rol=empresa&id=<uuid>&ir=/empresa
 import { NextResponse, type NextRequest } from "next/server";
 import { setSession } from "@/lib/session";
+import { DEMO_MODE } from "@/lib/demo";
 
 export async function GET(req: NextRequest) {
+  if (!DEMO_MODE) return NextResponse.json({ error: "No encontrado" }, { status: 404 });
   const rol = req.nextUrl.searchParams.get("rol");
   const id = req.nextUrl.searchParams.get("id");
   const ir = req.nextUrl.searchParams.get("ir") ?? "/";

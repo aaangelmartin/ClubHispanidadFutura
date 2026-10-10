@@ -1,8 +1,12 @@
-// Dueño: perfil 4 (valorar y pasaporte). Página pública: la prueba de lo que el estudiante sabe hacer.
+// Dueño: perfil 4 (valorar y pasaporte). Página pública: el pasaporte de talento abierto, con datos reales.
+// Mismo lenguaje que la landing (perfil 1): tapa marino, papel de seguridad, zona de lectura mecánica y sellos.
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { countryCode, ProgressRing } from "@/app/empresa/_lib/visuals";
+import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
+import p from "@/app/empresa/_lib/pasaporte.module.css";
+import Sello, { fechaSello, tinta } from "@/app/empresa/_lib/Sello";
 import CopyLink from "./CopyLink";
+import Accion from "@/app/empresa/_lib/Accion";
 import { getPassport, weightedScore } from "./queries";
 
 export const dynamic = "force-dynamic";
@@ -13,30 +17,36 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return { title: passport ? `Pasaporte de ${passport.student.name}` : "Pasaporte" };
 }
 
-function date(iso: string | null) {
-  if (!iso) return "";
-  return new Date(iso).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+const ISO3: Record<string, string> = { España: "ESP", México: "MEX", Colombia: "COL" };
+const coma = (n: number | null) => (n === null ? "—" : n.toFixed(1).replace(".", ","));
+const mrz = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, "<");
+
+// Dónde cae cada sello en la página de sellos (como en la landing).
+const POS: React.CSSProperties[] = [
+  { left: "6%", top: "12%" },
+  { right: "5%", top: "38%" },
+  { left: "10%", bottom: "8%" },
+  { right: "8%", bottom: "6%" },
+];
+
+function Campo({ etiqueta, valor }: { etiqueta: string; valor: string }) {
+  return (
+    <div className="flex flex-col">
+      <span className={`${p.datos} text-[9px] tracking-wider text-[var(--tinta-2)]`}>{etiqueta}</span>
+      <span className={`${p.datos} text-[13px] font-bold text-[var(--tinta)]`}>{valor}</span>
+    </div>
+  );
 }
 
-// Sello circular con texto en arco, como el de un pasaporte.
-function Seal({ count }: { count: number }) {
+function Escudo({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 200 200" className="h-40 w-40 sm:h-48 sm:w-48" role="img" aria-label={`${count} retos valorados por empresas`}>
-      <defs>
-        <path id="arc" d="M100,100 m-72,0 a72,72 0 1,1 144,0 a72,72 0 1,1 -144,0" />
-      </defs>
-      <circle cx="100" cy="100" r="94" fill="none" stroke="var(--gold)" strokeWidth="2" />
-      <circle cx="100" cy="100" r="86" fill="none" stroke="var(--gold)" strokeWidth="1" strokeDasharray="2 4" />
-      <circle cx="100" cy="100" r="56" fill="var(--gold)" />
-      <text fill="var(--gold)" style={{ font: "500 13px var(--font-plex-mono), monospace", letterSpacing: "3px" }}>
-        <textPath href="#arc">VALORADO POR EMPRESAS · ESPAÑA · LATAM ·</textPath>
-      </text>
-      <text x="100" y="98" textAnchor="middle" fill="var(--ink)" style={{ font: "700 46px var(--font-fraunces), Georgia, serif" }}>
-        {count}
-      </text>
-      <text x="100" y="122" textAnchor="middle" fill="var(--ink)" style={{ font: "500 10px var(--font-plex-mono), monospace", letterSpacing: "2px" }}>
-        {count === 1 ? "RETO" : "RETOS"}
-      </text>
+    <svg viewBox="0 0 268 311" className={className} aria-hidden="true">
+      <path d="M12 6 H256 V185 C256 245 212 282 134 305 C56 282 12 245 12 185 Z" fill="none" stroke="currentColor" strokeWidth="12" />
     </svg>
   );
 }
@@ -51,147 +61,222 @@ export default async function Pasaporte({ params }: { params: Promise<{ id: stri
     .filter((e) => e.evaluation)
     .map((e) => ({ ...e, score: weightedScore(e.challenge.rubric, e.evaluation!.scores) }));
   const inProgress = entries.filter((e) => !e.evaluation);
-  const countries = [...new Set(evaluated.map((e) => e.challenge.company.country))];
   const scores = evaluated.map((e) => e.score).filter((s): s is number => s !== null);
   const average = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+  const countries = [...new Set(evaluated.map((e) => e.challenge.company.country))];
+
+  const [nombre, ...resto] = student.name.split(" ");
+  const apellidos = resto.join(" ") || nombre!;
+  const pais = ISO3[student.country] ?? mrz(student.country).slice(0, 3);
+  const linea1 = `P<${pais}${mrz(apellidos)}<<${mrz(nombre!)}`.padEnd(44, "<").slice(0, 44);
+  const linea2 = `RETOS${String(evaluated.length).padStart(4, "0")}<${pais}${student.id.replace(/-/g, "").slice(0, 14).toUpperCase()}`
+    .padEnd(44, "<")
+    .slice(0, 44);
 
   return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-8 sm:px-6">
-      {/* Portada del pasaporte */}
-      <section className="relative overflow-hidden rounded-lg bg-ink text-paper">
-        <div className="h-2 bg-gold" />
-        <div className="grid items-center gap-8 p-6 sm:p-10 md:grid-cols-[1fr_auto]">
-          <div className="flex flex-col gap-4">
-            <span className="eyebrow">Pasaporte de talento · Iberoamérica</span>
-            <h1 className="text-5xl font-bold leading-none text-paper sm:text-7xl">{student.name}</h1>
-            <p className="flex items-center gap-2 text-lg text-paper/80">
-              <span className="rounded bg-gold px-1.5 font-mono text-xs text-paper">{countryCode(student.country)}</span>
-              {student.university}
+    <div className={`${pasaporteFonts} ${p.page} ${p.seguridad} min-h-screen`}>
+      {/* Tapa: titular y pasaporte abierto */}
+      <section className={p.tapa}>
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1.25fr] lg:py-16">
+          <div className="flex flex-col gap-5">
+            <span className={`${p.datos} text-xs tracking-[0.2em] text-[var(--oro)]`}>PASAPORTE DE TALENTO · IBEROAMÉRICA</span>
+            <h1 className="text-5xl text-[#f3efe6] sm:text-6xl">{student.name}</h1>
+            <p className="text-lg text-[#f3efe6]/75">
+              {student.university} · {student.country}
             </p>
+            <div className="grid grid-cols-3 gap-4 border-y border-white/10 py-5">
+              <div className="flex flex-col">
+                <span className={`${p.datos} text-[10px] tracking-widest text-[#f3efe6]/60`}>SELLOS</span>
+                <span className="text-4xl font-extrabold text-[var(--oro)]">{evaluated.length}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className={`${p.datos} text-[10px] tracking-widest text-[#f3efe6]/60`}>NOTA MEDIA</span>
+                <span className="text-4xl font-extrabold text-[#f3efe6]">{coma(average)}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className={`${p.datos} text-[10px] tracking-widest text-[#f3efe6]/60`}>EMPRESAS DE</span>
+                <span className="text-lg font-extrabold leading-tight text-[#f3efe6]">{countries.join(" · ") || "—"}</span>
+              </div>
+            </div>
             {student.skills.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {student.skills.map((s) => (
-                  <span key={s} className="chip border-paper/30 text-paper/90">
+                  <span key={s} className={`${p.datos} rounded-full border border-white/20 px-3 py-1 text-xs text-[#f3efe6]/85`}>
                     {s}
                   </span>
                 ))}
               </div>
             )}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-4">
               <CopyLink />
+              <Accion hecho="Descargando pasaporte en PDF" className={p.botonClaro}>
+                Descargar PDF
+              </Accion>
+              <Accion hecho="Añadido a tu perfil de LinkedIn" className={p.botonClaro}>
+                Añadir a LinkedIn
+              </Accion>
               {student.github && (
-                <a href={student.github} target="_blank" rel="noreferrer" className="text-sm text-paper/80 underline hover:text-gold">
+                <a href={student.github} target="_blank" rel="noreferrer" className="text-sm text-[#f3efe6]/80 underline hover:text-[var(--oro)]">
                   GitHub
                 </a>
               )}
               {student.portfolio && (
-                <a href={student.portfolio} target="_blank" rel="noreferrer" className="text-sm text-paper/80 underline hover:text-gold">
+                <a href={student.portfolio} target="_blank" rel="noreferrer" className="text-sm text-[#f3efe6]/80 underline hover:text-[var(--oro)]">
                   Portfolio
                 </a>
               )}
             </div>
           </div>
-          <div className="flex justify-center">
-            <Seal count={evaluated.length} />
-          </div>
-        </div>
-        <dl className="grid grid-cols-3 border-t border-paper/15">
-          <div className="flex flex-col gap-1 p-5 sm:p-6">
-            <dt className="font-mono text-xs uppercase tracking-widest text-paper/60">Nota media</dt>
-            <dd className="font-display text-4xl font-bold text-gold tabular">{average !== null ? average.toFixed(1) : "—"}</dd>
-          </div>
-          <div className="flex flex-col gap-1 border-l border-paper/15 p-5 sm:p-6">
-            <dt className="font-mono text-xs uppercase tracking-widest text-paper/60">Empresas de</dt>
-            <dd className="font-display text-2xl font-bold sm:text-3xl">{countries.length ? countries.join(" · ") : "—"}</dd>
-          </div>
-          <div className="flex flex-col gap-1 border-l border-paper/15 p-5 sm:p-6">
-            <dt className="font-mono text-xs uppercase tracking-widest text-paper/60">En curso</dt>
-            <dd className="font-display text-4xl font-bold tabular">{inProgress.length}</dd>
-          </div>
-        </dl>
-      </section>
 
-      {/* Trabajo demostrado */}
-      <section className="flex flex-col gap-4">
-        <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-3xl font-bold">Trabajo demostrado</h2>
-          <span className="font-mono text-xs text-ink-3">cada nota la pone la empresa del reto</span>
-        </div>
-        {evaluated.length === 0 && (
-          <p className="card p-8 text-ink-2">
-            Todavía no hay retos valorados. Cada reto entregado aparecerá aquí con la nota y el feedback de la empresa, gane o no.
-          </p>
-        )}
-        {evaluated.map((e) => (
-          <article key={e.id} className="card overflow-hidden">
-            <div className="grid gap-6 p-6 sm:grid-cols-[auto_1fr] sm:p-8">
-              <div className="flex flex-col items-center gap-1">
-                <ProgressRing value={e.score ?? 0} total={10} size={112} tone="light" label={e.score?.toFixed(1) ?? "—"} />
-                <span className="font-mono text-xs text-ink-3">sobre 10</span>
+          {/* El pasaporte abierto */}
+          <div className={`${p.libro} relative mx-auto w-full max-w-[720px] text-[var(--tinta)]`}>
+            <div className="grid overflow-hidden rounded-[14px] ring-1 ring-black/10 sm:grid-cols-2">
+              <div className={`${p.seguridad} relative flex flex-col gap-4 p-5 sm:p-6`}>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex flex-col">
+                    <span className={`${p.datos} text-[10px] font-bold tracking-[0.16em]`}>PASAPORTE DE TALENTO</span>
+                    <span className={`${p.datos} text-[9px] tracking-[0.12em] text-[var(--tinta-2)]`}>IBEROAMÉRICA</span>
+                  </div>
+                  <Escudo className="h-8 w-7 shrink-0 text-[var(--oro)]" />
+                </div>
+                <div className="flex gap-4">
+                  <div className="relative grid h-[118px] w-[92px] shrink-0 place-items-center overflow-hidden rounded-md bg-[#d9dfe2] ring-1 ring-black/10">
+                    <span className="text-3xl font-extrabold text-[#9aa6b2]">
+                      {student.name
+                        .split(" ")
+                        .slice(0, 2)
+                        .map((w) => w[0])
+                        .join("")}
+                    </span>
+                    <Escudo className="absolute -bottom-3 -right-3 h-12 w-10 text-[var(--oro)] opacity-50" />
+                  </div>
+                  <div className="grid min-w-0 flex-1 gap-2">
+                    <Campo etiqueta="Apellidos" valor={apellidos.toUpperCase()} />
+                    <Campo etiqueta="Nombre" valor={nombre!.toUpperCase()} />
+                    <Campo etiqueta="Universidad" valor={student.university.toUpperCase()} />
+                    <Campo etiqueta="Retos valorados" valor={String(evaluated.length)} />
+                  </div>
+                </div>
+                <div className={`${p.datos} mt-auto flex flex-col gap-0.5 overflow-hidden rounded-sm bg-white/50 px-2 py-2 text-[9px] sm:text-[9.5px]`}>
+                  <span className="whitespace-pre">{linea1}</span>
+                  <span className="whitespace-pre">{linea2}</span>
+                </div>
               </div>
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <span className="flex flex-wrap items-center gap-2 font-mono text-xs text-ink-3">
-                    <span className="rounded bg-ink px-1.5 text-paper">{countryCode(e.challenge.company.country)}</span>
-                    {e.challenge.company.name} · {date(e.evaluation!.created_at)}
+              <div className={`${p.seguridad} relative min-h-[330px] border-t border-black/5 sm:border-l sm:border-t-0`}>
+                <span className={`${p.datos} absolute right-5 top-4 text-[9px] tracking-[0.16em] text-[var(--tinta-2)]`}>SELLOS · STAMPS</span>
+                {evaluated.length === 0 && (
+                  <span className={`${p.datos} absolute inset-0 grid place-items-center px-8 text-center text-xs text-[var(--tinta-2)]`}>
+                    Aquí irán los sellos de las empresas que valoren sus retos.
                   </span>
-                  <h3 className="text-2xl font-bold">{e.challenge.title}</h3>
-                  <p className="text-ink-2">{e.challenge.summary}</p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {e.challenge.rubric.map((r) => {
-                    const s = e.evaluation!.scores.find((x) => x.criterion === r.criterion);
-                    return (
-                      <div key={r.criterion} className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 sm:grid-cols-[180px_1fr_auto]">
-                        <span className="text-sm">{r.criterion}</span>
-                        <div className="order-3 col-span-2 h-2.5 rounded-full bg-bg sm:order-none sm:col-span-1">
-                          <div className="h-2.5 rounded-full bg-ink" style={{ width: `${s ? s.score * 10 : 0}%` }} />
-                        </div>
-                        <span className="font-mono text-sm tabular">{s ? s.score : "—"}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-                <blockquote className="border-l-4 border-gold pl-4 text-lg text-ink">“{e.evaluation!.feedback}”</blockquote>
+                )}
+                {evaluated.slice(0, POS.length).map((e, i) => (
+                  <div key={e.id} className="absolute" style={POS[i]}>
+                    <Sello
+                      i={i}
+                      empresa={e.challenge.company.name}
+                      lugar={e.challenge.company.country}
+                      fecha={fechaSello(e.evaluation!.created_at)}
+                      nota={coma(e.score)}
+                      animado
+                      retraso={400 + i * 500}
+                    />
+                  </div>
+                ))}
               </div>
             </div>
-            <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-line bg-gold-soft px-6 py-4 sm:px-8">
-              <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-gold">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-gold font-bold">✓</span>
-                Valorado por {e.challenge.company.name}
-              </span>
-              {e.link && (
-                <a href={e.link} target="_blank" rel="noreferrer" className="text-sm font-semibold text-ink hover:text-gold">
-                  Ver la entrega ↗
-                </a>
-              )}
-            </footer>
-          </article>
-        ))}
+            <div className={`${p.lomo} pointer-events-none absolute inset-y-0 left-1/2 hidden w-10 -translate-x-1/2 sm:block`} aria-hidden="true" />
+          </div>
+        </div>
       </section>
 
-      {inProgress.length > 0 && (
-        <section className="flex flex-col gap-3">
-          <h2 className="text-2xl font-bold">En curso</h2>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {inProgress.map((e) => (
-              <div key={e.id} className="card flex items-center justify-between gap-3 p-4">
-                <div className="flex flex-col">
-                  <span className="font-semibold">{e.challenge.title}</span>
-                  <span className="text-sm text-ink-3">
-                    {e.challenge.company.name} · {e.challenge.company.country}
+      {/* Detalle de cada sello */}
+      <section className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:px-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h2 className="text-4xl">Trabajo demostrado</h2>
+          <span className={`${p.datos} text-xs text-[var(--tinta-2)]`}>CADA SELLO LO PONE LA EMPRESA DEL RETO</span>
+        </div>
+
+        {evaluated.length === 0 && (
+          <p className={`${p.hoja} p-8 text-[var(--tinta-2)]`}>
+            Todavía no hay sellos. Cada reto entregado aparecerá aquí con la nota y el feedback de la empresa, gane o no.
+          </p>
+        )}
+
+        {evaluated.map((e, i) => (
+          <article key={e.id} className={`${p.hoja} grid gap-6 p-6 sm:grid-cols-[auto_1fr] sm:p-8`}>
+            <div className="flex justify-center sm:pt-2">
+              <Sello
+                i={i}
+                forma="circulo"
+                size={136}
+                empresa={e.challenge.company.name}
+                lugar={e.challenge.company.country}
+                fecha={fechaSello(e.evaluation!.created_at)}
+                nota={coma(e.score)}
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <span className={`${p.datos} text-xs tracking-wider text-[var(--tinta-2)]`}>
+                  {e.challenge.company.name.toUpperCase()} · {e.challenge.company.country.toUpperCase()}
+                </span>
+                <h3 className="text-2xl">{e.challenge.title}</h3>
+                <p className="text-[var(--tinta-2)]">{e.challenge.summary}</p>
+              </div>
+              <div className="flex flex-col gap-2">
+                {e.challenge.rubric.map((r) => {
+                  const s = e.evaluation!.scores.find((x) => x.criterion === r.criterion);
+                  return (
+                    <div key={r.criterion} className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 sm:grid-cols-[180px_1fr_auto]">
+                      <span className={`${p.datos} text-xs`}>{r.criterion}</span>
+                      <div className="order-3 col-span-2 h-2 rounded-full bg-[rgba(20,35,61,0.08)] sm:order-none sm:col-span-1">
+                        <div className="h-2 rounded-full" style={{ width: `${s ? s.score * 10 : 0}%`, background: tinta(i) }} />
+                      </div>
+                      <span className={`${p.datos} text-sm font-bold`}>{s ? s.score : "—"}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <blockquote
+                className="border-l-4 pl-4 text-lg"
+                style={{ borderColor: tinta(i) }}
+              >
+                “{e.evaluation!.feedback}”
+              </blockquote>
+              {e.link && (
+                <a href={e.link} target="_blank" rel="noreferrer" className={`${p.datos} self-start text-sm font-bold underline hover:text-[var(--oro)]`}>
+                  VER LA ENTREGA ↗
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+
+        {inProgress.length > 0 && (
+          <div className="flex flex-col gap-3 pt-4">
+            <h2 className="text-2xl">En curso</h2>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {inProgress.map((e) => (
+                <div key={e.id} className={`${p.hoja} flex items-center justify-between gap-3 p-4`}>
+                  <div className="flex flex-col">
+                    <span className="font-bold">{e.challenge.title}</span>
+                    <span className={`${p.datos} text-xs text-[var(--tinta-2)]`}>
+                      {e.challenge.company.name} · {e.challenge.company.country}
+                    </span>
+                  </div>
+                  <span className={`${p.datos} rounded-full border border-current px-3 py-1 text-[10px] text-[var(--tinta-2)]`}>
+                    {e.submitted_at ? "EN VALORACIÓN" : "APUNTADO"}
                   </span>
                 </div>
-                <span className="chip">{e.submitted_at ? "En valoración" : "Apuntado"}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </section>
-      )}
+        )}
 
-      <p className="text-center text-sm text-ink-3">
-        Cada valoración la ha puesto la empresa que propuso el reto. La IA solo ayuda a resumir; no puntúa.
-      </p>
-    </main>
+        <p className={`${p.datos} pt-4 text-center text-xs text-[var(--tinta-2)]`}>
+          Cada sello lo ha puesto la empresa que propuso el reto. La IA solo ayuda a resumir; no puntúa.
+        </p>
+      </section>
+    </div>
   );
 }

@@ -1,5 +1,7 @@
 // Dueño: perfil 4 (valorar y pasaporte). Ver docs/perfiles/4-valorar-y-pasaporte.md.
 import Link from "next/link";
+import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
+import p from "@/app/empresa/_lib/pasaporte.module.css";
 import { notFound } from "next/navigation";
 import {
   daysLeft,
@@ -12,6 +14,7 @@ import {
 } from "../../_lib/queries";
 import StatusChip from "../../_lib/StatusChip";
 import { countryCode, ProgressRing } from "../../_lib/visuals";
+import Sello, { fechaSello } from "../../_lib/Sello";
 import AiSummaryBlock from "./AiSummaryBlock";
 import EvaluationForm from "./EvaluationForm";
 import { closeChallenge, closeSubmissions, requestContact } from "./actions";
@@ -35,13 +38,14 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
   const d = daysLeft(challenge.deadline);
 
   return (
+    <div className={`${pasaporteFonts} ${p.page} ${p.seguridad} min-h-screen`}>
     <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
       <Link href="/empresa" className="text-sm text-ink-2 hover:text-ink">
         ← Tus retos
       </Link>
 
       {/* Cabecera del reto */}
-      <section className="grid items-center gap-8 rounded-lg bg-ink p-6 text-paper sm:p-10 md:grid-cols-[1fr_auto]">
+      <section className={`${p.tapa} grid items-center gap-8 rounded-2xl p-6  sm:p-10 md:grid-cols-[1fr_auto]`}>
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <StatusChip status={challenge.status} />
@@ -57,7 +61,7 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
             {challenge.status === "abierto" && (
               <form action={closeSubmissions}>
                 <input type="hidden" name="challenge_id" value={challenge.id} />
-                <button className="btn border-gold bg-gold text-paper hover:brightness-110">
+                <button className={p.botonOro}>
                   Cerrar entregas y empezar a valorar
                 </button>
               </form>
@@ -66,7 +70,7 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
               <form action={closeChallenge} className="flex flex-wrap items-center gap-3">
                 <input type="hidden" name="challenge_id" value={challenge.id} />
                 <button
-                  className="btn border-gold bg-gold text-paper hover:brightness-110 disabled:bg-transparent disabled:text-paper/60"
+                  className={`${p.botonOro} disabled:cursor-not-allowed disabled:opacity-40`}
                   disabled={pending > 0}
                 >
                   Cerrar reto
@@ -94,7 +98,7 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
       </section>
 
       {/* Rúbrica como barra de pesos */}
-      <section className="card flex flex-col gap-4 p-6">
+      <section className={`${p.hoja} flex flex-col gap-4 p-6`}>
         <div className="flex items-baseline justify-between">
           <h2 className="text-2xl font-bold">Cómo se valora</h2>
           <span className="font-mono text-xs text-ink-3">la IA resume · tú decides</span>
@@ -120,7 +124,7 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
       </section>
 
       {challenge.status === "abierto" && delivered.length > 0 && (
-        <p className="card border-gold bg-gold-soft p-4">
+        <p className={`${p.hoja} border-gold bg-gold-soft p-4`}>
           El reto sigue abierto: puedes leer las entregas ya. La valoración se activa al cerrar las entregas.
         </p>
       )}
@@ -130,14 +134,14 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
         <h2 className="text-3xl font-bold">
           Entregas <span className="font-mono text-lg text-ink-3">{delivered.length}</span>
         </h2>
-        {delivered.length === 0 && <div className="card p-8 text-ink-2">Todavía no ha llegado ninguna entrega.</div>}
+        {delivered.length === 0 && <div className={`${p.hoja} p-8 text-ink-2`}>Todavía no ha llegado ninguna entrega.</div>}
 
         {delivered.map((s, i) => {
           const score = s.evaluation ? weightedScore(challenge.rubric, s.evaluation.scores) : null;
           return (
             <article
               key={s.id}
-              className={`card overflow-hidden ${s.evaluation ? "" : "border-gold ring-1 ring-gold"}`}
+              className={`${p.hoja} overflow-hidden ${s.evaluation ? "" : "border-gold ring-1 ring-gold"}`}
             >
               <header className="flex flex-wrap items-center gap-4 border-b border-line p-6">
                 <div
@@ -159,10 +163,15 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   {s.evaluation ? (
-                    <span className="flex items-baseline gap-1">
-                      <span className="font-display text-4xl font-bold tabular">{score}</span>
-                      <span className="font-mono text-xs text-ink-3">/10</span>
-                    </span>
+                    <Sello
+                      i={i}
+                      forma="circulo"
+                      size={96}
+                      empresa={company.name}
+                      lugar={company.country}
+                      fecha={fechaSello(s.evaluation.created_at)}
+                      nota={score !== null ? score.toFixed(1).replace(".", ",") : "—"}
+                    />
                   ) : (
                     <span className="chip border-gold bg-gold-soft text-gold">Por valorar</span>
                   )}
@@ -214,5 +223,6 @@ export default async function ValorarReto({ params }: { params: Promise<{ id: st
         })}
       </section>
     </main>
+    </div>
   );
 }

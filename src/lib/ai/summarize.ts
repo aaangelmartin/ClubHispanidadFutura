@@ -1,5 +1,6 @@
 import "server-only";
-import { askJson } from "./client";
+import { AI_ENABLED, askJson } from "./client";
+import { resumirSimulado } from "./simulada";
 import type { AiSummary, Challenge, Submission } from "../types";
 
 // Dueño: perfil 4 (valorar y pasaporte). Prompt = PRD §10.2.
@@ -19,6 +20,7 @@ Sé factual. No inventes lo que no está en la entrega. No uses datos personales
 
 // Solo se pasa el contenido de la entrega, nunca los datos del estudiante.
 export function summarizeSubmission(challenge: Challenge, submission: Pick<Submission, "link" | "notes">) {
+  if (!AI_ENABLED) return resumirSimulado(challenge, submission); // IA apagada: simulada
   const reto = {
     title: challenge.title,
     task: challenge.task,
