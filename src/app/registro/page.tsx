@@ -19,7 +19,7 @@ export default async function Registro({ searchParams }: { searchParams: Promise
         <p className="text-lg text-ink-2">
           {empresa
             ? "Te registras en un minuto y la IA te ayuda a convertir tu necesidad en un reto real."
-            : "Un minuto para registrarte. Después eliges un reto real de una empresa de España o México."}
+            : "Un minuto para registrarte. Después eliges un reto real de una empresa de España o Colombia."}
         </p>
       </div>
 

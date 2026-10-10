@@ -2,9 +2,9 @@
 // Dueño: perfil 1. Formularios de registro; la lógica está en actions.ts (servidor).
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
+import { COUNTRIES } from "@/lib/types";
 import { registerCompany, registerStudent, type FormState } from "./actions";
 
-const COUNTRIES = ["España", "México", "Colombia"];
 const initial: FormState = { error: null };
 
 function Campo({
@@ -82,7 +82,7 @@ export function FormEstudiante() {
         <input id="consent" name="consent" type="checkbox" required className="mt-1 h-4 w-4 accent-[var(--ink)]" />
         <span className="text-sm text-ink-2">
           <strong className="text-ink">Tus datos son tuyos.</strong> Solo los usamos para conectarte con retos.
-          Cumplimos el RGPD y la ley de protección de datos de México.
+          Cumplimos el RGPD y la ley de protección de datos de Colombia (Ley 1581 de 2012).
         </span>
       </label>
       <Aviso state={state} />

@@ -1,5 +1,5 @@
 // Dueño: perfil 1 (entrada y demanda). Landing con movimiento: titular animado, banda continua,
-// recorrido fijo por escenas, texto que se ilumina con el scroll y arco España ↔ México.
+// recorrido fijo por escenas, texto que se ilumina con el scroll y arco España ↔ Colombia.
 // Ver docs/PRD.md §1–3 y §8 P1.
 import Link from "next/link";
 import { contarEstudiantes } from "./panel/queries";
@@ -18,13 +18,13 @@ const BANDA = [
   "Días, no semanas",
   "Valorado por la empresa",
   "Gratis para estudiantes",
-  "España ↔ México",
+  "España ↔ Colombia",
 ];
 
 const PASOS: Paso[] = [
   { quien: "Empresa", titulo: "Cuenta qué necesita", texto: "Con sus palabras: el problema que quiere resolver y el perfil que busca." },
   { quien: "IA", titulo: "Lo convierte en un reto", texto: "Enunciado, entregable, plazo de días y una rúbrica clara. La empresa lo revisa y publica." },
-  { quien: "Estudiante", titulo: "Lo resuelve en remoto", texto: "Desde España o México, sin CV ni visado. Entrega un enlace y explica su solución." },
+  { quien: "Estudiante", titulo: "Lo resuelve en remoto", texto: "Desde España o Colombia, sin CV ni visado. Entrega un enlace y explica su solución." },
   { quien: "Empresa", titulo: "Valora y contacta", texto: "Valora cada entrega con la rúbrica. Gane o no, todo queda en el pasaporte del estudiante." },
 ];
 
@@ -93,10 +93,10 @@ const ESCENAS = [
     </div>
   </Tarjeta>,
   <Tarjeta key="estudiante">
-    <span className="eyebrow">Entrega · Diego, UNAM</span>
+    <span className="eyebrow">Entrega · Andrés, U. Nacional de Colombia</span>
     <div className="mt-4 flex items-center gap-3 rounded-md border border-line bg-bg p-3">
       <span className="grid h-9 w-9 place-items-center rounded-md bg-ink font-mono text-xs text-paper">{"</>"}</span>
-      <span className="truncate font-mono text-sm">github.com/diego-h/carrito-analisis</span>
+      <span className="truncate font-mono text-sm">github.com/andres-r/carrito-analisis</span>
     </div>
     <p className="mt-4 text-ink-2">
       “El 38 % abandona en el paso de envío. Propongo mostrar el coste antes y un pago en un clic.”
@@ -108,8 +108,8 @@ const ESCENAS = [
   </Tarjeta>,
   <Tarjeta key="pasaporte" className="relative border-t-4 border-t-gold">
     <span className="eyebrow">Pasaporte de talento</span>
-    <h4 className="mt-2 font-display text-3xl font-bold">Diego Hernández</h4>
-    <p className="text-ink-2">UNAM · México</p>
+    <h4 className="mt-2 font-display text-3xl font-bold">Andrés Rojas</h4>
+    <p className="text-ink-2">Universidad Nacional · Colombia</p>
     <div className="mt-5 flex items-center justify-between rounded-md bg-gold-soft p-4">
       <div>
         <p className="font-semibold">Abandono del carrito</p>
@@ -139,7 +139,7 @@ export default async function Home() {
         <div className="mx-auto grid min-h-[calc(100svh-64px)] max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.25fr_1fr]">
           <div className="flex flex-col gap-7">
             <span className={`eyebrow ${s.word}`} style={{ animationDelay: "0ms" }}>
-              Retos reales online · España ↔ México
+              Retos reales online · España ↔ Colombia
             </span>
             <h1 className="text-5xl font-bold leading-[1.02] sm:text-7xl">
               {TITULAR.split(" ").map((w, i) => (
@@ -246,18 +246,18 @@ export default async function Home() {
       <section id="piloto" className="mx-auto grid w-full max-w-6xl items-center gap-12 px-4 py-24 sm:px-6 md:grid-cols-2">
         <Revelar className="flex flex-col gap-5">
           <span className="eyebrow">Piloto de 90 días</span>
-          <h2 className="text-4xl font-bold sm:text-5xl">España y México, conectados por sus universidades</h2>
+          <h2 className="text-4xl font-bold sm:text-5xl">España y Colombia, conectadas por sus universidades</h2>
           <p className="text-lg text-ink-2">
             Una iniciativa del Club Hispanidad Futura para convertir la comunidad iberoamericana en una plataforma de
             oportunidades para el talento joven.
           </p>
         </Revelar>
         <AlVer>
-          <svg viewBox="-50 0 620 260" className="w-full" role="img" aria-label="Arco que une Ciudad de México y Madrid">
+          <svg viewBox="-50 0 620 260" className="w-full" role="img" aria-label="Arco que une Bogotá y Madrid">
             <path className={s.arc} d="M60 200 C 160 20, 360 20, 460 170" fill="none" stroke="var(--gold)" strokeWidth="3" strokeLinecap="round" />
             <path d="M60 200 C 160 20, 360 20, 460 170" fill="none" stroke="var(--line)" strokeWidth="1" strokeDasharray="4 8" />
             {[
-              [60, 200, "Ciudad de México"],
+              [60, 200, "Bogotá"],
               [460, 170, "Madrid"],
             ].map(([x, y, label]) => (
               <g key={label as string}>
