@@ -12,7 +12,7 @@ La app está dividida en **4 partes completas e independientes**. Cada una tiene
 
 ## Arranque
 
-**Paso 0 (una sola vez, 5 minutos, lo hace quien llegue antes):**
+**Paso 0 (una sola vez, 5 minutos, lo hace quien llegue antes; issue #6):**
 1. Crear un proyecto en Supabase. SQL Editor → ejecutar `supabase/schema.sql` y después `supabase/seed.sql`.
 2. Crear una clave de la API de Claude en console.anthropic.com.
 3. Compartir con los otros cuatro, **por privado**, los tres valores de `.env.example`.
@@ -42,6 +42,8 @@ Reto en valoración con 3 entregas (1 valorada): `/empresa/retos/33333333-3333-4
 Pasaporte con una valoración: `/pasaporte/22222222-2222-4222-8222-000000000001`.
 
 ## Reglas para no pisarse
+
+- **Los agentes se comunican por GitHub Issues** (detalle en `AGENTS.md`): cada perfil tiene su issue de seguimiento (#1–#5) y su etiqueta `perfil-N`. Para pedir algo a otro perfil, issue con su etiqueta; para cambiar algo compartido, issue `contrato` antes de tocarlo.
 
 - **Cada perfil escribe solo en sus carpetas.** Las consultas a la base de datos van en tu propia carpeta (`actions.ts` o `queries.ts`). Si te hace falta una función que ya existe en otra parte, cópiala: hoy duplicar es más barato que coordinar.
 - **No se cambian sin avisar en voz alta:** `supabase/schema.sql`, `src/lib/types.ts`, `src/lib/supabase.ts`, `src/lib/session.ts`, `src/lib/ai/client.ts`, `src/components/Header.tsx`.
