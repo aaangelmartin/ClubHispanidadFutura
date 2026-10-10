@@ -2,6 +2,7 @@
 // Envuelve también /empresa/nuevo (perfil 2) sin tocar su contenido.
 import { pasaporteFonts } from "./_lib/fonts";
 import p from "./_lib/pasaporte.module.css";
+import e from "./_lib/empresa.module.css";
 import Lateral from "./_lib/Lateral";
 import Notificaciones from "./_lib/Notificaciones";
 import { requireCompany } from "./_lib/queries";
@@ -14,11 +15,13 @@ export default async function EmpresaLayout({ children }: { children: React.Reac
     .map((w) => w[0])
     .join("");
   return (
-    <div className={`${pasaporteFonts} ${p.page} ${p.seguridad} min-h-screen lg:flex`}>
+    <div data-app-empresa className={`${pasaporteFonts} ${p.page} ${e.app} lg:flex`}>
+      {/* La app de empresa lleva su propia cabecera en la barra lateral: se oculta la cabecera pública del sitio. */}
+      <style>{"body:has([data-app-empresa]) > header{display:none}"}</style>
       <Lateral empresa={company.name} pais={company.country} />
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-end gap-3 px-4 pt-4 sm:px-6">
-          <label className="mr-auto hidden max-w-sm flex-1 items-center gap-2 rounded-full bg-white/70 px-4 py-2 ring-1 ring-black/10 md:flex">
+          <label className="mr-auto hidden max-w-sm flex-1 items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-black/10 md:flex">
             <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#4f5d73]" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.5-3.5" />
@@ -26,7 +29,7 @@ export default async function EmpresaLayout({ children }: { children: React.Reac
             <input id="buscar-empresa" placeholder="Buscar candidatos, retos…" className="w-full bg-transparent text-sm outline-none" />
           </label>
           <Notificaciones />
-          <div className="flex items-center gap-2 rounded-full bg-white/70 py-1 pl-1 pr-3 ring-1 ring-black/10">
+          <div className="flex items-center gap-2 rounded-full bg-white py-1 pl-1 pr-3 ring-1 ring-black/10">
             <span className="grid h-8 w-8 place-items-center rounded-full bg-[#14233d] text-xs font-bold text-[#f3efe6]">{iniciales}</span>
             <span className="text-sm font-semibold">{company.contact_name}</span>
           </div>

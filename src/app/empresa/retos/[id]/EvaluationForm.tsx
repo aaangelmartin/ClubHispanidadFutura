@@ -77,10 +77,10 @@ export default function EvaluationForm({
       </label>
 
       <button type="submit" className="btn btn-primary w-full py-3 text-base" disabled={pending}>
-        {pending ? "Sellando…" : existing ? "Actualizar el sello" : "Sellar valoración"}
+        {pending ? "Guardando…" : existing ? "Actualizar valoración" : "Guardar valoración"}
       </button>
       {state.error && <p className="text-sm text-warn">{state.error}</p>}
-      {state.ok && !pending && <p className="text-sm text-ok">Sellado. Ya está en su pasaporte.</p>}
+      {state.ok && !pending && <p className="text-sm text-ok">Guardada. El estudiante la verá en su pasaporte.</p>}
     </form>
   );
 }

@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
 import p from "@/app/empresa/_lib/pasaporte.module.css";
+import e from "@/app/empresa/_lib/empresa.module.css";
 import { formatDate, getCandidates, initials, requireCompany, weightedScore } from "../_lib/queries";
-import { countryCode } from "../_lib/visuals";
-import Sello, { fechaSello } from "../_lib/Sello";
+import { countryCode, ProgressRing } from "../_lib/visuals";
 import Accion from "../_lib/Accion";
 
 export const dynamic = "force-dynamic";
@@ -36,9 +36,9 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
   });
 
   return (
-    <div className={`${pasaporteFonts} ${p.page} ${p.seguridad} min-h-screen`}>
+    <div className={`${pasaporteFonts} ${p.page}`}>
     <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
-      <section className={`${p.tapa} flex flex-wrap items-end justify-between gap-6 rounded-2xl p-6  sm:p-10`}>
+      <section className={`${e.hero} flex flex-wrap items-end justify-between gap-6 rounded-2xl p-6  sm:p-10`}>
         <div className="flex flex-col gap-3">
           <span className="eyebrow">{company.name}</span>
           <h1 className="text-4xl font-bold text-paper sm:text-5xl">Candidatos</h1>
@@ -76,16 +76,16 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
       <Accion hecho="Exportado: candidatos.csv">Exportar a CSV</Accion>
       </div>
 
-      {rows.length === 0 && <div className={`${p.hoja} p-10 text-center text-ink-2`}>No hay candidatos con este filtro.</div>}
+      {rows.length === 0 && <div className={`${e.panel} p-10 text-center text-ink-2`}>No hay candidatos con este filtro.</div>}
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {rows.map((c, idx) => {
+        {rows.map((c) => {
           const score = c.evaluation ? weightedScore(c.challenge.rubric, c.evaluation.scores) : null;
           const contacted = !!c.evaluation?.contact_requested;
           return (
             <article
               key={c.id}
-              className={`${p.hoja} flex flex-col gap-4 p-5 ${!c.evaluation ? "border-gold" : contacted ? "border-ok" : ""}`}
+              className={`${e.panel} flex flex-col gap-4 p-5 ${!c.evaluation ? "border-gold" : contacted ? "border-ok" : ""}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div
@@ -96,15 +96,7 @@ export default async function Candidatos({ searchParams }: { searchParams: Promi
                   {initials(c.student.name)}
                 </div>
                 {score !== null ? (
-                  <Sello
-                    i={idx}
-                    forma="circulo"
-                    size={84}
-                    empresa={company.name}
-                    lugar={company.country}
-                    fecha={fechaSello(c.evaluation!.created_at)}
-                    nota={score.toFixed(1).replace(".", ",")}
-                  />
+                  <ProgressRing value={score} total={10} size={64} tone="light" label={score.toFixed(1)} />
                 ) : (
                   <span className="chip border-gold bg-gold-soft text-gold">Por valorar</span>
                 )}

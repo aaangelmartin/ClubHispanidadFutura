@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
 import p from "@/app/empresa/_lib/pasaporte.module.css";
+import e from "@/app/empresa/_lib/empresa.module.css";
 import { daysLeft, getCompanyChallenges, requireCompany } from "./_lib/queries";
 import StatusChip from "./_lib/StatusChip";
 import { Avatars, countryCode, ProgressRing, SegmentBar } from "./_lib/visuals";
@@ -49,10 +50,10 @@ export default async function EmpresaDashboard() {
   const funnelMax = Math.max(1, ...funnel.map((f) => f.value));
 
   return (
-    <div className={`${pasaporteFonts} ${p.page} ${p.seguridad} min-h-screen`}>
+    <div className={`${pasaporteFonts} ${p.page}`}>
     <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
       {/* Cabecera: saludo, siguiente acción y progreso */}
-      <section className={`${p.tapa} grid items-center gap-8 rounded-2xl p-6  sm:p-10 md:grid-cols-[1fr_auto]`}>
+      <section className={`${e.hero} grid items-center gap-8 rounded-2xl p-6  sm:p-10 md:grid-cols-[1fr_auto]`}>
         <div className="flex flex-col gap-4">
           <span className="eyebrow">
             {company.name} · {company.country}
@@ -98,7 +99,7 @@ export default async function EmpresaDashboard() {
           { label: "Por valorar", value: pending, hint: pending ? "te están esperando" : "al día", gold: pending > 0 },
           { label: "Contactados", value: contacted, hint: "candidatos que te interesan" },
         ].map((s) => (
-          <div key={s.label} className={`${p.hoja} flex flex-col gap-1 p-5 ${s.gold ? "border-gold bg-gold-soft" : ""}`}>
+          <div key={s.label} className={`${e.panel} flex flex-col gap-1 p-5 ${s.gold ? "border-gold bg-gold-soft" : ""}`}>
             <span className="font-mono text-xs uppercase tracking-widest text-ink-3">{s.label}</span>
             <span className={`font-display text-5xl font-bold tabular ${s.gold ? "text-gold" : ""}`}>{s.value}</span>
             <span className="text-sm text-ink-2">{s.hint}</span>
@@ -108,7 +109,7 @@ export default async function EmpresaDashboard() {
 
       {/* Embudo y países */}
       <section className="grid gap-4 lg:grid-cols-[3fr_2fr]">
-        <div className={`${p.hoja} flex flex-col gap-5 p-6`}>
+        <div className={`${e.panel} flex flex-col gap-5 p-6`}>
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <h2 className="text-2xl font-bold">Embudo de talento</h2>
             <span className="font-mono text-xs text-ink-3">todos tus retos</span>
@@ -129,7 +130,7 @@ export default async function EmpresaDashboard() {
           </div>
         </div>
 
-        <div className={`${p.hoja} flex flex-col gap-5 p-6`}>
+        <div className={`${e.panel} flex flex-col gap-5 p-6`}>
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <h2 className="text-2xl font-bold">De dónde vienen</h2>
             <span className="font-mono text-xs text-ink-3">{enrolled} candidatos</span>
@@ -183,7 +184,7 @@ export default async function EmpresaDashboard() {
               <Link
                 key={c.id}
                 href={c.status === "borrador" ? "/empresa/nuevo" : `/empresa/retos/${c.id}`}
-                className={`${p.hoja} group flex flex-col gap-4 p-6 transition hover:-translate-y-0.5 hover:border-gold ${
+                className={`${e.panel} group flex flex-col gap-4 p-6 transition hover:-translate-y-0.5 hover:border-gold ${
                   left > 0 ? "border-gold" : ""
                 }`}
               >
