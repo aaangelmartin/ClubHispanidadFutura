@@ -52,7 +52,7 @@ export default async function Home() {
       <section className="flex min-h-[calc(100svh-98px)] items-center bg-ink text-white">
         <div className={`${ENVOLTURA} grid items-center gap-14 py-16 lg:grid-cols-[1fr_1.05fr] lg:gap-16 lg:py-24`}>
           <div className="flex flex-col gap-6">
-            <h1 className="text-[44px] font-bold leading-[1.02] tracking-[-0.04em] sm:text-[64px] lg:text-[72px]">El talento se demuestra.</h1>
+            <h1 className="text-[44px] font-bold leading-[1.02] tracking-[-0.04em] sm:text-[64px] lg:text-[72px]">Próximo destino: tu primer trabajo.</h1>
             <p className="max-w-[34ch] text-[19px] leading-[1.5] text-[#c9cfda]">
               Empresas de España y Colombia publican retos reales. Estudiantes los resuelven en días. Cada entrega valorada queda en su pasaporte.
             </p>
@@ -68,8 +68,20 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Frase bajo la portada */}
+      <section aria-label="Lema" className="border-b border-line bg-white">
+        <div className={`${ENVOLTURA} flex flex-col gap-4 py-14 sm:flex-row sm:items-center sm:justify-between lg:py-16`}>
+          <p className="max-w-[30ch] text-[28px] font-bold leading-[1.2] tracking-[-0.02em] text-ink sm:text-[36px] lg:text-[44px]">
+            Un título dice de dónde vienes; un sello, adónde puedes llegar.
+          </p>
+          <Link href="/registro?rol=estudiante" className="btn btn-primary w-fit shrink-0 !px-5 !py-3 !text-base">
+            Embárcate
+          </Link>
+        </div>
+      </section>
+
       {/* 3 · Para empresas */}
-      <section className="flex min-h-[calc(100svh-58px)] items-center bg-paper">
+      <section id="empresas" className="scroll-mt-16 bg-paper">
         <div className={`${ENVOLTURA} grid items-center gap-12 py-20 lg:grid-cols-2 lg:gap-[72px] lg:py-24`}>
           <Aparece className="flex flex-col gap-6">
             <span className="text-base font-bold text-blue">Para empresas</span>
@@ -88,7 +100,7 @@ export default async function Home() {
       </section>
 
       {/* 4 · Para estudiantes */}
-      <section className="flex min-h-[calc(100svh-58px)] items-center bg-ink text-white">
+      <section id="estudiantes" className="scroll-mt-16 bg-ink text-white">
         <div className={`${ENVOLTURA} grid items-center gap-12 py-20 lg:grid-cols-2 lg:gap-[72px] lg:py-24`}>
           <div className="order-2 lg:order-1">
             <PasaporteEstudiante />
@@ -109,7 +121,7 @@ export default async function Home() {
       </section>
 
       {/* 5 · Nadie se queda en tierra */}
-      <section className="flex min-h-[calc(100svh-58px)] items-center bg-white">
+      <section className="bg-white">
         <div className={`${ENVOLTURA} flex flex-col gap-10 py-20 lg:py-24`}>
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <Aparece className="flex max-w-[640px] flex-col gap-4">
@@ -128,7 +140,7 @@ export default async function Home() {
       </section>
 
       {/* 6 · La IA prepara. Tú decides. */}
-      <section className="flex min-h-[calc(100svh-58px)] items-center bg-paper">
+      <section className="bg-paper">
         <div className={`${ENVOLTURA} grid items-center gap-12 py-20 lg:grid-cols-[0.8fr_1.2fr] lg:gap-[72px] lg:py-24`}>
           <Aparece className="flex flex-col gap-5">
             <h2 className={H2}>La IA prepara. Tú decides.</h2>
@@ -141,7 +153,7 @@ export default async function Home() {
       </section>
 
       {/* 7 · Llegadas de hoy */}
-      <section className="flex min-h-[calc(100svh-58px)] items-center bg-ink text-white">
+      <section className="bg-ink text-white">
         <div className={`${ENVOLTURA} flex flex-col gap-7 py-16 lg:py-20`}>
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div className="flex flex-col gap-3">
@@ -188,7 +200,7 @@ export default async function Home() {
       </section>
 
       {/* 8 · Cierre */}
-      <section className="flex min-h-[calc(100svh-58px)] items-center bg-gold">
+      <section className="bg-gold">
         <div className={`${ENVOLTURA} flex flex-col justify-between gap-8 py-16 md:flex-row md:items-center lg:py-[88px]`}>
           <h2 className={`${H2} max-w-[16ch] text-ink`}>Tu próximo junior está a punto de embarcar.</h2>
           <div className="flex flex-wrap gap-3">

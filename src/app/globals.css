@@ -143,3 +143,31 @@ h1, h2, h3 {
 .tabular {
   font-variant-numeric: tabular-nums;
 }
+
+/* Texturas de pasaporte: ningún fondo es liso del todo.
+   Marino con rayas finas en diagonal (la tapa), papel con guilloché (la página de seguridad)
+   y oro con rayado suave. Solo añaden background-image; el color lo pone la clase de Tailwind. */
+section.bg-ink,
+main.bg-ink,
+header.bg-ink,
+footer.bg-ink {
+  background-image:
+    radial-gradient(1200px 520px at 88% -10%, rgba(200, 150, 58, 0.16), transparent 60%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 6px);
+}
+section.bg-paper,
+main.bg-paper,
+aside.bg-paper {
+  background-image:
+    repeating-radial-gradient(circle at 0% 100%, transparent 0 9px, rgba(20, 35, 61, 0.05) 9px 10px),
+    repeating-radial-gradient(circle at 100% 0%, transparent 0 13px, rgba(20, 35, 61, 0.05) 13px 14px);
+}
+section.bg-gold,
+nav.bg-gold {
+  background-image: repeating-linear-gradient(135deg, rgba(20, 35, 61, 0.06) 0 2px, transparent 2px 7px);
+}
+body {
+  background-image:
+    repeating-radial-gradient(circle at 100% 0%, transparent 0 15px, rgba(20, 35, 61, 0.022) 15px 16px);
+  background-attachment: fixed;
+}

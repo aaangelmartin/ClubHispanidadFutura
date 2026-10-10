@@ -12,16 +12,15 @@
   --sello-a: #b23a48;
   --sello-b: #2d6a8f;
   --sello-c: #2f7a55;
-  --display: var(--font-archivo), system-ui, sans-serif;
+  --display: var(--font-hanken), system-ui, sans-serif;
   --datos: var(--font-b612), ui-monospace, monospace;
   font-family: var(--display);
 }
 
 .display {
   font-family: var(--display);
-  font-stretch: 125%;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.035em;
   line-height: 0.95;
 }
 

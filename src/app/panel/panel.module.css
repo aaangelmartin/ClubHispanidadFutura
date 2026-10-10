@@ -2,6 +2,9 @@
 
 .tablero {
   background: #14233d;
+  background-image:
+    radial-gradient(1200px 520px at 88% -10%, rgba(200, 150, 58, 0.16), transparent 60%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 6px);
   color: #fff;
 }
 

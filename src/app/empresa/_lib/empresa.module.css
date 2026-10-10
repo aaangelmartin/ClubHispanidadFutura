@@ -3,6 +3,9 @@
 
 .app {
   background: #f7f6f2;
+  background-image:
+    repeating-radial-gradient(circle at 0% 100%, transparent 0 9px, rgba(20, 35, 61, 0.045) 9px 10px),
+    repeating-radial-gradient(circle at 100% 0%, transparent 0 13px, rgba(20, 35, 61, 0.045) 13px 14px);
   color: #14233d;
   min-height: 100vh;
   font-family: var(--font-hanken), system-ui, sans-serif;
@@ -11,6 +14,9 @@
 /* Cabecera marina (se mantiene por compatibilidad) */
 .hero {
   background: #14233d;
+  background-image:
+    radial-gradient(1200px 520px at 88% -10%, rgba(200, 150, 58, 0.16), transparent 60%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 6px);
   color: #fff;
 }
 
