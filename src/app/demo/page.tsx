@@ -1,6 +1,8 @@
 // Lanzador de la demo: todas las pantallas a un clic, con la sesión adecuada. Dueño: perfil 1.
 // Los pasos viven en ./pasos.ts; cada perfil añade los suyos.
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { DEMO_MODE } from "@/lib/demo";
 import { enlace, PASOS, SESIONES } from "./pasos";
 
 import type { Metadata } from "next";
@@ -8,6 +10,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Demo · Retos reales" };
 
 export default function Demo() {
+  if (!DEMO_MODE) notFound();
   return (
     <main className="mx-auto flex max-w-5xl flex-col gap-10 px-4 py-10 sm:px-6">
       <div className="flex flex-col gap-2">
