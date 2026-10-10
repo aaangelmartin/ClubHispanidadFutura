@@ -19,6 +19,8 @@
 | [`docs/NICHO.md`](docs/NICHO.md) | Propuesta de nicho de entrada, competidores y cómo vender a universidades |
 | [`docs/NEGOCIO.md`](docs/NEGOCIO.md) | Mercado, financiación, KPIs, aliados, plan 90 días |
 | [`docs/PITCH.md`](docs/PITCH.md) | Guion del pitch de 3 minutos |
+| [`docs/PITCH-PROPUESTA.md`](docs/PITCH-PROPUESTA.md) | Propuesta de mejora del pitch: causa raíz, nicho, financiación del piloto |
+| [`docs/PREGUNTAS.md`](docs/PREGUNTAS.md) | **Preguntas probables del jurado y respuestas cortas** |
 | [`docs/DEMO.md`](docs/DEMO.md) | **Guion de la demo (30 s y 90 s), preparación y plan B** |
 | [`docs/deck-mentores.html`](docs/deck-mentores.html) | Deck para validar con mentores ([publicado](https://claude.ai/code/artifact/ca73f748-aac1-4b16-b9db-db126fd59be0)) |
 
