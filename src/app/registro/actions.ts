@@ -67,7 +67,7 @@ export async function registerStudent(_prev: FormState, form: FormData): Promise
   if ("error" in result) return { error: result.error ?? null };
 
   await setSession({ role: "student", id: result.id });
-  redirect("/retos");
+  redirect("/estudiante");
 }
 
 export async function registerCompany(_prev: FormState, form: FormData): Promise<FormState> {

@@ -4,12 +4,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import r from "./registro.module.css";
 import { FormEmpresa, FormEstudiante } from "./Formularios";
+import { getSession } from "@/lib/session";
 
 export const metadata: Metadata = { title: "Registro · Embarca" };
 
 export default async function Registro({ searchParams }: { searchParams: Promise<{ rol?: string }> }) {
   const { rol } = await searchParams;
   const empresa = rol === "empresa";
+  const sesion = await getSession();
 
   const selector = (
     <nav
@@ -34,8 +36,17 @@ export default async function Registro({ searchParams }: { searchParams: Promise
   );
 
   return (
-    <main className="min-h-[calc(100dvh-4rem)] bg-[var(--bg)] px-4 pb-16 pt-6 sm:px-6 sm:pt-10">
+    <main className="min-h-[calc(100dvh-4rem)] bg-paper px-4 pb-16 pt-6 sm:px-6 sm:pt-10">
       <div className="mx-auto max-w-6xl">
+        {sesion && (
+          <p className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-blue-soft px-4 py-3 text-sm text-ink">
+            Ya tienes una cuenta abierta como {sesion.role === "company" ? "empresa" : "estudiante"}.
+            <Link href={sesion.role === "company" ? "/empresa" : "/estudiante"} className="font-semibold text-blue hover:underline">
+              Ir a mi inicio
+            </Link>
+            <Link href="/salir" className="font-semibold text-blue hover:underline">Salir y crear otra</Link>
+          </p>
+        )}
         {empresa ? <FormEmpresa selector={selector} /> : <FormEstudiante selector={selector} />}
       </div>
     </main>
