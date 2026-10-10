@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { Isotipo } from "@/components/embarca";
 import Formulario from "./Formulario";
+import EntrarDemo from "./Demo";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Entrar · Embarca" };
@@ -21,6 +22,9 @@ export default async function Entrar() {
         <p className="mt-2 text-ink-2">Usa el email con el que creaste tu pasaporte o diste de alta tu empresa.</p>
         <div className="mt-8">
           <Formulario />
+        </div>
+        <div className="mt-6 border-t border-line pt-6">
+          <EntrarDemo />
         </div>
         <p className="mt-6 text-sm text-ink-2">
           ¿Aún no tienes cuenta?{" "}
