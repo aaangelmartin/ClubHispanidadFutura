@@ -1,10 +1,12 @@
 # Reparto del equipo (5 personas)
 
+> **Cada persona trabaja con su ficha de `docs/perfiles/`.** A su Claude: *"Soy el perfil N. Lee AGENTS.md y docs/perfiles/N-*.md y empieza por la primera tarea."*
+
 **4 personas en la app** (un módulo cada una) y **1 en negocio** (todo lo que no es código). Cada persona es dueña de su módulo y de sus archivos. Si algo te bloquea, avisa en voz alta; no esperes.
 
 | # | Rol | Quién | Qué construye / entrega | Archivos |
 |---|---|---|---|---|
-| 1 | **Base e integración** (líder técnico) | | Supabase, Vercel, landing, registro, panel en vivo. Integra a los demás y prepara la demo | `src/app/page.tsx`, `src/app/registro/`, `src/app/panel/`, `src/lib/` (salvo `ai.ts`), `supabase/schema.sql` |
+| 1 | **Base e integración** (líder técnico) | | Supabase, Vercel, landing, registro, panel en vivo. Integra a los demás y prepara la demo | `src/app/page.tsx`, `layout.tsx`, `src/app/registro/`, `src/app/panel/`, `src/app/dev/`, `src/lib/` (salvo `ai.ts`), `supabase/schema.sql` |
 | 2 | **Crear retos** (empresa) | | La empresa describe su problema, la IA genera el reto, la empresa lo edita y lo publica | `src/app/empresa/nuevo/`, `src/lib/ai.ts` |
 | 3 | **Valorar entregas** (empresa) | | Mis retos, entregas con resumen IA, nota por rúbrica, feedback, contactar, cerrar reto. Datos de ejemplo | `src/app/empresa/page.tsx`, `src/app/empresa/retos/`, `supabase/seed.sql` |
 | 4 | **Lado estudiante** | | Retos abiertos, apuntarse, entregar, pasaporte público | `src/app/retos/`, `src/app/pasaporte/` |

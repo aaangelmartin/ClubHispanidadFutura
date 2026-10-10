@@ -11,6 +11,7 @@
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Cómo trabajamos (personas y agentes) |
 | [`docs/PRD.md`](docs/PRD.md) | Producto: problema, reglas, MVP, IA, datos, decisiones |
+| [`docs/perfiles/`](docs/perfiles/README.md) | **Una ficha por perfil: empieza aquí** |
 | [`docs/EQUIPO.md`](docs/EQUIPO.md) | Reparto: 4 en la app, 1 en negocio, y calendario del día |
 | [`docs/NEGOCIO.md`](docs/NEGOCIO.md) | Mercado, financiación, KPIs, aliados, plan 90 días |
 | [`docs/PITCH.md`](docs/PITCH.md) | Guion del pitch de 3 minutos |

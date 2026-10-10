@@ -3,6 +3,7 @@
 Equipo de 5 en la **Hackathon Iberoamérica 2030** del Club Hispanidad Futura (Madrid, 10/10/2026). Pitches a las **16:00**. Todo lo que hagas debe servir para la demo o el pitch de hoy.
 
 ## Lee antes de hacer nada
+0. **Pregunta qué perfil es la persona (1–5) si no te lo ha dicho, y lee su ficha en `docs/perfiles/`.** Esa ficha dice qué archivos son suyos, qué no puede tocar y las tareas en orden. Trabaja solo en lo suyo.
 1. `docs/PRD.md` — qué construimos, reglas de producto, alcance del MVP, prompts. **Fuente de verdad.**
 2. `docs/EQUIPO.md` — quién hace qué y calendario.
 3. `docs/NEGOCIO.md` — mercado, financiación, KPIs, aliados, plan 90 días.
