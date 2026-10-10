@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Sans_3, IBM_Plex_Mono, Lobster, Raleway } from "next/font/google";
+import { Fraunces, Source_Sans_3, IBM_Plex_Mono, Lobster, Raleway, Archivo, B612_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 
@@ -10,6 +10,9 @@ const sourceSans = Source_Sans_3({ variable: "--font-source-sans", subsets: ["la
 const plexMono = IBM_Plex_Mono({ variable: "--font-plex-mono", subsets: ["latin"], weight: ["500"] });
 const lobster = Lobster({ variable: "--font-lobster", subsets: ["latin"], weight: "400" });
 const raleway = Raleway({ variable: "--font-raleway", subsets: ["latin"], weight: ["800"] });
+// Landing (pasaporte de talento): Archivo extendida para titulares y B612 Mono para los datos del pasaporte.
+const archivo = Archivo({ variable: "--font-archivo", subsets: ["latin"], axes: ["wdth"] });
+const b612 = B612_Mono({ variable: "--font-b612", subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "Retos reales · Club Hispanidad Futura",
@@ -23,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${fraunces.variable} ${sourceSans.variable} ${plexMono.variable} ${lobster.variable} ${raleway.variable} antialiased`}>
+      <body className={`${fraunces.variable} ${sourceSans.variable} ${plexMono.variable} ${lobster.variable} ${raleway.variable} ${archivo.variable} ${b612.variable} antialiased`}>
         <Header />
         {children}
       </body>

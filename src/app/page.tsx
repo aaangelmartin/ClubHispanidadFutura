@@ -1,140 +1,74 @@
-// Dueño: perfil 1 (entrada y demanda). Landing oscura y tecnológica: la IA monta un reto en directo,
-// retos reales en vez de puzzles, evidencia en vez de CV y las dos entradas. Ver docs/PRD.md §1–3 y §8 P1.
+// Dueño: perfil 1 (entrada y demanda). Landing «pasaporte de talento»: el producto es el pasaporte,
+// así que la portada es un pasaporte abierto al que llegan los sellos de las empresas.
+// Ver docs/PRD.md §1–3 y §8 P1.
 import Link from "next/link";
 import { contarEstudiantes } from "./panel/queries";
-import { Contador, Revelar } from "./_landing/movimiento";
-import { Escribir, Inclinar } from "./_landing/tech";
-import t from "./_landing/tech.module.css";
+import Pasaporte from "./_landing/Pasaporte";
+import p from "./_landing/pasaporte.module.css";
 
 export const dynamic = "force-dynamic";
 
-const SANS = { fontFamily: "var(--font-source-sans), system-ui, sans-serif" };
-
-const JSON_RETO = `{
-  "title": "Reduce el abandono del carrito",
-  "duration_days": 5,
-  "profile": "Junior de datos (Python o SQL)",
-  "deliverable": "Repo + informe de 2 páginas",
-  "rubric": [
-    { "criterion": "Rigor del análisis", "weight": 40 },
-    { "criterion": "Propuestas medibles", "weight": 35 },
-    { "criterion": "Claridad al explicarlo", "weight": 25 }
-  ],
-  "warnings": []
-}`;
-
-const STACK = ["Python", "SQL", "React", "Node.js", "TypeScript", "Power BI", "Figma", "Java", "Ciberseguridad", "Machine learning", "Cloud", "Producto"];
-
-const BLOQUES = [
+const PASOS = [
   {
-    eyebrow: "Retos reales",
-    titulo: "Problemas de empresas, no puzzles de algoritmos",
-    puntos: ["La empresa describe su necesidad con sus palabras", "La IA la convierte en un reto acotado: días, no semanas", "Entrega real: repo, demo o informe"],
+    titulo: "Una empresa cuenta lo que necesita",
+    texto: "Con sus palabras, sin redactar ofertas. Empresas de España y Colombia con un problema real.",
   },
   {
-    eyebrow: "Pasaporte",
-    titulo: "Evidencia valorada, no un CV más",
-    puntos: ["Cada entrega recibe nota por criterio y feedback", "Ganes o no, queda en tu pasaporte público", "Un enlace que enseñas en cualquier entrevista"],
+    titulo: "La IA lo convierte en un reto de días",
+    texto: "Enunciado, entregable y rúbrica. Acotado para que lo pueda hacer alguien junior en remoto.",
   },
   {
-    eyebrow: "IA responsable",
-    titulo: "La IA prepara. Decide una persona",
-    puntos: ["Monta el reto y resume cada entrega", "No pone notas ni ordena candidatos", "Alineado con la Ley de IA de la UE"],
+    titulo: "Lo resuelves y la empresa pone su sello",
+    texto: "Valora cada entrega con la rúbrica y escribe feedback. Ganes o no, el sello queda en tu pasaporte.",
   },
 ];
 
-const ENTRADAS = [
-  {
-    quien: "Para estudiantes",
-    titulo: "Tu primera experiencia real",
-    texto: "Elige un reto, entrégalo en días y construye un pasaporte que enseña lo que sabes hacer. Gratis, siempre.",
-    cta: "Crear mi pasaporte",
-    href: "/registro?rol=estudiante",
-    destacado: true,
-  },
-  {
-    quien: "Para empresas",
-    titulo: "Ve el trabajo antes de contratar",
-    texto: "Describe tu necesidad y la IA monta el reto. Recibe entregas de dos países y contacta a quien lo demuestra.",
-    cta: "Publicar un reto",
-    href: "/registro?rol=empresa",
-    destacado: false,
-  },
-];
-
-function Flecha() {
-  return (
-    <span className="text-[var(--d-gold)]" aria-hidden="true">
-      →
-    </span>
-  );
-}
-
-function Punto() {
-  return (
-    <span className="relative flex h-2 w-2">
-      <span className={`absolute inline-flex h-full w-full rounded-full bg-[var(--d-live)] ${t.ping}`} />
-      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--d-live)]" />
-    </span>
-  );
-}
-
-function Etiqueta({ children }: { children: React.ReactNode }) {
-  return <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--d-gold)]">{children}</span>;
-}
-
-function VentanaProducto() {
-  return (
-    <div className={t.ring}>
-      <div className="overflow-hidden rounded-[17px] bg-[#0b111d]">
-        <div className="flex items-center gap-2 border-b border-[var(--d-line)] px-4 py-3">
-          <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
-          <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
-          <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-          <span className="ml-3 truncate font-mono text-xs text-[var(--d-muted)]">retos · hispanidad futura · nuevo reto</span>
-          <span className="ml-auto hidden rounded-full border border-[var(--d-line)] px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-[var(--d-muted)] sm:inline">
-            Ejemplo piloto
-          </span>
+function Artefacto({ i }: { i: number }) {
+  if (i === 0)
+    return (
+      <p className="rounded-lg bg-white/70 p-4 text-[15px] leading-relaxed text-[var(--tinta)] ring-1 ring-black/5">
+        “Queremos entender por qué los clientes abandonan el carrito en la app. Buscamos a alguien junior que sepa de datos.”
+        <span className="mt-2 block text-sm text-[var(--tinta-2)]">Ibérica Retail, Madrid</span>
+      </p>
+    );
+  if (i === 1)
+    return (
+      <div className="rounded-lg bg-white/70 p-4 ring-1 ring-black/5">
+        <div className="flex items-baseline justify-between gap-3">
+          <span className="font-bold text-[var(--tinta)]">Reduce el abandono del carrito</span>
+          <span className={`${p.datos} shrink-0 text-xs text-[var(--tinta-2)]`}>5 días</span>
         </div>
-        <div className="grid md:grid-cols-[0.9fr_1.1fr]">
-          <div className="flex flex-col gap-4 border-b border-[var(--d-line)] p-5 md:border-b-0 md:border-r">
-            <span className="font-mono text-[11px] uppercase tracking-widest text-[var(--d-gold)]">La empresa escribe</span>
-            <p className="rounded-lg border border-[var(--d-line)] bg-white/[0.03] p-3 text-sm leading-relaxed">
-              “Somos un e-commerce de Madrid. Queremos entender por qué los clientes abandonan el carrito en la app.
-              Buscamos a alguien junior que sepa de datos.”
-            </p>
-            <div className="flex flex-col gap-2.5">
-              {(
-                [
-                  ["Rigor del análisis", 40],
-                  ["Propuestas medibles", 35],
-                  ["Claridad al explicarlo", 25],
-                ] as const
-              ).map(([c, w], i) => (
-                <div key={c} className="flex flex-col gap-1">
-                  <div className="flex justify-between text-xs text-[var(--d-muted)]">
-                    <span>{c}</span>
-                    <span className="font-mono">{w}%</span>
-                  </div>
-                  <div className="h-1.5 rounded-full bg-white/[0.06]">
-                    <div
-                      className={`h-1.5 rounded-full bg-[var(--d-gold)] ${t.bar}`}
-                      style={{ width: `${w}%`, animationDelay: `${1200 + i * 200}ms` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex min-h-[340px] flex-col gap-3 p-5">
-            <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-[var(--d-gold)]">
-              <Punto />
-              La IA monta el reto
-            </span>
-            <Escribir texto={JSON_RETO} />
-          </div>
-        </div>
+        <ul className={`${p.datos} mt-3 flex flex-col gap-1.5 text-xs text-[var(--tinta-2)]`}>
+          {[
+            ["Rigor del análisis", 40],
+            ["Propuestas medibles", 35],
+            ["Claridad", 25],
+          ].map(([c, w]) => (
+            <li key={c} className="flex items-center gap-2">
+              <span className="w-32 shrink-0">{c}</span>
+              <span className="h-1.5 flex-1 rounded-full bg-[var(--tinta)]/10">
+                <span className="block h-1.5 rounded-full bg-[var(--tinta)]" style={{ width: `${w}%` }} />
+              </span>
+              <span className="w-8 text-right">{w}%</span>
+            </li>
+          ))}
+        </ul>
       </div>
+    );
+  return (
+    <div className="flex items-center gap-4 rounded-lg bg-white/70 p-4 ring-1 ring-black/5">
+      <span
+        className={`${p.datos} grid h-20 w-20 shrink-0 -rotate-6 place-items-center rounded-full border-[3px] border-[var(--sello-a)] text-center text-[var(--sello-a)] mix-blend-multiply`}
+      >
+        <span className="text-[8px] font-bold leading-tight tracking-[0.14em]">
+          VALORADO
+          <br />
+          <span className="text-xl leading-none">8,6</span>
+        </span>
+      </span>
+      <p className="text-sm text-[var(--tinta-2)]">
+        “Buen análisis del embudo. Las propuestas se pueden medir desde la primera semana.”
+      </p>
     </div>
   );
 }
@@ -143,180 +77,104 @@ export default async function Home() {
   const registrados = await contarEstudiantes();
 
   return (
-    <main className={`${t.page} relative overflow-x-clip`}>
-      {/* Hero */}
-      <section className="relative">
-        <div className={`absolute inset-0 ${t.grid}`} aria-hidden="true" />
-        <div className={t.glow} style={{ width: 520, height: 520, left: "8%", top: -120, background: "#1d3b7a" }} />
-        <div className={t.glow} style={{ width: 420, height: 420, right: "6%", top: 80, background: "#8a5d12", animationDelay: "-4s" }} />
+    <main className={`${p.page} overflow-x-clip`}>
+      {/* Portada: la tapa del pasaporte */}
+      <section className={p.tapa}>
+        <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-14 sm:px-8 lg:grid-cols-[1.15fr_1fr] lg:pb-28 lg:pt-20">
+          <div className="flex flex-col gap-7">
+            <h1 className={`${p.display} ${p.entra} text-[38px] sm:text-5xl lg:text-[54px]`}>
+              El CV dice lo que hiciste. Aquí demuestras lo que sabes hacer.
+            </h1>
+            <p className={`${p.entra} max-w-[34rem] text-lg leading-relaxed text-[#c9d1de]`} style={{ animationDelay: "150ms" }}>
+              Resuelve retos reales de empresas de España y Colombia. Cada entrega valorada es un sello en tu pasaporte de
+              talento, ganes o no.
+            </p>
+            <div className={`${p.entra} flex flex-col gap-3 sm:flex-row`} style={{ animationDelay: "280ms" }}>
+              <Link
+                href="/registro?rol=estudiante"
+                className={`${p.boton} inline-flex items-center justify-center rounded-lg bg-[var(--oro)] px-7 py-3.5 text-[17px] font-bold text-[var(--tapa)] shadow-[0_10px_30px_-10px_rgba(200,150,58,0.8)]`}
+              >
+                Crear mi pasaporte
+              </Link>
+              <Link
+                href="/registro?rol=empresa"
+                className={`${p.boton} inline-flex items-center justify-center rounded-lg px-7 py-3.5 text-[17px] font-bold text-[#f3efe6] ring-1 ring-white/30 hover:ring-white/60`}
+              >
+                Publicar un reto
+              </Link>
+            </div>
+            <p className={`${p.entra} text-sm text-[#9aa6b8]`} style={{ animationDelay: "400ms" }}>
+              {registrados ? (
+                <Link href="/panel" className="underline decoration-white/30 underline-offset-4 hover:text-white">
+                  <span className="tabular font-bold text-white">{registrados}</span>{" "}
+                  {registrados === 1 ? "estudiante ya tiene" : "estudiantes ya tienen"} su pasaporte
+                </Link>
+              ) : (
+                "Gratis para estudiantes. Piloto de 90 días entre España y Colombia."
+              )}
+            </p>
+          </div>
 
-        <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 pb-16 pt-16 text-center sm:px-6 sm:pt-24">
-          <Link
-            href="/panel"
-            className={`${t.rise} ${t.glass} inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm text-[var(--d-muted)] hover:text-[var(--d-text)]`}
-          >
-            <Punto />
-            {registrados ? (
-              <span>
-                <strong className="tabular text-[var(--d-text)]">{registrados}</strong> estudiantes ya dentro · ver en vivo
-              </span>
-            ) : (
-              <span>Piloto abierto · España ↔ Colombia</span>
-            )}
-            <Flecha />
-          </Link>
+          <Pasaporte />
+        </div>
+      </section>
 
-          <h1
-            className={`${t.rise} max-w-5xl text-5xl font-bold leading-[0.98] tracking-[-0.035em] sm:text-7xl lg:text-[88px]`}
-            style={{ ...SANS, animationDelay: "120ms" }}
-          >
-            El CV dice lo que hiciste.
-            <br />
-            <span className={t.gradText}>Aquí demuestras lo que sabes hacer.</span>
-          </h1>
+      {/* Cómo se consigue un sello: es una secuencia, de ahí la numeración */}
+      <section className={`${p.seguridad} text-[var(--tinta)]`}>
+        <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8">
+          <h2 className={`${p.display} max-w-3xl text-4xl sm:text-5xl`}>Así se consigue un sello</h2>
+          <ol className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+            {PASOS.map((paso, i) => (
+              <li key={paso.titulo} className="flex flex-col gap-4">
+                <span className={`${p.display} text-6xl text-[var(--oro)]`}>{i + 1}</span>
+                <h3 className="text-xl font-bold leading-snug" style={{ fontFamily: "var(--font-archivo), sans-serif" }}>{paso.titulo}</h3>
+                <p className="leading-relaxed text-[var(--tinta-2)]">{paso.texto}</p>
+                <div className="mt-2">
+                  <Artefacto i={i} />
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-          <p className={`${t.rise} max-w-2xl text-lg text-[var(--d-muted)] sm:text-xl`} style={{ animationDelay: "260ms" }}>
-            Empresas de España y Colombia publican retos reales. La IA los monta en segundos. Tú los resuelves en remoto y
-            te llevas una evidencia valorada por una empresa, ganes o no.
-          </p>
-
-          <div className={`${t.rise} flex w-full flex-col gap-3 sm:w-auto sm:flex-row`} style={{ animationDelay: "380ms" }}>
-            <Link
-              href="/registro?rol=estudiante"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--d-gold)] px-7 py-3.5 font-semibold text-[#14110a] shadow-[0_0_40px_-8px_var(--d-gold)] transition hover:-translate-y-0.5 hover:shadow-[0_0_60px_-6px_var(--d-gold)]"
-            >
-              Soy estudiante · Empezar gratis
-              <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
-                →
-              </span>
-            </Link>
+      {/* Para empresas y la regla de la IA */}
+      <section className={p.tapa}>
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-24 sm:px-8 md:grid-cols-2 md:items-end">
+          <div className="flex flex-col gap-6">
+            <h2 className={`${p.display} text-4xl sm:text-5xl`}>Ve el trabajo antes de contratar</h2>
+            <p className="max-w-md text-lg leading-relaxed text-[#c9d1de]">
+              Describe lo que necesitas y recibe entregas de estudiantes de dos países. Sin organizar procesos ni
+              hackathons propios.
+            </p>
             <Link
               href="/registro?rol=empresa"
-              className={`${t.glass} inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-semibold transition hover:-translate-y-0.5 hover:border-white/25`}
+              className={`${p.boton} inline-flex w-fit items-center justify-center rounded-lg bg-[#f3efe6] px-7 py-3.5 text-[17px] font-bold text-[var(--tapa)]`}
             >
-              Soy empresa · Publicar un reto
+              Publicar un reto
             </Link>
           </div>
-
-          <div className={`${t.rise} mt-6 w-full max-w-5xl text-left`} style={{ animationDelay: "520ms" }}>
-            <Inclinar>
-              <VentanaProducto />
-            </Inclinar>
+          <div className="flex flex-col gap-3 border-l-2 border-[var(--oro)] pl-6">
+            <p className={`${p.display} text-2xl sm:text-3xl`}>La IA prepara. Decide una persona.</p>
+            <p className="leading-relaxed text-[#c9d1de]">
+              La IA monta el reto y resume cada entrega, pero no pone notas ni ordena candidatos. Las notas y los sellos
+              los pone la empresa.
+            </p>
           </div>
-        </div>
-      </section>
-
-      {/* Banda de tecnologías */}
-      <section className="border-y border-[var(--d-line)] py-6" aria-label="Áreas de los retos">
-        <p className="mb-4 text-center font-mono text-xs uppercase tracking-[0.2em] text-[var(--d-muted)]">
-          Retos de software y datos para el talento joven iberoamericano
-        </p>
-        <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_15%,#000_85%,transparent)]">
-          <div className={t.marquee}>
-            {[...STACK, ...STACK].map((s, i) => (
-              <span key={i} className="mx-2 rounded-full border border-[var(--d-line)] px-4 py-1.5 font-mono text-sm text-[var(--d-muted)]">
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* El problema y cómo lo resolvemos */}
-      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
-        <Revelar className="flex flex-col items-center gap-4 text-center">
-          <Etiqueta>El círculo que rompemos</Etiqueta>
-          <h2 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl" style={SANS}>
-            Sin experiencia no hay trabajo. Sin trabajo no hay experiencia.
-          </h2>
-        </Revelar>
-
-        <div className="mt-16 grid gap-5 md:grid-cols-3">
-          {BLOQUES.map((b, i) => (
-            <Revelar key={b.titulo} retraso={i * 120} className="h-full">
-              <div className={`${t.glass} flex h-full flex-col gap-4 rounded-2xl p-7 transition hover:-translate-y-1 hover:border-white/20`}>
-                <Etiqueta>{b.eyebrow}</Etiqueta>
-                <h3 className="text-2xl font-bold leading-tight" style={SANS}>
-                  {b.titulo}
-                </h3>
-                <ul className="flex flex-col gap-2.5 text-[var(--d-muted)]">
-                  {b.puntos.map((p) => (
-                    <li key={p} className="flex gap-2">
-                      <Flecha />
-                      <span>{p}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Revelar>
-          ))}
-        </div>
-      </section>
-
-      {/* Dos entradas */}
-      <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
-        <Revelar className="mb-12 flex flex-col items-center gap-3 text-center">
-          <Etiqueta>Una plataforma, dos lados</Etiqueta>
-          <h2 className="text-4xl font-bold tracking-tight sm:text-5xl" style={SANS}>
-            ¿Desde qué lado entras?
-          </h2>
-        </Revelar>
-        <div className="grid gap-5 md:grid-cols-2">
-          {ENTRADAS.map((c, i) => (
-            <Revelar key={c.quien} retraso={i * 120} className="h-full">
-              <Link
-                href={c.href}
-                className={`${t.glass} group relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl p-8 transition hover:-translate-y-1 hover:border-white/20`}
-              >
-                {c.destacado && (
-                  <span className={t.glow} style={{ width: 260, height: 260, right: -60, top: -80, background: "#8a5d12", opacity: 0.35 }} />
-                )}
-                <span className="relative">
-                  <Etiqueta>{c.quien}</Etiqueta>
-                </span>
-                <h3 className="relative text-3xl font-bold" style={SANS}>
-                  {c.titulo}
-                </h3>
-                <p className="relative text-[var(--d-muted)]">{c.texto}</p>
-                <span className="relative mt-auto inline-flex items-center gap-2 pt-4 font-semibold">
-                  {c.cta}
-                  <span className="transition-transform group-hover:translate-x-1">
-                    <Flecha />
-                  </span>
-                </span>
-              </Link>
-            </Revelar>
-          ))}
         </div>
       </section>
 
       {/* Cierre */}
-      <section className="relative overflow-hidden border-t border-[var(--d-line)]">
-        <div className={`absolute inset-0 ${t.grid}`} aria-hidden="true" />
-        <div className={t.glow} style={{ width: 600, height: 300, left: "50%", bottom: -200, marginLeft: -300, background: "#8a5d12" }} />
-        <Revelar className="relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 py-28 text-center sm:px-6">
-          {registrados !== null && registrados > 0 && (
-            <p className="text-7xl font-bold tracking-tight sm:text-8xl" style={SANS}>
-              <Contador hasta={registrados} />
-            </p>
-          )}
-          <h2 className="text-4xl font-bold tracking-tight sm:text-6xl" style={SANS}>
-            {registrados ? (
-              registrados === 1 ? "estudiante ya está demostrando. ¿Y tú?" : "estudiantes ya están demostrando. ¿Y tú?"
-            ) : (
-              <>
-                Empieza a <span className={t.gradText}>demostrar</span>.
-              </>
-            )}
-          </h2>
-          <p className="text-[var(--d-muted)]">Piloto de 90 días entre España y Colombia · Una iniciativa del Club Hispanidad Futura</p>
+      <section className={`${p.seguridad} text-[var(--tinta)]`}>
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-5 py-20 sm:px-8 md:flex-row md:items-center md:justify-between">
+          <p className={`${p.display} max-w-xl text-3xl sm:text-4xl`}>Tu primer sello está a un reto de distancia.</p>
           <Link
             href="/registro?rol=estudiante"
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--d-gold)] px-8 py-4 font-semibold text-[#14110a] shadow-[0_0_40px_-8px_var(--d-gold)] transition hover:-translate-y-0.5"
+            className={`${p.boton} inline-flex items-center justify-center rounded-lg bg-[var(--tapa)] px-7 py-3.5 text-[17px] font-bold text-[#f3efe6]`}
           >
-            Crear mi pasaporte gratis <span aria-hidden="true">→</span>
+            Crear mi pasaporte
           </Link>
-        </Revelar>
+        </div>
       </section>
     </main>
   );
