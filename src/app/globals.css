@@ -1,26 +1,126 @@
 @import "tailwindcss";
 
+/* Marca: la misma del deck de mentores y de la guía del Club Hispanidad Futura.
+   Crema de fondo, azul marino para el texto y oro como único acento.
+   Detalle y reglas de uso en docs/BRANDING.md. Tema claro único (se proyecta en la demo). */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #eae3d6;      /* fondo de página, crema */
+  --paper: #f6f1e7;   /* tarjetas y superficies */
+  --ink: #14233d;     /* texto principal, azul marino */
+  --ink-2: #4a5568;   /* texto secundario */
+  --ink-3: #7a8496;   /* etiquetas, ayudas */
+  --line: rgba(20, 35, 61, 0.14);
+  --gold: #a9781f;    /* acento: lo importante y la acción principal */
+  --gold-soft: rgba(169, 120, 31, 0.12);
+  --ok: #2f6b4f;      /* estados: valorado, cerrado bien */
+  --warn: #9a5b13;    /* estados: falta algo */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-source-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, Menlo, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Piezas base que comparten los cuatro perfiles. Úsalas antes de inventar otras. */
+@layer components {
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    padding: 9px 16px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .btn:hover {
+    border-color: var(--gold);
+  }
+  .btn-primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .btn-primary:hover {
+    background: #0c1526;
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+  .field {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: var(--ink);
+  }
+  .field:focus-visible,
+  .btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
 }

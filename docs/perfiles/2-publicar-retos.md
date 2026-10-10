@@ -1,12 +1,12 @@
 # Perfil 2 · Publicar retos (empresa)
 
 ## Tu parte
-Todo el recorrido de la empresa hasta tener su reto publicado: **describe su problema, la IA lo convierte en un reto con rúbrica, lo edita, lo publica y ve la lista de sus retos**. Es el momento "wow" de la demo y el uso de IA que más se ve delante del jurado.
+Todo el recorrido de la empresa hasta tener su reto publicado: **describe su problema, la IA lo convierte en un reto con rúbrica, lo edita y lo publica**. (El dashboard `/empresa` con sus retos y candidatos es del perfil 4.) Es el momento "wow" de la demo y el uso de IA que más se ve delante del jurado.
 
 ## Tus archivos
-`src/app/empresa/nuevo/`, `src/app/empresa/page.tsx` (+ tus `actions.ts` / componentes dentro de esas carpetas), `src/lib/ai/generate.ts`.
+`src/app/empresa/nuevo/` (+ tus `actions.ts` / componentes dentro), `src/lib/ai/generate.ts`.
 
-**No toques:** `src/app/empresa/retos/` (perfil 4).
+**No toques:** `src/app/empresa/page.tsx`, `src/app/empresa/candidatos/` ni `src/app/empresa/retos/` (perfil 4).
 
 ## No dependes de nadie
 Entra como empresa de ejemplo: `/dev/sesion?rol=empresa&id=11111111-1111-4111-8111-000000000001&ir=/empresa/nuevo`. Lo que publiques aparece en `/retos` (perfil 3) por sí solo, porque solo pasa por la base de datos.
@@ -33,10 +33,8 @@ Entra como empresa de ejemplo: `/dev/sesion?rol=empresa&id=11111111-1111-4111-81
 - [ ] **Publicar** → `status = 'abierto'`, `deadline = now() + duration_days`.
 - [ ] Confirmación: "Reto publicado", con enlace a `/retos/[id]` (lo que ven los estudiantes) y a `/empresa`.
 
-### 4. Mis retos
-- [ ] `/empresa`: retos de la empresa con un chip de estado (borrador, abierto, en valoración, cerrado), plazo y "N entregas · M valoradas".
-- [ ] Cada reto enlaza a `/empresa/retos/[id]` (lo construye el perfil 4; el enlace funciona aunque aún no esté).
-- [ ] Botón **Publicar un reto nuevo**.
+### 4. Borradores
+- [ ] Si la empresa tiene retos en `borrador`, enséñalos en `/empresa/nuevo` para poder seguir editándolos. (Los publicados los muestra el dashboard `/empresa` del perfil 4.)
 
 ## Hecho cuando
-Como empresa de ejemplo, escribes un problema real, generas, cambias un campo, publicas, lo ves en `/empresa` y aparece en `/retos`.
+Como empresa de ejemplo, escribes un problema real, generas, cambias un campo, publicas y aparece en `/retos` y en el dashboard `/empresa`.

@@ -25,6 +25,7 @@ Equipo de 5 en la **Hackathon Iberoamérica 2030** del Club Hispanidad Futura (M
 - Sin login: quién eres sale de `getSession()` (`src/lib/session.ts`), que se fija al registrarse.
 - Toca solo las carpetas de tu perfil (`docs/perfiles/`). Las consultas a la base de datos van en tu propia carpeta; si necesitas algo de otra parte, cópialo antes que editar lo ajeno.
 - Para probar sin registrarte: `/dev/sesion` con los IDs de `supabase/seed.sql` (tabla en `docs/perfiles/README.md`).
+- **Marca: `docs/BRANDING.md`.** Es la misma del deck de mentores. Usa los tokens y las clases base de `globals.css`; no inventes colores ni fuentes.
 - UI en español. Simple y legible; la demo tiene que verse bien en un proyector.
 
 ## Git

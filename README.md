@@ -10,6 +10,7 @@
 | Archivo | Qué hay |
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | Cómo trabajamos (personas y agentes) |
+| [`docs/BRANDING.md`](docs/BRANDING.md) | Marca de la app, el deck y el pitch: colores, tipografías y piezas base |
 | [`docs/PRD.md`](docs/PRD.md) | Producto: problema, reglas, MVP, IA, datos, decisiones |
 | [`docs/perfiles/`](docs/perfiles/README.md) | **Una ficha por perfil: empieza aquí** |
 | [`docs/EQUIPO.md`](docs/EQUIPO.md) | Reparto (4 partes de la app + negocio) y calendario |
@@ -35,8 +36,8 @@ npm run dev                  # http://localhost:3000
 | Ruta | Qué es | Dueño |
 |---|---|---|
 | `/`, `/registro`, `/panel` | Entrada y demanda | Perfil 1 |
-| `/empresa/nuevo`, `/empresa` | Publicar retos | Perfil 2 |
+| `/empresa/nuevo` | Publicar retos | Perfil 2 |
 | `/retos`, `/retos/[id]` | Resolver retos | Perfil 3 |
-| `/empresa/retos/[id]`, `/pasaporte/[id]` | Valorar y pasaporte | Perfil 4 |
+| `/empresa`, `/empresa/candidatos`, `/empresa/retos/[id]`, `/pasaporte/[id]` | Valorar y pasaporte | Perfil 4 |
 
 Base de datos: ejecutar `supabase/schema.sql` y luego `supabase/seed.sql` (datos de ejemplo) en el SQL Editor de Supabase.

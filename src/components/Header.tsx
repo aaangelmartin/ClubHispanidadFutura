@@ -10,6 +10,7 @@ export default async function Header() {
       ? [
           { href: "/empresa/nuevo", label: "Publicar reto" },
           { href: "/empresa", label: "Mis retos" },
+          { href: "/empresa/candidatos", label: "Candidatos" },
         ]
       : session?.role === "student"
         ? [
@@ -22,17 +23,17 @@ export default async function Header() {
           ];
 
   return (
-    <header className="border-b">
-      <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-6 py-4">
-        <Link href="/" className="font-bold">
+    <header className="border-b border-line bg-paper">
+      <nav className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 sm:px-6">
+        <Link href="/" className="font-display text-lg font-bold text-ink">
           Retos reales
         </Link>
         {links.map((l) => (
-          <Link key={l.href} href={l.href} className="text-sm hover:underline">
+          <Link key={l.href} href={l.href} className="text-sm text-ink-2 hover:text-ink">
             {l.label}
           </Link>
         ))}
-        <Link href="/panel" className="ml-auto text-sm hover:underline">
+        <Link href="/panel" className="ml-auto text-sm text-ink-2 hover:text-ink">
           Panel en vivo
         </Link>
       </nav>

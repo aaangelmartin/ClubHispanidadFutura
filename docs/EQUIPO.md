@@ -5,9 +5,9 @@
 | # | Perfil | Quién | Parte completa |
 |---|---|---|---|
 | 1 | **Entrada y demanda** | | Landing, registro (estudiante y empresa), panel en vivo, despliegue |
-| 2 | **Publicar retos** | | La empresa describe su problema → la IA genera el reto → edita → publica → mis retos |
+| 2 | **Publicar retos** | | La empresa describe su problema → la IA genera el reto → edita → publica |
 | 3 | **Resolver retos** | | El estudiante ve los retos, se apunta y entrega |
-| 4 | **Valorar y pasaporte** | | La empresa valora con resumen IA → cierra el reto → el pasaporte público |
+| 4 | **Valorar y pasaporte** | Álvaro | Dashboard de la empresa (retos y candidatos) → valora con resumen IA → cierra el reto → pasaporte público |
 | 5 | **Negocio** | | Mentores, registros reales, mercado, financiación, partners, KPIs, plan 90 días, pitch |
 
 ## Por qué nadie espera a nadie

@@ -1,4 +1,4 @@
-// Dueño: perfil 2 (publicar retos): mis retos. Ver docs/perfiles/2-publicar-retos.md y docs/EQUIPO.md.
+// Dueño: perfil 4 (valorar y pasaporte): dashboard de la empresa. Ver docs/perfiles/4-valorar-y-pasaporte.md y docs/EQUIPO.md.
 export default function Page() {
   return (
     <main className="mx-auto max-w-3xl p-8">

@@ -5,9 +5,9 @@ La app está dividida en **4 partes completas e independientes**. Cada una tiene
 | Perfil | Ficha | Parte completa | Rutas |
 |---|---|---|---|
 | 1 | [`1-entrada-y-demanda.md`](1-entrada-y-demanda.md) | Landing, registro de estudiantes y empresas, panel en vivo | `/`, `/registro`, `/panel` |
-| 2 | [`2-publicar-retos.md`](2-publicar-retos.md) | La empresa describe su problema, la IA genera el reto, edita, publica y ve sus retos | `/empresa/nuevo`, `/empresa` |
+| 2 | [`2-publicar-retos.md`](2-publicar-retos.md) | La empresa describe su problema, la IA genera el reto, lo edita y lo publica | `/empresa/nuevo` |
 | 3 | [`3-resolver-retos.md`](3-resolver-retos.md) | El estudiante busca retos, se apunta y entrega | `/retos`, `/retos/[id]` |
-| 4 | [`4-valorar-y-pasaporte.md`](4-valorar-y-pasaporte.md) | La empresa valora las entregas con ayuda de la IA y el resultado va al pasaporte | `/empresa/retos/[id]`, `/pasaporte/[id]` |
+| 4 | [`4-valorar-y-pasaporte.md`](4-valorar-y-pasaporte.md) | Dashboard de la empresa (sus retos y candidatos), valoración con ayuda de la IA y pasaporte público | `/empresa`, `/empresa/candidatos`, `/empresa/retos/[id]`, `/pasaporte/[id]` |
 | 5 | [`5-negocio.md`](5-negocio.md) | Mentores, registros reales, mercado, financiación, partners, KPIs, plan 90 días, pitch | `docs/` |
 
 ## Arranque
@@ -47,4 +47,5 @@ Pasaporte con una valoración: `/pasaporte/22222222-2222-4222-8222-000000000001`
 - **No se cambian sin avisar en voz alta:** `supabase/schema.sql`, `src/lib/types.ts`, `src/lib/supabase.ts`, `src/lib/session.ts`, `src/lib/ai/client.ts`, `src/components/Header.tsx`.
 - **Si necesitas un campo nuevo en la base de datos**, avisa, añádelo a `schema.sql` y a `types.ts` con `alter table … add column` y pásale la línea SQL a quien gestione Supabase.
 - `git pull --rebase` antes de empezar y antes de cada `push`. `npm run build` sin errores antes de subir.
-- Tailwind, limpio y legible en un proyector. Todo en español.
+- **Marca: `docs/BRANDING.md`** (la misma del deck de mentores). Usa las clases `card`, `btn`, `btn-primary`, `chip`, `field`, `eyebrow` y los colores `bg-paper`, `text-ink`, `text-gold`… No definas colores ni fuentes nuevas.
+- Todo en español y legible en un proyector.
