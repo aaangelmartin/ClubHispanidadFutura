@@ -1,0 +1,122 @@
+/* Dueño: perfil 1. Solicitud de pasaporte de talento: campos tipo documento sobre papel de seguridad. */
+
+.hoja {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 30px 60px -20px rgba(0, 0, 0, 0.55),
+    0 12px 24px -12px rgba(0, 0, 0, 0.4);
+}
+
+/* Perforación del número de serie, como en el borde de una página de pasaporte */
+.serie {
+  font-family: var(--datos);
+  letter-spacing: 0.22em;
+  color: rgba(20, 35, 61, 0.35);
+}
+
+.etiqueta {
+  font-family: var(--datos);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--tinta-2);
+}
+
+.input {
+  width: 100%;
+  font-family: var(--datos);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--tinta);
+  background: rgba(255, 255, 255, 0.55);
+  border: 0;
+  border-bottom: 1.5px solid rgba(20, 35, 61, 0.35);
+  border-radius: 6px 6px 0 0;
+  padding: 10px 12px 9px;
+  min-height: 48px;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.input::placeholder {
+  color: rgba(79, 93, 115, 0.55);
+  font-weight: 400;
+}
+.input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom-color: var(--tinta);
+}
+.input[aria-invalid="true"] {
+  border-bottom-color: var(--sello-a);
+  background: rgba(178, 58, 72, 0.06);
+}
+
+/* Países: tres botones grandes, más rápidos que un desplegable en el móvil */
+.pais {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 8px 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 0 1.5px rgba(20, 35, 61, 0.18);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--tinta);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+}
+.pais:has(input:checked) {
+  background: var(--tinta);
+  color: #f3efe6;
+  box-shadow: inset 0 0 0 1.5px var(--tinta);
+}
+.pais:has(input:focus-visible) {
+  outline: 2px solid var(--oro);
+  outline-offset: 2px;
+}
+.pais input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: var(--datos);
+  font-size: 13px;
+  color: var(--tinta);
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(20, 35, 61, 0.22);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.chip[aria-pressed="true"] {
+  background: var(--sello-b);
+  color: #fff;
+  box-shadow: none;
+}
+
+.oro {
+  background: var(--oro);
+  color: var(--tapa-2);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset, 0 8px 18px -8px rgba(200, 150, 58, 0.8);
+}
+.oro:hover {
+  background: #d6a449;
+}
+.oro:disabled {
+  opacity: 0.75;
+  cursor: progress;
+}
+
+.selector a[aria-current="page"] {
+  background: #f3efe6;
+  color: var(--tinta);
+}

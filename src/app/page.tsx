@@ -1,14 +1,22 @@
-// Dueño: perfil 1 (entrada y demanda). Landing: problema en una frase + "Soy empresa" / "Soy estudiante". Ver docs/PRD.md §8 P1.
-import Link from "next/link";
+// Dueño: perfil 1 (entrada y demanda). Landing «pasaporte de talento»: cada sección vive en _landing/.
+// Ver docs/PRD.md §1–3 y §8 P1.
+import { contarEstudiantes } from "./panel/queries";
+import Hero from "./_landing/Hero";
+import SeccionSellos from "./_landing/SeccionSellos";
+import SeccionEmpresas from "./_landing/SeccionEmpresas";
+import Cierre from "./_landing/Cierre";
+import p from "./_landing/pasaporte.module.css";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const registrados = await contarEstudiantes();
   return (
-    <main className="mx-auto max-w-3xl p-8">
-      <h1 className="text-3xl font-bold">El CV dice lo que hiciste. Aquí demuestras lo que sabes hacer.</h1>
-      <div className="mt-6 flex gap-3">
-        <Link className="rounded border px-4 py-2" href="/registro?rol=empresa">Soy empresa</Link>
-        <Link className="rounded border px-4 py-2" href="/registro?rol=estudiante">Soy estudiante</Link>
-      </div>
+    <main className={`${p.page} overflow-x-clip`}>
+      <Hero registrados={registrados} />
+      <SeccionSellos />
+      <SeccionEmpresas />
+      <Cierre registrados={registrados} />
     </main>
   );
 }

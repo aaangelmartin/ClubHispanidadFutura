@@ -1,0 +1,72 @@
+/* Dueño: perfil 1. Panel de llegadas: casillas split-flap, filas del tablero y el punto «en directo». */
+
+.casilla {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  perspective: 400px;
+  border-radius: 0.14em;
+  background: linear-gradient(180deg, #1d2e4c 0%, #172741 49.5%, #0c1628 50.5%, #13213a 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+    0 0.06em 0.12em rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+/* La bisagra horizontal de la casilla */
+.casilla::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 2px;
+  transform: translateY(-1px);
+  background: rgba(5, 10, 20, 0.85);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+.casilla::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 50%, rgba(0, 0, 0, 0.18));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.vivo {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #3ecf8e;
+}
+.vivo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #3ecf8e;
+  animation: latido 1.6s ease-out infinite;
+}
+@keyframes latido {
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(3); opacity: 0; }
+}
+
+.marco {
+  border: 1px solid rgba(243, 239, 230, 0.1);
+  background: rgba(8, 15, 28, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.filaPar {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.barra {
+  background: repeating-linear-gradient(90deg, var(--oro) 0 10px, transparent 10px 13px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vivo::after { animation: none; }
+}

@@ -1,0 +1,63 @@
+/* Dueño: perfil 1. «Así se consigue un sello»: piezas de papel del escenario ligado al scroll. */
+
+.hoja {
+  background-color: #fbfbf8;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(20, 35, 61, 0.045) 27px 28px);
+  box-shadow:
+    0 1px 0 rgba(20, 35, 61, 0.06),
+    0 18px 40px -18px rgba(20, 35, 61, 0.35),
+    0 2px 6px rgba(20, 35, 61, 0.08);
+}
+
+.ficha {
+  background-color: #fbfbf8;
+  box-shadow:
+    0 1px 0 rgba(20, 35, 61, 0.06),
+    0 24px 50px -20px rgba(20, 35, 61, 0.4),
+    0 2px 6px rgba(20, 35, 61, 0.08);
+}
+
+/* Ribete de guilloché en la cabecera de la ficha del reto */
+.guilloche {
+  background-color: var(--tapa);
+  background-image:
+    repeating-radial-gradient(ellipse at 20% 120%, transparent 0 6px, rgba(200, 150, 58, 0.22) 6px 7px),
+    repeating-radial-gradient(ellipse at 80% -20%, transparent 0 9px, rgba(255, 255, 255, 0.07) 9px 10px);
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1.05em;
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  background: var(--tinta);
+  animation: parpadeo 1s steps(1) infinite;
+}
+@keyframes parpadeo {
+  50% { opacity: 0; }
+}
+
+/* Tinta del sello: borde irregular, como un tampón real */
+.tinta {
+  mix-blend-mode: multiply;
+  filter: url(#tinta-irregular);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor { animation: none; }
+}
+
+/* Posiciones del escenario (en el módulo para no depender del escaneo de clases) */
+.entregaAlto { height: 84%; }
+.selloPos { position: absolute; right: 2%; bottom: 25%; }
+@media (min-width: 640px) {
+  .entregaAlto { height: 76%; }
+  .selloPos { right: 6%; bottom: 22%; }
+}
+@media (min-width: 1024px) {
+  .entregaAlto { height: 72%; }
+}
+
+.hallazgo { padding-right: 36%; }

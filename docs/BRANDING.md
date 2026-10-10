@@ -28,6 +28,12 @@ Ya está montada en el código: `src/app/globals.css` (colores y piezas base) y 
 | Títulos | Fraunces (serif) | `font-display` (los `h1`–`h3` ya la llevan) |
 | Texto | Source Sans 3 | por defecto |
 | Etiquetas, cifras, código | IBM Plex Mono | `font-mono` |
+| Marca: «Hispanidad Futura» | Lobster | `font-script` (solo la marca) |
+| Marca: palabra del escudo | Raleway 800 | `font-escudo` (solo la marca) |
+
+El escudo del Club con la palabra del producto está en `src/components/Marca.tsx` (`<Marca />` y `<Escudo />`).
+
+**Ojo:** las variables de `@theme inline` no existen como CSS. Fuera de las clases de Tailwind usa las de next/font: `var(--font-fraunces)`, `var(--font-source-sans)`, `var(--font-plex-mono)`, `var(--font-lobster)`, `var(--font-raleway)`.
 
 Cifras alineadas en columnas: clase `tabular`.
 

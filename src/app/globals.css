@@ -17,6 +17,8 @@
   --warn: #9a5b13;    /* estados: falta algo */
 }
 
+/* «inline»: estas variables no existen en CSS; fuera de las clases de Tailwind usa las de next/font
+   (--font-fraunces, --font-source-sans, --font-plex-mono, --font-lobster, --font-raleway). */
 @theme inline {
   --color-bg: var(--bg);
   --color-paper: var(--paper);
@@ -31,6 +33,8 @@
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-source-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, Menlo, monospace;
+  --font-script: var(--font-lobster), Georgia, serif;   /* solo marca: «Hispanidad Futura» */
+  --font-escudo: var(--font-raleway), system-ui, sans-serif; /* solo marca: palabra del escudo */
 }
 
 html {
