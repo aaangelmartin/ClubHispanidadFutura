@@ -1,5 +1,6 @@
 // Dueño: perfil 4 (valorar y pasaporte). Página pública: el pasaporte de talento abierto, con datos reales.
 // Mismo lenguaje que la landing (perfil 1): tapa marino, papel de seguridad, zona de lectura mecánica y sellos.
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pasaporteFonts } from "@/app/empresa/_lib/fonts";
@@ -273,9 +274,59 @@ export default async function Pasaporte({ params }: { params: Promise<{ id: stri
           </div>
         )}
 
-        <p className={`${p.datos} pt-4 text-center text-xs text-[var(--tinta-2)]`}>
-          Cada sello lo ha puesto la empresa que propuso el reto. La IA solo ayuda a resumir; no puntúa.
-        </p>
+        {/* Cómo se verifica: confianza para quien recibe el enlace */}
+        <div className="grid gap-4 pt-4 sm:grid-cols-3">
+          {[
+            ["Empresa real", "Cada sello lo pone la empresa que propuso el reto, con su nombre y fecha."],
+            ["Rúbrica pública", "Los criterios y sus pesos se conocían antes de entregar. La nota no es una opinión suelta."],
+            ["Decide una persona", "La IA solo resume las entregas. No puntúa ni ordena candidatos (Ley de IA de la UE)."],
+          ].map(([t, d], i) => (
+            <div key={t} className={`${p.hoja} flex gap-3 p-5`}>
+              <span
+                className={`${p.datos} grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 text-sm font-bold`}
+                style={{ color: tinta(i), borderColor: tinta(i) }}
+              >
+                ✓
+              </span>
+              <div className="flex flex-col gap-1">
+                <span className="font-extrabold">{t}</span>
+                <span className="text-sm text-[var(--tinta-2)]">{d}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Llamada a la acción: cada pasaporte compartido es una puerta de entrada */}
+      <section className={p.tapa}>
+        <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-14 sm:px-6 md:grid-cols-[1.4fr_1fr]">
+          <div className="flex flex-col gap-4">
+            <span className={`${p.datos} text-xs tracking-[0.2em] text-[var(--oro)]`}>¿BUSCAS TALENTO ASÍ?</span>
+            <h2 className="text-4xl text-[#f3efe6] sm:text-5xl">
+              Publica un reto y conoce a {nombre} antes de contratar.
+            </h2>
+            <p className="max-w-xl text-lg text-[#f3efe6]/75">
+              Cuéntanos tu problema y la IA lo convierte en un reto de días. Recibes entregas de estudiantes de España y
+              Colombia y valoras el trabajo, no el CV. Gratis durante el piloto.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Link href="/registro?rol=empresa" className={p.botonOro}>
+                Publicar un reto gratis
+              </Link>
+              <Link href="/registro?rol=estudiante" className={p.botonClaro}>
+                Soy estudiante: crear mi pasaporte
+              </Link>
+            </div>
+          </div>
+          <ul className={`${p.datos} flex flex-col gap-3 text-sm text-[#f3efe6]/85`}>
+            {["Reto listo en minutos con IA", "Entregas en días, no en semanas", "Sin agencias ni procesos largos", "Talento de dos países, en remoto"].map((x) => (
+              <li key={x} className="flex items-center gap-3 border-b border-white/10 pb-3">
+                <span className="text-[var(--oro)]">✓</span>
+                {x}
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     </div>
   );

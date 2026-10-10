@@ -109,7 +109,7 @@ export default async function EmpresaDashboard() {
       {/* Embudo y países */}
       <section className="grid gap-4 lg:grid-cols-[3fr_2fr]">
         <div className={`${p.hoja} flex flex-col gap-5 p-6`}>
-          <div className="flex items-baseline justify-between">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <h2 className="text-2xl font-bold">Embudo de talento</h2>
             <span className="font-mono text-xs text-ink-3">todos tus retos</span>
           </div>
@@ -130,7 +130,7 @@ export default async function EmpresaDashboard() {
         </div>
 
         <div className={`${p.hoja} flex flex-col gap-5 p-6`}>
-          <div className="flex items-baseline justify-between">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <h2 className="text-2xl font-bold">De dónde vienen</h2>
             <span className="font-mono text-xs text-ink-3">{enrolled} candidatos</span>
           </div>

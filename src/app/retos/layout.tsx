@@ -18,8 +18,24 @@ async function estudiante() {
   return { ...data, sellos: count ?? 0 };
 }
 
+// Cifras reales para la prueba social. Los estudiantes de ejemplo (@ejemplo.test) no cuentan.
+async function cifras() {
+  const [{ data: abiertos }, { count: estudiantes }] = await Promise.all([
+    db().from("challenges").select("company_id, companies(country)").eq("status", "abierto"),
+    db().from("students").select("id", { count: "exact", head: true }).not("email", "like", "%ejemplo.test"),
+  ]);
+  const retos = abiertos ?? [];
+  const paises = new Set(
+    retos.map((r) => {
+      const c = r.companies as { country: string } | { country: string }[] | null;
+      return Array.isArray(c) ? c[0]?.country : c?.country;
+    }),
+  );
+  return { retos: retos.length, empresas: new Set(retos.map((r) => r.company_id)).size, paises: paises.size, estudiantes: estudiantes ?? 0 };
+}
+
 export default async function RetosLayout({ children }: { children: React.ReactNode }) {
-  const yo = await estudiante();
+  const [yo, n] = await Promise.all([estudiante(), cifras()]);
   return (
     <div className={`${pasaporteFonts} ${p.page} ${p.seguridad} min-h-screen`}>
       <div className={p.tapa}>
@@ -50,6 +66,34 @@ export default async function RetosLayout({ children }: { children: React.ReactN
               Crear mi pasaporte
             </Link>
           )}
+        </div>
+      </div>
+      <div className="border-b border-black/5 bg-white/60">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-4 py-4 sm:px-6">
+          <dl className="flex flex-wrap gap-x-8 gap-y-2">
+            {[
+              [n.retos, n.retos === 1 ? "reto abierto" : "retos abiertos"],
+              [n.empresas, n.empresas === 1 ? "empresa" : "empresas"],
+              [n.paises, n.paises === 1 ? "país" : "países"],
+              [n.estudiantes, n.estudiantes === 1 ? "estudiante registrado" : "estudiantes registrados"],
+            ]
+              .filter(([v]) => Number(v) > 0) // un cero resta más de lo que suma
+              .map(([v, l]) => (
+              <div key={String(l)} className="flex items-baseline gap-2">
+                <dt className="sr-only">{l}</dt>
+                <dd className="text-2xl font-extrabold [font-stretch:125%]">{v}</dd>
+                <span className="text-sm text-[var(--tinta-2)]">{l}</span>
+              </div>
+            ))}
+          </dl>
+          <ul className={`${p.datos} flex flex-wrap gap-x-5 gap-y-1 text-xs text-[var(--tinta-2)]`}>
+            {["Gratis", "Sin CV", "En remoto", "Tu entrega es tuya"].map((x) => (
+              <li key={x} className="flex items-center gap-1.5">
+                <span className="text-[var(--oro)]">✓</span>
+                {x}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       {children}
