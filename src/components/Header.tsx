@@ -36,6 +36,9 @@ export default async function Header() {
         <Link href="/panel" className="ml-auto text-sm text-ink-2 hover:text-ink">
           Panel en vivo
         </Link>
+        <Link href="/demo" className="chip border-gold text-gold hover:bg-gold-soft">
+          Demo
+        </Link>
       </nav>
     </header>
   );

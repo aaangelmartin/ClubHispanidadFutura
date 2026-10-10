@@ -87,6 +87,7 @@ Plataforma de **retos reales online** publicados por empresas para descubrir y c
 6. **Premio al ganador recomendado** (no obligatorio en el MVP).
 7. **Datos reales en el panel.** Los retos de ejemplo se marcan "ejemplo piloto". Nada de números inflados.
 8. **Privacidad visible:** consentimiento explícito en el registro (RGPD + ley de datos del país LatAm).
+9. **Todo demostrable:** es la app real, pero cada pantalla está a un clic desde `/demo`, se entiende en 30 segundos y nunca aparece vacía en la demo (detalle en `AGENTS.md`).
 
 ## 6. Objeciones y respuestas (preparadas)
 

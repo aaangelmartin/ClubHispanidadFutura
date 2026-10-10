@@ -9,6 +9,14 @@ Equipo de 5 en la **Hackathon Iberoamérica 2030** del Club Hispanidad Futura (M
 3. `docs/NEGOCIO.md` — mercado, financiación, KPIs, aliados, plan 90 días.
 4. `docs/PITCH.md` — guion de 3 minutos.
 
+## Principio: todo tiene que ser demostrable
+Construimos **la aplicación real que vamos a lanzar**, no una maqueta. Pero todo lo que hagamos tiene que poder **enseñarse rápido en una demo y entenderse sin explicaciones**:
+- **Todo a un clic desde `/demo`.** Si creas una pantalla nueva, añádela a `src/app/demo/pasos.ts` con su título, la frase que se dice al enseñarla y la sesión de ejemplo que necesita.
+- **Se entiende en 30 segundos.** Lo importante de cada pantalla se ve sin hacer scroll ni leer párrafos. Si hace falta explicarlo, la pantalla está mal.
+- **Nunca vacía en la demo.** Con los datos de `supabase/seed.sql` cada pantalla tiene algo que enseñar. Si tu pantalla necesita más datos de ejemplo, pídelos con un issue (`contrato`). Los estados vacíos, diseñados y con el siguiente paso claro.
+- **Rápida.** Lo que tarda (la IA) muestra progreso y nunca bloquea la pantalla entera. Si algo puede fallar en directo, tiene un "Reintentar".
+- **Lo que se ve, funciona.** Nada de botones decorativos ni datos inventados presentados como reales: lo de ejemplo se marca "Ejemplo piloto".
+
 ## Reglas para agentes
 - **Idioma:** español en docs, UI y commits.
 - **No amplíes el alcance.** Lo que está "Fuera del MVP" en `PRD.md` §8 no se construye hoy, aunque sea fácil.
@@ -53,6 +61,11 @@ Si hay un issue `bloqueo` para tu perfil, va antes que tu siguiente tarea.
 - Referencia el issue en el commit: `perfil 4: añade cierre de reto (#4)`. Usa `closes #N` cuando un commit resuelva un issue de petición.
 - Al resolver un issue que te pidieron, ciérralo con un comentario de qué has hecho y cómo probarlo.
 - **Nunca** pongas claves, contraseñas ni `.env.local` en un issue: el repo es público.
+
+## IA: apagada hasta nueva orden
+- La IA tiene un interruptor: **`AI_ENABLED`**. Mientras no sea `true`, `src/lib/ai/client.ts` no hace ninguna llamada a Claude y las pantallas muestran el error con "Reintentar".
+- **No lo actives ni hagas peticiones a la API de Claude** hasta que el equipo lo diga explícitamente.
+- Nunca escribas una clave en el código, en un commit ni en un issue.
 
 ## Git
 - Rama `main`, commits pequeños y frecuentes. `git pull --rebase` antes de empezar y antes de `push`.
