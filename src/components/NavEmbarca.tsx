@@ -2,6 +2,7 @@
 // Dueño: perfil 1. Barra de navegación de Embarca: enlaces según quién eres (visitante, estudiante o empresa),
 // el enlace activo marcado, acciones a la derecha y menú desplegable en móvil.
 import Link from "next/link";
+import { salir } from "@/app/salir/actions";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Isotipo } from "@/components/embarca";
@@ -91,11 +92,17 @@ export default function NavEmbarca({
               <span className="max-w-[18ch] truncate text-sm font-semibold text-ink">{quien}</span>
             </span>
           )}
-          {acciones.map((a) => (
-            <Link key={a.href + a.label} href={a.href} className={claseAccion(a.tipo)}>
-              {a.label}
-            </Link>
-          ))}
+          {acciones.map((a) =>
+            a.href === "/salir" ? (
+              <form key={a.href} action={salir}>
+                <button type="submit" className={claseAccion(a.tipo)}>{a.label}</button>
+              </form>
+            ) : (
+              <Link key={a.href + a.label} href={a.href} className={claseAccion(a.tipo)}>
+                {a.label}
+              </Link>
+            ),
+          )}
         </div>
 
         <button
@@ -130,11 +137,17 @@ export default function NavEmbarca({
             </Link>
           ))}
           <div className="mt-2 flex flex-col gap-2">
-            {acciones.map((a) => (
-              <Link key={a.href + a.label} href={a.href} className={`${claseAccion(a.tipo)} text-center !py-3`}>
-                {a.label}
-              </Link>
-            ))}
+            {acciones.map((a) =>
+              a.href === "/salir" ? (
+                <form key={a.href} action={salir} className="flex flex-col">
+                  <button type="submit" className={`${claseAccion(a.tipo)} text-center !py-3`}>{a.label}</button>
+                </form>
+              ) : (
+                <Link key={a.href + a.label} href={a.href} className={`${claseAccion(a.tipo)} text-center !py-3`}>
+                  {a.label}
+                </Link>
+              ),
+            )}
           </div>
         </div>
       )}

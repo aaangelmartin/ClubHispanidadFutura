@@ -6,6 +6,7 @@ import r from "./registro.module.css";
 import { FormEmpresa, FormEstudiante } from "./Formularios";
 import { getSession } from "@/lib/session";
 import FormEntrar from "../entrar/Formulario";
+import { salir } from "../salir/actions";
 import EntrarDemo from "../entrar/Demo";
 
 export const metadata: Metadata = { title: "Registro · Embarca" };
@@ -46,7 +47,9 @@ export default async function Registro({ searchParams }: { searchParams: Promise
             <Link href={sesion.role === "company" ? "/empresa" : "/estudiante"} className="font-semibold text-blue hover:underline">
               Ir a mi inicio
             </Link>
-            <Link href="/salir" className="font-semibold text-blue hover:underline">Salir y crear otra</Link>
+            <form action={salir} className="contents">
+              <button type="submit" className="font-semibold text-blue hover:underline">Salir y crear otra</button>
+            </form>
           </p>
         )}
         {/* Entrar con una cuenta que ya existe, o directo al panel en modo demo */}
