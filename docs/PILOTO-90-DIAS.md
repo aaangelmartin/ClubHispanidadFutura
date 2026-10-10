@@ -10,13 +10,13 @@ Dilo despacio y con una pausa breve entre tramos. Cada tramo tiene una cifra; m�
 | Tiempo | Qué se dice | Qué se ve |
 |---|---|---|
 | 0:00–0:05 | **"Esto no es una idea: es un plan de 90 días que arranca en la Cumbre Iberoamericana de noviembre."** | Línea de tiempo vacía con tres tramos |
-| 0:05–0:18 | **"Días 0 a 30: abrimos puertas. Una universidad en España, otra en Colombia y tres empresas con negocio en los dos países. Y la parte legal resuelta antes de que entre el primer estudiante: protección de datos europea y colombiana."** | Se ilumina el tramo 1: `1 + 1 universidades · 3 empresas` |
-| 0:18–0:29 | **"Días 31 a 60: despegan tres retos reales. Entre sesenta y cien estudiantes de los dos países se inscriben y entregan."** | Tramo 2: `3 retos · 60–100 estudiantes` |
-| 0:29–0:40 | **"Días 61 a 90: aterrizamos con resultados. Las empresas valoran todas las entregas, y cada valoración es un sello en un pasaporte."** | Tramo 3: `todas las entregas valoradas → sellos` |
+| 0:05–0:16 | **"Días 0 a 30: abrimos puertas. Una universidad en España, otra en Colombia y tres empresas con negocio en los dos países."** | Se ilumina el tramo 1: `1 + 1 universidades · 3 empresas` |
+| 0:16–0:28 | **"Días 31 a 60: despegan tres retos reales. Entre sesenta y cien estudiantes de los dos países se inscriben y entregan."** | Tramo 2: `3 retos · 60–100 estudiantes` |
+| 0:28–0:40 | **"Días 61 a 90: aterrizamos con resultados. Las empresas valoran todas las entregas, y cada valoración es un sello en un pasaporte."** | Tramo 3: `todas las entregas valoradas → sellos` |
 | 0:40–0:54 | **"Nos medimos por tres objetivos. Que al menos el 90 % de las entregas llegue valorado: si eso falla, el sello no vale. Que al menos el 60 % de los inscritos entregue. Y que nazcan cinco contactos entre empresa y estudiante."** | Tres cifras grandes: `≥ 90 %` · `≥ 60 %` · `≥ 5` |
 | 0:54–1:00 | **"Un título dice de dónde vienes. Un sello dice a dónde puedes llegar."** | Pasaporte con un único sello dorado |
 
-Si el bloque se queda en 45 s: quita la parte legal del tramo 1 y la frase "Que al menos el 60 % de los inscritos entregue".
+Si el bloque se queda en 45 s: quita la frase "Que al menos el 60 % de los inscritos entregue".
 
 ## Por qué suena real
 - **Fecha de salida concreta:** la Cumbre Iberoamericana (Madrid, 4 y 5 de noviembre), donde `NEGOCIO.md` §5 sitúa la búsqueda de las 3 empresas.
@@ -58,8 +58,9 @@ Marca de `BRANDING.md`: crema, marino y oro, títulos en serif. **El oro solo en
 | "¿Quién paga el piloto?" | "Patrocinadores y fundaciones, porque empleo joven e integración iberoamericana es su agenda. El importe exacto lo cerramos con ellos." |
 
 ## Antes de subir al escenario
+- [ ] **No menciones la parte legal** (RGPD, Ley 1581, Ley de IA): se quitó a propósito para no abrir preguntas. Si la sacan, la respuesta está en `NEGOCIO.md` §2.
 - [ ] **Fecha de inicio del piloto:** sigue pendiente en `NEGOCIO.md` §5. Si se fija, cámbiala por "arranca el [día]".
 - [ ] **Universidad de España:** `NEGOCIO.md` §4 aún no tiene nombre. No lo menciones hasta que lo haya.
 - [ ] **Importe pedido a patrocinadores:** pendiente. No lo digas en el pitch.
 - [ ] **Coherencia con `PITCH.md`:** ahí aparece "2 universidades" (una por país) y "100 estudiantes"; aquí "60–100". Acordar con el perfil 5 una sola cifra.
-- [ ] Cronometrar: si pasa de 60 s, recorta primero la parte legal, nunca la frase final.
+- [ ] Cronometrar: si pasa de 60 s, recorta primero la frase del 60 %, nunca la frase final.
