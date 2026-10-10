@@ -17,6 +17,13 @@ La app está dividida en **4 partes completas e independientes**. Cada una tiene
 2. Crear una clave de la API de Claude en console.anthropic.com.
 3. Compartir con los otros cuatro, **por privado**, los tres valores de `.env.example`.
 
+**Base de datos en local (recomendado para desarrollar, sin cuentas ni esperar a nadie):** con Docker Desktop abierto,
+```bash
+supabase start      # la primera vez descarga imágenes (~3 min). Carga schema.sql y seed.sql solo
+supabase status     # muestra la URL (API_URL) y la clave (SERVICE_ROLE_KEY) para .env.local
+```
+`.env.local` para local: `SUPABASE_URL=http://127.0.0.1:54321`, `SUPABASE_SERVICE_ROLE_KEY=<SERVICE_ROLE_KEY de supabase status>`, `AI_ENABLED=false`. Para volver a los datos de ejemplo: `supabase db reset`. Panel de la base de datos: http://127.0.0.1:54323.
+
 **Cada persona:**
 ```bash
 git clone https://github.com/aaangelmartin/ClubHispanidadFutura.git
