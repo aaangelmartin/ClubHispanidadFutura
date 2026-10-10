@@ -16,6 +16,7 @@ export type RetoFeed = Challenge & {
   apuntados: number;
   entregas: number;
   yoApuntado: boolean;
+  personas: string[]; // nombres de los primeros apuntados, para los avatares
 };
 
 export type Actividad = {
@@ -43,18 +44,19 @@ export async function getEstudiante(id: string) {
 export async function getFeed(estudianteId: string | null): Promise<RetoFeed[]> {
   const { data, error } = await db()
     .from("challenges")
-    .select("*, companies(id, name, country), submissions(student_id, submitted_at)")
+    .select("*, companies(id, name, country), submissions(student_id, submitted_at, students(name))")
     .eq("status", "abierto")
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return (data ?? []).map(({ companies, submissions, ...c }) => {
-    const subs = (submissions ?? []) as { student_id: string; submitted_at: string | null }[];
+    const subs = (submissions ?? []) as { student_id: string; submitted_at: string | null; students: unknown }[];
     return {
       ...(c as Challenge),
       company: one(companies) as RetoFeed["company"],
       apuntados: subs.length,
       entregas: subs.filter((s) => s.submitted_at).length,
       yoApuntado: !!estudianteId && subs.some((s) => s.student_id === estudianteId),
+      personas: subs.slice(0, 3).map((s) => (one(s.students as { name: string }[] | null)?.name ?? "")).filter(Boolean),
     };
   });
 }
