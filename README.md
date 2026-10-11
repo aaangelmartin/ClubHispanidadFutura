@@ -19,6 +19,7 @@
 | [`docs/NICHO.md`](docs/NICHO.md) | Propuesta de nicho de entrada, competidores y cómo vender a universidades |
 | [`docs/NEGOCIO.md`](docs/NEGOCIO.md) | Mercado, financiación, KPIs, aliados, plan 90 días |
 | [`docs/PITCH.md`](docs/PITCH.md) | Guion del pitch de 3 minutos |
+| [`docs/RECAP.md`](docs/RECAP.md) | Recap completo de la hackathon (para post de LinkedIn y blog) |
 | [`docs/LANZAMIENTO.md`](docs/LANZAMIENTO.md) | **Por qué entra cada actor, cómo llegamos a él y en qué orden se lanza (el huevo y la gallina)** |
 | [`docs/PITCH-PROPUESTA.md`](docs/PITCH-PROPUESTA.md) | Propuesta de mejora del pitch: causa raíz, nicho, financiación del piloto |
 | [`docs/PREGUNTAS.md`](docs/PREGUNTAS.md) | **Preguntas probables del jurado y respuestas cortas** |
