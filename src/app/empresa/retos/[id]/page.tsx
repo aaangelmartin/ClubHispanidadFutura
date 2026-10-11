@@ -1,4 +1,4 @@
-// Dueño: perfil 4 (valorar y pasaporte). Ver docs/perfiles/4-valorar-y-pasaporte.md.
+// Dueño: perfil 4 (valorar y pasaporte). Ver docs/equipo/perfiles/4-valorar-y-pasaporte.md.
 // Valorar en Embarca: lista de entregas a la izquierda, pasaporte + entrega en el centro, nota por criterio a la derecha.
 import Link from "next/link";
 import { notFound } from "next/navigation";

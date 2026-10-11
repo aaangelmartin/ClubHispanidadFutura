@@ -32,7 +32,7 @@ cp .env.example .env.local      # pegar los tres valores
 claude
 ```
 Y el primer mensaje a Claude:
-> **Soy el perfil N. Lee AGENTS.md y docs/perfiles/N-*.md y empieza por la primera tarea.**
+> **Soy el perfil N. Lee AGENTS.md y docs/equipo/perfiles/N-*.md y empieza por la primera tarea.**
 
 ## Cómo se prueba cada parte sin depender de nadie
 
@@ -59,5 +59,5 @@ Todo lo que construyas tiene que verse en la demo: **a un clic desde `/demo`**, 
 - **No se cambian sin avisar en voz alta:** `supabase/schema.sql`, `src/lib/types.ts`, `src/lib/supabase.ts`, `src/lib/session.ts`, `src/lib/ai/client.ts`, `src/components/Header.tsx`.
 - **Si necesitas un campo nuevo en la base de datos**, avisa, añádelo a `schema.sql` y a `types.ts` con `alter table … add column` y pásale la línea SQL a quien gestione Supabase.
 - `git pull --rebase` antes de empezar y antes de cada `push`. `npm run build` sin errores antes de subir.
-- **Marca: `docs/BRANDING.md`** (la misma del deck de mentores). Usa las clases `card`, `btn`, `btn-primary`, `chip`, `field`, `eyebrow` y los colores `bg-paper`, `text-ink`, `text-gold`… No definas colores ni fuentes nuevas.
+- **Marca: `docs/producto/BRANDING.md`** (la misma del deck de mentores). Usa las clases `card`, `btn`, `btn-primary`, `chip`, `field`, `eyebrow` y los colores `bg-paper`, `text-ink`, `text-gold`… No definas colores ni fuentes nuevas.
 - Todo en español y legible en un proyector.

@@ -4,10 +4,10 @@
 Todo lo que el jurado puntúa y no es código: que haya **demanda real** en el panel a las 16:00, que cada cifra tenga fuente, que se entienda quién paga y por qué, con quién se hace el piloto, y un pitch de 3 minutos que se recuerde. Recuerda que el 65% de la nota es impacto, IA y viabilidad en 90 días.
 
 ## Tus archivos
-- `docs/NEGOCIO.md` (mercado, financiación, KPIs, aliados, plan 90 días)
-- `docs/PITCH.md` (guion)
-- `docs/deck-mentores.html` (deck de validación; publicado como artifact)
-- `docs/PRD.md` §12: anota ahí cualquier decisión que salga de los mentores.
+- `docs/negocio/NEGOCIO.md` (mercado, financiación, KPIs, aliados, plan 90 días)
+- `docs/pitch/PITCH.md` (guion)
+- `docs/pitch/deck-mentores.html` (deck de validación; publicado como artifact)
+- `docs/producto/PRD.md` §12: anota ahí cualquier decisión que salga de los mentores.
 
 ## Prioridad: lo que caduca va primero
 Los mentores están en la sala **ahora** y los registros necesitan horas para llegar. El pitch se puede escribir a las 14:30; esto no.
@@ -24,7 +24,7 @@ Los mentores están en la sala **ahora** y los registros necesitan horas para ll
 - [ ] Apunta cuántos registros hay a las 14:00, 15:00 y 15:55.
 
 ### 3. Validación con mentores (13:45)
-- [ ] Recorre a los mentores con el deck (`docs/deck-mentores.html`) y apunta sus respuestas a las 5 preguntas.
+- [ ] Recorre a los mentores con el deck (`docs/pitch/deck-mentores.html`) y apunta sus respuestas a las 5 preguntas.
 - [ ] Pide a cada uno **un problema real de su empresa** y pásaselo al perfil 2: se genera en directo en la demo.
 - [ ] Pregunta a la organización: ¿el pitch dura 3 o 10 minutos? ¿Hay proyector? ¿La demo puede ser en vivo?
 - [ ] **14:00, puesta en común:** cuenta al equipo qué han dicho, y anota las decisiones en `PRD.md` §12.

@@ -5,11 +5,11 @@
 
 /* Marca: la misma del deck de mentores y de la guía del Club Hispanidad Futura.
    Crema de fondo, azul marino para el texto y oro como único acento.
-   Detalle y reglas de uso en docs/BRANDING.md. Tema claro único (se proyecta en la demo). */
+   Detalle y reglas de uso en docs/producto/BRANDING.md. Tema claro único (se proyecta en la demo). */
 
 :root {
   /* Embarca · versión Hispanidad Futura: marino y oro del Club sobre blanco, con la señalética de
-     aeropuerto para los estados (verde, ámbar, rojo) y el azul para servicios. Ver docs/BRANDING.md. */
+     aeropuerto para los estados (verde, ámbar, rojo) y el azul para servicios. Ver docs/producto/BRANDING.md. */
   --bg: #ffffff;      /* fondo de página */
   --paper: #f4f2ec;   /* superficies y tarjetas */
   --ink: #14233d;     /* marino del Club: texto, paneles, portada */

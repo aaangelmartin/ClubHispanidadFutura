@@ -2,6 +2,7 @@
   "name": "club-hispanidad-futura",
   "version": "0.1.0",
   "private": true,
+  "description": "Embarca: retos reales de empresas para el talento joven de España y Colombia, con un pasaporte de talento. Hackathon Iberoamérica 2030 · Club Hispanidad Futura.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

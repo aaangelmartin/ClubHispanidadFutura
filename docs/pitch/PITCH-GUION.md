@@ -1,6 +1,6 @@
 # Embarca · Guion hablado y preparación
 
-Propuesta de apoyo al perfil 5, solicitada por el usuario. No cambia las reglas del producto ni fija precios, acuerdos o metas. Actualizada con su propuesta de negocio llegada durante esta tarea: contacto de candidato y premium, sin comisión por contratación. Referencias: [pitch principal](PITCH.md), [PRD](PRD.md), [negocio](NEGOCIO.md), [demo](DEMO.md), marca del issue [#12](https://github.com/aaangelmartin/ClubHispanidadFutura/issues/12).
+Propuesta de apoyo al perfil 5, solicitada por el usuario. No cambia las reglas del producto ni fija precios, acuerdos o metas. Actualizada con su propuesta de negocio llegada durante esta tarea: contacto de candidato y premium, sin comisión por contratación. Referencias: [pitch principal](PITCH.md), [PRD](../producto/PRD.md), [negocio](../negocio/NEGOCIO.md), [demo](../producto/DEMO.md), marca del issue [#12](https://github.com/aaangelmartin/ClubHispanidadFutura/issues/12).
 
 ## Qué debe recordar el jurado
 

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="96" viewBox="0 0 360 96" role="img" aria-label="Embarca">
+  <rect x="4" y="12" width="72" height="72" rx="14" fill="#C8963A"/>
+  <path d="M27 63 L55 35 M34 35 H55 V56" fill="none" stroke="#14233D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="96" y="66" fill="#FFFFFF" font-family="'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif" font-size="52" font-weight="700" letter-spacing="-1.5">Embarca</text>
+</svg>

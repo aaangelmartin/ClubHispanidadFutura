@@ -1,5 +1,5 @@
 // Dueño: perfil 1 (entrada y demanda). Landing de Embarca (diseño «Landing v2 · Hispanidad Futura», marino y oro).
-// Las piezas animadas viven en _landing/. Ver docs/PRD.md §1–3 y §8 P1.
+// Las piezas animadas viven en _landing/. Ver docs/producto/PRD.md §1–3 y §8 P1.
 import Link from "next/link";
 import { contarEstudiantes } from "./panel/queries";
 import { Logo } from "@/components/embarca";

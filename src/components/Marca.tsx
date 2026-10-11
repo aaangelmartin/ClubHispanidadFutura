@@ -1,5 +1,5 @@
 // Marca del producto: el escudo del Club Hispanidad Futura con la palabra del producto
-// (Raleway ExtraBold, como «CLUB») y «Hispanidad Futura» en caligrafía (Lobster). Ver docs/BRANDING.md.
+// (Raleway ExtraBold, como «CLUB») y «Hispanidad Futura» en caligrafía (Lobster). Ver docs/producto/BRANDING.md.
 // Dueño: perfil 1. Cuando el equipo elija nombre, cambia PALABRA_ESCUDO.
 
 export const PALABRA_ESCUDO = "RETOS";

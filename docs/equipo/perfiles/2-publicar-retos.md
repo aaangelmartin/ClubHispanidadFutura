@@ -12,7 +12,7 @@ Todo el recorrido de la empresa hasta tener su reto publicado: **describe su pro
 Entra como empresa de ejemplo: `/dev/sesion?rol=empresa&id=11111111-1111-4111-8111-000000000001&ir=/empresa/nuevo`. Lo que publiques aparece en `/retos` (perfil 3) por sí solo, porque solo pasa por la base de datos.
 
 ## Contrato
-- Tabla `challenges` (`supabase/schema.sql`). Creas filas en `borrador` y las pasas a `abierto`. Ciclo de vida: `docs/PRD.md` §8.1.
+- Tabla `challenges` (`supabase/schema.sql`). Creas filas en `borrador` y las pasas a `abierto`. Ciclo de vida: `docs/producto/PRD.md` §8.1.
 - `generateChallenge(description, companyName, companyCountry)` en `src/lib/ai/generate.ts` → `GeneratedChallenge`. El prompt es tuyo.
 - `getSession()` tiene que ser `{ role: "company" }`. Si no, redirige a `/registro?rol=empresa`.
 - Reglas del reto (`PRD.md` §5): plazo en días, nunca trabajo de producción.

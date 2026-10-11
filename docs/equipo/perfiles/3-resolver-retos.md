@@ -12,7 +12,7 @@ Los datos de ejemplo ya traen dos retos abiertos. Entra como estudiante: `/dev/s
 ## Contrato
 - Lees `challenges` (con su `companies`) y creas y actualizas `submissions` (`supabase/schema.sql`). Un estudiante, una entrega por reto (`unique`).
 - `getSession()` tiene que ser `{ role: "student" }` para apuntarse. Si no hay sesión, manda a `/registro?rol=estudiante`.
-- Reglas: `docs/PRD.md` §5 (la entrega es del estudiante; gane o no, va a su pasaporte).
+- Reglas: `docs/producto/PRD.md` §5 (la entrega es del estudiante; gane o no, va a su pasaporte).
 
 ## Tareas, en orden
 

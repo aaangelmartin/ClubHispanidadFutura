@@ -3,7 +3,7 @@ import { Fraunces, Source_Sans_3, IBM_Plex_Mono, Lobster, Raleway, Archivo, B612
 import "./globals.css";
 import Header from "@/components/Header";
 
-// Tipografías de la marca (docs/BRANDING.md): Fraunces para títulos, Source Sans 3 para texto
+// Tipografías de la marca (docs/producto/BRANDING.md): Fraunces para títulos, Source Sans 3 para texto
 // e IBM Plex Mono para etiquetas y cifras. Lobster y Raleway solo para la marca (escudo y caligrafía).
 const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], weight: ["500", "700"] });
 const sourceSans = Source_Sans_3({ variable: "--font-source-sans", subsets: ["latin"], weight: ["400", "600", "700"] });

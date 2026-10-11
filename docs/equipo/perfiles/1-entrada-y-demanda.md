@@ -15,7 +15,7 @@ Tus pantallas solo escriben en `students` y `companies` y leen recuentos. La cab
 - [ ] Vercel: importar el repo, añadir las 3 variables de `.env.example`, desplegar. Poner la URL en `README.md` (sección App).
 
 ### 2. Landing completa
-- [ ] Hero: el problema en una frase y la frase del producto (*"El CV dice lo que hiciste. Aquí demuestras lo que sabes hacer."*). Textos definitivos del perfil 5; mientras tanto, usa los de `docs/PRD.md` §1–3.
+- [ ] Hero: el problema en una frase y la frase del producto (*"El CV dice lo que hiciste. Aquí demuestras lo que sabes hacer."*). Textos definitivos del perfil 5; mientras tanto, usa los de `docs/producto/PRD.md` §1–3.
 - [ ] Dos llamadas claras: **Soy estudiante** → `/registro?rol=estudiante` y **Soy empresa** → `/registro?rol=empresa`.
 - [ ] "Cómo funciona" en 4 pasos: la empresa describe → la IA monta el reto → el estudiante entrega → la empresa valora y queda en el pasaporte.
 - [ ] Bloque "Si no ganas, no pierdes" y una línea de confianza: *"La IA prepara; decide una persona."*

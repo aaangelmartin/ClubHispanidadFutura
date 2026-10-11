@@ -1,6 +1,6 @@
 # Embarca · Preguntas del jurado
 
-Material de ensayo, no evidencia de validación. Complementa [las respuestas del perfil 5](PREGUNTAS.md), sin sustituirlas. Responder con una idea, una prueba disponible y el siguiente paso. Las propuestas operativas que siguen están pendientes de acordar; no son funciones ya implementadas. Contexto: [PRD](PRD.md), [negocio](NEGOCIO.md), [guion](PITCH-GUION.md).
+Material de ensayo, no evidencia de validación. Complementa [las respuestas del perfil 5](PREGUNTAS.md), sin sustituirlas. Responder con una idea, una prueba disponible y el siguiente paso. Las propuestas operativas que siguen están pendientes de acordar; no son funciones ya implementadas. Contexto: [PRD](../producto/PRD.md), [negocio](../negocio/NEGOCIO.md), [guion](PITCH-GUION.md).
 
 ## Las tres preguntas que más hay que ensayar
 

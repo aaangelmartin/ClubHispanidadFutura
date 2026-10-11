@@ -33,7 +33,7 @@ Frases cortas, para decirlas despacio. La demo ocupa 30 segundos; quedan unos 15
 
 **0:40–1:10 · Demo (30 segundos, la hace el perfil 1)**
 
-El guion completo de la demo, con la preparación de las dos ventanas y qué hacer si algo falla, está en [`DEMO.md`](DEMO.md). Es la "versión 30 segundos":
+El guion completo de la demo, con la preparación de las dos ventanas y qué hacer si algo falla, está en [`DEMO.md`](../producto/DEMO.md). Es la "versión 30 segundos":
 
 | Seg. | Pantalla | Qué se dice |
 |---|---|---|

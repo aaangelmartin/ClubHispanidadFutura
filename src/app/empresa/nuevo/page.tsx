@@ -1,4 +1,4 @@
-// Dueño: perfil 2 (publicar retos). Ver docs/perfiles/2-publicar-retos.md y docs/EQUIPO.md.
+// Dueño: perfil 2 (publicar retos). Ver docs/equipo/perfiles/2-publicar-retos.md y docs/equipo/EQUIPO.md.
 import Link from "next/link";
 import { deleteDraft } from "./actions";
 import EditForm from "./EditForm";

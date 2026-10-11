@@ -3,11 +3,11 @@
 Equipo de 5 en la **Hackathon Iberoamérica 2030** del Club Hispanidad Futura (Madrid, 10/10/2026). Pitches a las **16:00**. Todo lo que hagas debe servir para la demo o el pitch de hoy.
 
 ## Lee antes de hacer nada
-0. **Pregunta qué perfil es la persona (1–5) si no te lo ha dicho, y lee su ficha en `docs/perfiles/`.** Esa ficha dice qué archivos son suyos, qué no puede tocar y las tareas en orden. Trabaja solo en lo suyo.
-1. `docs/PRD.md` — qué construimos, reglas de producto, alcance del MVP, prompts. **Fuente de verdad.**
-2. `docs/EQUIPO.md` — quién hace qué y calendario.
-3. `docs/NEGOCIO.md` — mercado, financiación, KPIs, aliados, plan 90 días.
-4. `docs/PITCH.md` — guion de 3 minutos.
+0. **Pregunta qué perfil es la persona (1–5) si no te lo ha dicho, y lee su ficha en `docs/equipo/perfiles/`.** Esa ficha dice qué archivos son suyos, qué no puede tocar y las tareas en orden. Trabaja solo en lo suyo.
+1. `docs/producto/PRD.md` — qué construimos, reglas de producto, alcance del MVP, prompts. **Fuente de verdad.**
+2. `docs/equipo/EQUIPO.md` — quién hace qué y calendario.
+3. `docs/negocio/NEGOCIO.md` — mercado, financiación, KPIs, aliados, plan 90 días.
+4. `docs/pitch/PITCH.md` — guion de 3 minutos.
 
 ## Principio: todo tiene que ser demostrable
 Construimos **la aplicación real que vamos a lanzar**, no una maqueta. Pero todo lo que hagamos tiene que poder **enseñarse rápido en una demo y entenderse sin explicaciones**:
@@ -31,9 +31,9 @@ Construimos **la aplicación real que vamos a lanzar**, no una maqueta. Pero tod
 - **Datos e IA solo en el servidor:** Server Components y Server Actions usando `db()` (`src/lib/supabase.ts`) y `src/lib/ai/`. Nunca importes esos archivos desde un componente `"use client"` ni pongas claves en el navegador.
 - **`supabase/schema.sql` es el contrato** entre módulos, y `src/lib/types.ts` lo refleja. No lo cambies sin avisar al equipo; si hace falta, cambia los dos a la vez.
 - Sin login: quién eres sale de `getSession()` (`src/lib/session.ts`), que se fija al registrarse.
-- Toca solo las carpetas de tu perfil (`docs/perfiles/`). Las consultas a la base de datos van en tu propia carpeta; si necesitas algo de otra parte, cópialo antes que editar lo ajeno.
-- Para probar sin registrarte: `/dev/sesion` con los IDs de `supabase/seed.sql` (tabla en `docs/perfiles/README.md`).
-- **Marca: `docs/BRANDING.md`.** Es la misma del deck de mentores. Usa los tokens y las clases base de `globals.css`; no inventes colores ni fuentes.
+- Toca solo las carpetas de tu perfil (`docs/equipo/perfiles/`). Las consultas a la base de datos van en tu propia carpeta; si necesitas algo de otra parte, cópialo antes que editar lo ajeno.
+- Para probar sin registrarte: `/dev/sesion` con los IDs de `supabase/seed.sql` (tabla en `docs/equipo/perfiles/README.md`).
+- **Marca: `docs/producto/BRANDING.md`.** Es la misma del deck de mentores. Usa los tokens y las clases base de `globals.css`; no inventes colores ni fuentes.
 - UI en español. Simple y legible; la demo tiene que verse bien en un proyector.
 
 ## Coordinación entre agentes: GitHub Issues
@@ -74,6 +74,6 @@ Si hay un issue `bloqueo` para tu perfil, va antes que tu siguiente tarea.
 
 ## Git
 - Rama `main`, commits pequeños y frecuentes. `git pull --rebase` antes de empezar y antes de `push`.
-- Cada perfil edita **sus** archivos (su ficha de `docs/perfiles/`). Para tocar el de otro, abre un issue (ver arriba).
+- Cada perfil edita **sus** archivos (su ficha de `docs/equipo/perfiles/`). Para tocar el de otro, abre un issue (ver arriba).
 - Mensajes de commit en español, en imperativo, con el issue: `negocio: añade datos de paro juvenil (#5)`.
 - Sin ramas ni PRs hoy: no hay tiempo de revisión.

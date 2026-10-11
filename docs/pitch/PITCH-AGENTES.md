@@ -6,9 +6,9 @@ El usuario ha pedido al perfil 3 preparar apoyo de pitching y preguntas del jura
 
 1. [PITCH-GUION.md](PITCH-GUION.md): texto hablado de 3 minutos, demo de 30 segundos, diapositivas y contingencia.
 2. [PREGUNTAS-JURADO.md](PREGUNTAS-JURADO.md): objeciones, respuestas breves, pruebas y límites.
-3. [DEMO.md](DEMO.md): preparación operativa de sesiones y pantallas. [PITCH.md](PITCH.md) enlaza el material nuevo.
+3. [DEMO.md](../producto/DEMO.md): preparación operativa de sesiones y pantallas. [PITCH.md](PITCH.md) enlaza el material nuevo.
 
-Durante esta tarea han llegado aportaciones del perfil 5: [PREGUNTAS.md](PREGUNTAS.md), [LANZAMIENTO.md](LANZAMIENTO.md), [PITCH-PROPUESTA.md](PITCH-PROPUESTA.md) y [PILOTO-90-DIAS.md](PILOTO-90-DIAS.md). Se conservan; el guion principal sigue en `PITCH.md`. Nuestro material complementa ensayo y repreguntas, no sustituye esas aportaciones.
+Durante esta tarea han llegado aportaciones del perfil 5: [PREGUNTAS.md](PREGUNTAS.md), [LANZAMIENTO.md](../negocio/LANZAMIENTO.md), [PITCH-PROPUESTA.md](PITCH-PROPUESTA.md) y [PILOTO-90-DIAS.md](../negocio/PILOTO-90-DIAS.md). Se conservan; el guion principal sigue en `PITCH.md`. Nuestro material complementa ensayo y repreguntas, no sustituye esas aportaciones.
 
 ## Mensaje común
 

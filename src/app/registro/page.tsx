@@ -1,4 +1,4 @@
-// Dueño: perfil 1 (entrada y demanda). Registro de estudiantes y empresas. Ver docs/PRD.md §8 P1.
+// Dueño: perfil 1 (entrada y demanda). Registro de estudiantes y empresas. Ver docs/producto/PRD.md §8 P1.
 // Embarca: el estudiante crea su pasaporte; la empresa se da de alta y prepara su primer reto (tarjeta de embarque).
 import Link from "next/link";
 import type { Metadata } from "next";

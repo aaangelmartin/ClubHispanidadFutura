@@ -21,7 +21,7 @@ Los datos de ejemplo ya traen un reto en valoración con 3 entregas (1 valorada)
 ## Contrato
 - Lees `challenges`, `submissions`, `students` y `companies`. Escribes `submissions.ai_summary`, `evaluations` y `challenges.status` (`supabase/schema.sql`).
 - `summarizeSubmission(challenge, { link, notes })` en `src/lib/ai/summarize.ts` → `AiSummary`. El prompt es tuyo.
-- Reglas (`docs/PRD.md` §5): **la IA no pone nota ni ordena; decide la empresa**. Se valoran **todas** las entregas. Solo la empresa dueña del reto ve sus entregas.
+- Reglas (`docs/producto/PRD.md` §5): **la IA no pone nota ni ordena; decide la empresa**. Se valoran **todas** las entregas. Solo la empresa dueña del reto ve sus entregas.
 - Ciclo de vida: `PRD.md` §8.1.
 
 ## Tareas, en orden

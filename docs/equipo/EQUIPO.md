@@ -1,6 +1,6 @@
 # Reparto del equipo (5 personas)
 
-**4 personas en la app, cada una con una parte completa e independiente, y 1 en negocio.** Las fichas con las tareas, los archivos y cómo probar están en [`docs/perfiles/`](perfiles/README.md). A Claude se le dice: *"Soy el perfil N. Lee AGENTS.md y docs/perfiles/N-*.md y empieza por la primera tarea."*
+**4 personas en la app, cada una con una parte completa e independiente, y 1 en negocio.** Las fichas con las tareas, los archivos y cómo probar están en [`docs/equipo/perfiles/`](perfiles/README.md). A Claude se le dice: *"Soy el perfil N. Lee AGENTS.md y docs/equipo/perfiles/N-*.md y empieza por la primera tarea."*
 
 | # | Perfil | Quién | Parte completa |
 |---|---|---|---|
