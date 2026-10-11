@@ -13,5 +13,5 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Usa ?rol=empresa|estudiante&id=<uuid>&ir=/ruta" }, { status: 400 });
   }
   await setSession({ role: rol === "empresa" ? "company" : "student", id });
-  return NextResponse.redirect(new URL(ir.startsWith("/") ? ir : "/", req.url));
+  return NextResponse.redirect(new URL(ir.startsWith("/") && !ir.startsWith("//") ? ir : "/", req.url));
 }

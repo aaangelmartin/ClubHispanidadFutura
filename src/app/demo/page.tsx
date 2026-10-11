@@ -3,7 +3,7 @@
 // Enlaces <a> normales, no <Link>: Next precarga los <Link> y cada precarga de /dev/sesion cambiaría la sesión.
 import { notFound } from "next/navigation";
 import { DEMO_MODE } from "@/lib/demo";
-import { enlace, PASOS, SESIONES } from "./pasos";
+import { ACTOS, enlace, etiqueta, PASOS, SESIONES, type Sesion } from "./pasos";
 
 import type { Metadata } from "next";
 
@@ -21,34 +21,54 @@ export default function Demo() {
         </p>
       </div>
 
-      <ol className="flex flex-col gap-3">
-        {PASOS.map((p, i) => (
-          <li key={p.ruta + i}>
-            <a href={enlace(p)} className="card flex flex-wrap items-center gap-x-5 gap-y-2 p-4 hover:border-gold">
-              <span className="font-display text-3xl font-bold text-gold tabular">{i + 1}</span>
-              <div className="flex min-w-0 flex-1 flex-col">
-                <span className="font-semibold">{p.titulo}</span>
-                <span className="text-sm text-ink-2">{p.frase}</span>
-              </div>
-              <span className="chip">{p.como ? SESIONES[p.como].nombre : "Sin sesión"}</span>
-            </a>
-          </li>
-        ))}
-      </ol>
+      {ACTOS.map((acto, a) => {
+        const pasos = PASOS.map((p, i) => ({ p, n: i + 1 })).filter(({ p }) => p.acto === acto.k);
+        if (pasos.length === 0) return null;
+        return (
+          <section key={acto.k} className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-2">
+              <h2 className="text-xl font-bold">
+                <span className="text-ink-2">Acto {a + 1} · </span>
+                {acto.titulo}
+              </h2>
+              <span className="text-sm text-ink-2">{acto.quien}</span>
+            </div>
+            <ol className="flex flex-col gap-3">
+              {pasos.map(({ p, n }) => (
+                <li key={p.ruta + n}>
+                  <a href={enlace(p)} className="card flex flex-wrap items-center gap-x-5 gap-y-2 p-4 hover:border-gold">
+                    <span className="w-9 font-display text-3xl font-bold text-gold tabular">{n}</span>
+                    <div className="flex min-w-0 flex-1 flex-col">
+                      <span className="font-semibold">{p.titulo}</span>
+                      <span className="text-sm text-ink-2">{p.frase}</span>
+                      <span className="font-mono text-xs text-ink-2">{p.ruta}</span>
+                    </div>
+                    <span className="chip">{etiqueta(p.como)}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        );
+      })}
 
       <section className="flex flex-col gap-3">
         <h2 className="text-xl font-bold">Entrar como</h2>
         <div className="grid gap-3 sm:grid-cols-2">
-          {Object.entries(SESIONES).map(([key, s]) => (
+          {(Object.entries(SESIONES) as [Sesion, (typeof SESIONES)[Sesion]][]).map(([key, s]) => (
             <a
               key={key}
-              href={enlace({ ruta: s.rol === "empresa" ? "/empresa" : "/retos", como: key as keyof typeof SESIONES })}
+              href={enlace({ ruta: s.rol === "empresa" ? "/empresa" : "/estudiante", como: key })}
               className="card flex items-center justify-between gap-3 p-4 hover:border-gold"
             >
               <span>{s.nombre}</span>
               <span className="chip">{s.rol}</span>
             </a>
           ))}
+          <a href={enlace({ ruta: "/", como: "visitante" })} className="card flex items-center justify-between gap-3 p-4 hover:border-gold">
+            <span>Salir y ver la web como visitante</span>
+            <span className="chip">sin sesión</span>
+          </a>
         </div>
       </section>
     </main>
